@@ -1,0 +1,2 @@
+rootProject.name='MakeItEven2'
+include ':app'
