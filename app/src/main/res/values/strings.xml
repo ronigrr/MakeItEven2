@@ -1,3 +1,84 @@
 <resources>
-    <string name="app_name">MakeItEven2</string>
+    <string name="app_name">MakeItEven</string>
+
+    <string name="Stage_mode">Stage Mode</string>
+
+    <string name="Arcade_mode">Arcade Mode</string>
+
+    <string name="main_sound">Main sound</string>
+
+    <string name="sound_effects">Sound effects</string>
+
+    <string name="Progress">are you sure you want to reset all your progress?</string>
+
+    <string name="Yes">Yes</string>
+
+    <string name="No">No</string>
+
+    <string name="HigeScore">HigeScore</string>
+
+    <string name="correct_answer">Correct Answer</string>
+
+    <string name="wrong_answer">You Are Worng</string>
+
+    <string name="division">Division by 0 or not Neutral Division</string>
+
+    <string name="game_reset">Game Reset</string>
+
+    <string name="about_us">About Us</string>
+
+    <string name="score">Score:</string>
+
+    <string name="tutorial">Tutorial</string>
+
+    <string name="back">Back</string>
+
+    <string name="next">Next</string>
+
+    <string name="time_up">Times Up!!</string>
+
+    <string name="enter_nickname">Enter Nickname:</string>
+
+    <string name="settings">Settings</string>
+
+    <string name="reset_game_levels">Reset game levels</string>
+
+    <string name="Congrats">Congrats you did it right!!!!</string>
+
+    <string name="level_number">Level:</string>
+    <string name="this_fild_requierd">This field required</string>
+    <string name="invalid_fraction">Invalid division no fractions allowd</string>
+    <string name="Dividing_by_0">Dividing by 0 is a math error</string>
+    <string-array name="tutorial_string_array">
+        <item>Its easy to learn math with us,you have a simple goal,reach the big number in black using all four numbers given,press next to continue</item>
+        <item>now we will choose a number,lets say 6</item>
+        <item>lets choose an operator,lets try plus</item>
+        <item>Now lest choose another number to add to 6,lets go with 1</item>
+        <item>Now together we have 7,lets try to subtract 4 from the 7,we will choose minus first this time</item>
+        <item>and now we can pick the number we want to subtract from first we will pick 7</item>
+        <item>we want to subtract 4 from it so we will pick 4</item>
+        <item>Grate,we are close,lets pick the 3</item>
+        <item>And now we can pick the plus operator</item>
+        <item>Lets pick the other 3</item>
+        <item>Grate! we reached our goal,press next to continue</item>
+        <item>After reaching our goal in stage mode you can press the home button ,restart the level or press the next button for next stage,Press next please</item>
+        <item>This is the arcade mode,here you hace 02:30 minutes to solve as much as you can,you got 3 Lifebuoys that will change you question and will cost you 10 seconds</item>
+    </string-array>
+
+    <string-array name="tutorial_string_array_new">
+        <item>This is the Tutorial level</item>
+        <item>You need to reach this number in order to complete the level</item>
+        <item>you need to use all 4 given numbers to do so</item>
+        <item>you can use all of the operators any number of times</item>
+        <item>Click here to start over the level</item>
+        <item>You can get a hint by clicking the buoy.\n
+            ***on the arcade mode each buoy will change question and cost you 10 seconds***</item>
+    </string-array>
+
+    <string name="finish">Finish</string>
+    <string name="tutorial_level">Tutorial level</string>
+    <string name="Tap_me_to_continue">Tap me to continue</string>
+    <string name="stage"></string>
+    <string name="hints_left">Hints:</string>
+
 </resources>
