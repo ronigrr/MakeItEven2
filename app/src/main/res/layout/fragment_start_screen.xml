@@ -16,7 +16,7 @@
 <!--    </include>-->
 
     <ImageView
-        android:id="@+id/game_logo"
+        android:id="@+id/ivGameLogo"
         android:layout_width="360dp"
         android:layout_height="300dp"
         android:layout_centerHorizontal="true"
@@ -24,7 +24,7 @@
         android:contentDescription="logo"/>
 
     <Button
-        android:id="@+id/stage_mode_btn"
+        android:id="@+id/btnStageMode"
         android:layout_width="250dp"
         android:layout_height="60dp"
         android:layout_centerInParent="true"
@@ -35,10 +35,10 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/arcade_mode_btn"
+        android:id="@+id/btnArcadeMode"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:layout_below="@id/stage_mode_btn"
+        android:layout_below="@id/btnStageMode"
         android:layout_centerInParent="true"
         android:layout_marginTop="25dp"
         android:background="@drawable/arcade_btn"
@@ -48,7 +48,7 @@
         android:textStyle="bold" />
 
     <ImageButton
-        android:id="@+id/setting_btn"
+        android:id="@+id/btnSetting"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentEnd="true"
@@ -62,10 +62,10 @@
 
 
     <Button
-        android:id="@+id/totorial_btn"
+        android:id="@+id/btnTutorial"
         android:layout_width="250dp"
         android:layout_height="60dp"
-        android:layout_below="@id/arcade_mode_btn"
+        android:layout_below="@id/btnArcadeMode"
         android:layout_centerInParent="true"
         android:layout_marginTop="25dp"
         android:background="@drawable/tutorial_btn_background"
@@ -80,7 +80,7 @@
         android:id="@+id/start_activity_container"
         android:layout_centerInParent="true">
         <ImageButton
-            android:id="@+id/scoreBoard_btn"
+            android:id="@+id/btnScoreBoard"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:layout_alignParentBottom="true"
@@ -91,7 +91,7 @@
             android:contentDescription="scoreBoard icon"/>
 
         <ImageButton
-            android:id="@+id/shopping_cart_btn"
+            android:id="@+id/btnShoppingCart"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_alignParentRight="true"
@@ -101,6 +101,7 @@
             android:background="@color/Transparent"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_shopping_cart"
+            android:visibility="invisible"
             android:contentDescription="scoreBoard icon"/>
     </RelativeLayout>
 </RelativeLayout>
