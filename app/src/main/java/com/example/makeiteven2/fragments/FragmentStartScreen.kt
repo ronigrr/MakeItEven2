@@ -74,9 +74,4 @@ class FragmentStartScreen : Fragment() {
         }
         super.onAttach(context)
     }
-//    companion object {
-//        fun newInstance() : FragmentStartScreen {
-//            return FragmentStartScreen()
-//        }
-//    }
 }
