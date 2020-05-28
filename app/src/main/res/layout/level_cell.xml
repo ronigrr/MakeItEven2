@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/root_layout_level_cell">
+
+
+    <Button
+        android:id="@+id/btnLevel"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/levels_color"
+        android:stateListAnimator="@null" />
+
+    <RelativeLayout
+        android:id="@+id/stage_number_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/tvStageNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/primaryTextColor"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/ivLock"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignEnd="@id/btnLevel"
+        android:layout_alignBottom="@id/btnLevel"
+        android:layout_marginBottom="2dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/lock" />
+
+
+</RelativeLayout>

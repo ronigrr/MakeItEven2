@@ -14,16 +14,18 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
+import com.example.makeiteven2.extras.OnTouchAnimation
 import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 
 class FragmentStartScreen : Fragment() {
 
     private lateinit var callBack : OnButtonClicked
     private lateinit var stageModeBtn : Button
-    lateinit var arcadeModeBtn : Button
-    lateinit var tutorialBtn : Button
-    lateinit var scoreBoardBtn : ImageButton
-    lateinit var logoIv : ImageView
+    private lateinit var onTouchAnimation : OnTouchAnimation
+    private lateinit var arcadeModeBtn : Button
+    private lateinit var tutorialBtn : Button
+    private lateinit var scoreBoardBtn : ImageButton
+    private lateinit var logoIv : ImageView
 
     interface OnButtonClicked {
         fun onButtonClicked(view : View)
@@ -38,25 +40,13 @@ class FragmentStartScreen : Fragment() {
         tutorialBtn =rootView.btnTutorial
         scoreBoardBtn = rootView.btnScoreBoard
         logoIv = rootView.ivGameLogo
-
-        val btPressAnimation = AnimationUtils.loadAnimation(inflater.context, R.anim.btn_pressed)
-        val btnReleaseAnimation = AnimationUtils.loadAnimation(inflater.context, R.anim.btn_realeas)
-        val btnTouchAnimation = OnTouchListener { v, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                v.startAnimation(btPressAnimation)
-                btPressAnimation.fillAfter = true
-            }
-            if (event.action == MotionEvent.ACTION_UP) {
-                v.startAnimation(btnReleaseAnimation)
-            }
-            false
-        }
+        onTouchAnimation = OnTouchAnimation(inflater.context)
 
         logoIv.startAnimation(AnimationUtils.loadAnimation(context,R.anim.bounce))
-        scoreBoardBtn.setOnTouchListener(btnTouchAnimation)
-        stageModeBtn.setOnTouchListener(btnTouchAnimation)
-        tutorialBtn.setOnTouchListener(btnTouchAnimation)
-        arcadeModeBtn.setOnTouchListener(btnTouchAnimation)
+        scoreBoardBtn.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
+        stageModeBtn.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
+        tutorialBtn.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
+        arcadeModeBtn.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
 
         stageModeBtn.setOnClickListener { callBack.onButtonClicked(it) }
         scoreBoardBtn.setOnClickListener{ callBack.onButtonClicked(it) }
