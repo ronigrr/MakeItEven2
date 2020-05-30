@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -19,44 +17,44 @@ import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 
 class FragmentStartScreen : Fragment() {
 
-    private lateinit var callBack : OnButtonClicked
-    private lateinit var stageModeBtn : Button
-    private lateinit var onTouchAnimation : OnTouchAnimation
-    private lateinit var arcadeModeBtn : Button
-    private lateinit var tutorialBtn : Button
-    private lateinit var scoreBoardBtn : ImageButton
-    private lateinit var logoIv : ImageView
+    private lateinit var callBack : IFragmentsStartsScreenCallback
+    private lateinit var mStageModeBtn : Button
+    private lateinit var mOnTouchAnimation : OnTouchAnimation
+    private lateinit var mArcadeModeBtn : Button
+    private lateinit var mTutorialBtn : Button
+    private lateinit var mScoreBoardBtn : ImageButton
+    private lateinit var mLogoIv : ImageView
 
-    interface OnButtonClicked {
-        fun onButtonClicked(view : View)
+    interface IFragmentsStartsScreenCallback {
+        fun onStartScreenFragmentButtonClicked(view : View)
     }
 
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_start_screen,container,false)
-        stageModeBtn = rootView.btnStageMode
-        arcadeModeBtn = rootView.btnArcadeMode
-        tutorialBtn =rootView.btnTutorial
-        scoreBoardBtn = rootView.btnScoreBoard
-        logoIv = rootView.ivGameLogo
-        onTouchAnimation = OnTouchAnimation(inflater.context)
+        mStageModeBtn = rootView.btnStageMode
+        mArcadeModeBtn = rootView.btnArcadeMode
+        mTutorialBtn =rootView.btnTutorial
+        mScoreBoardBtn = rootView.btnScoreBoard
+        mLogoIv = rootView.ivGameLogo
+        mOnTouchAnimation = OnTouchAnimation(inflater.context)
 
-        logoIv.startAnimation(AnimationUtils.loadAnimation(context,R.anim.bounce))
-        scoreBoardBtn.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
-        stageModeBtn.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
-        tutorialBtn.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
-        arcadeModeBtn.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
+        mLogoIv.startAnimation(AnimationUtils.loadAnimation(context,R.anim.bounce))
+        mScoreBoardBtn.setOnTouchListener(mOnTouchAnimation.btnTouchAnimation)
+        mStageModeBtn.setOnTouchListener(mOnTouchAnimation.btnTouchAnimation)
+        mTutorialBtn.setOnTouchListener(mOnTouchAnimation.btnTouchAnimation)
+        mArcadeModeBtn.setOnTouchListener(mOnTouchAnimation.btnTouchAnimation)
 
-        stageModeBtn.setOnClickListener { callBack.onButtonClicked(it) }
-        scoreBoardBtn.setOnClickListener{ callBack.onButtonClicked(it) }
-        tutorialBtn.setOnClickListener { callBack.onButtonClicked(it) }
-        arcadeModeBtn.setOnClickListener { callBack.onButtonClicked(it) }
+        mStageModeBtn.setOnClickListener { callBack.onStartScreenFragmentButtonClicked(it) }
+        mScoreBoardBtn.setOnClickListener{ callBack.onStartScreenFragmentButtonClicked(it) }
+        mTutorialBtn.setOnClickListener { callBack.onStartScreenFragmentButtonClicked(it) }
+        mArcadeModeBtn.setOnClickListener { callBack.onStartScreenFragmentButtonClicked(it) }
         return rootView
     }
 
     override fun onAttach(context: Context) {
-        if (context is OnButtonClicked) {
+        if (context is IFragmentsStartsScreenCallback) {
             callBack = context
         }
         else{

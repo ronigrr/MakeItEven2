@@ -5,9 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.Level
@@ -19,20 +17,15 @@ class LevelsAdapter(private var mLevelsList : List<Level> = ArrayList(), private
 
     class ViewHolder(private val view : View,private val context: Context) : RecyclerView.ViewHolder(view){
         private val onTouchAnimation = OnTouchAnimation(context)
-        private lateinit var levelBtn : Button
-        private lateinit var lockStage : View
-        private lateinit var stageNumberLayout : View
-        private lateinit var stageNumberTv : TextView
 
         @SuppressLint("ClickableViewAccessibility")
         fun bind(level : Level, currentStage: Int) {
-            levelBtn = view.btnLevel
-            lockStage= view.ivLock
-            stageNumberLayout = view.stage_number_layout
-            stageNumberTv = view.tvStageNumber
+            val lockStage : View = view.ivLock
+            val stageNumberLayout : View = view.layoutStageNumber
+            val stageNumberTv : TextView = view.tvStageNumber
 
             stageNumberTv.text = level.levelNum.toString()
-            levelBtn.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
+            view.btnLevel.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
 
             when  {
                 level.levelNum == 0 -> {
@@ -50,7 +43,7 @@ class LevelsAdapter(private var mLevelsList : List<Level> = ArrayList(), private
                 }
             }
 
-            levelBtn.setOnClickListener {
+            view.btnLevel.setOnClickListener {
                 //TODO: Implement onClick listener with callback to start the game level
             }
 

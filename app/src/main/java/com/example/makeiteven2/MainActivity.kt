@@ -3,14 +3,13 @@ package com.example.makeiteven2
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.Toast
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.fragments.FragmentLevelsScreen
 import com.example.makeiteven2.fragments.FragmentStartScreen
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 
-class MainActivity : AppCompatActivity(),FragmentStartScreen.OnButtonClicked , FragmentLevelsScreen.OnLevelClicked {
+class MainActivity : AppCompatActivity(),FragmentStartScreen.IFragmentsStartsScreenCallback , FragmentLevelsScreen.IFragmentLevelsScreenCallback {
 
     private val fragmentManager = supportFragmentManager
     private val fragmentStartScreen : FragmentStartScreen = FragmentStartScreen()
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity(),FragmentStartScreen.OnButtonClicked , F
 
     }
 
-    override fun onButtonClicked(view: View) {
+    override fun onStartScreenFragmentButtonClicked(view: View) {
         when (view.id)
         {
             btnStageMode.id -> loadStageMode()
@@ -40,7 +39,7 @@ class MainActivity : AppCompatActivity(),FragmentStartScreen.OnButtonClicked , F
             .addToBackStack(null).commit()
     }
 
-    override fun onLevelClicked(view: View) {
+    override fun onLevelsFragmentLevelClicked(view: View) {
         //TODO: implement method
     }
 
