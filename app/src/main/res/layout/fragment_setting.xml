@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_element_settings"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:background="@drawable/fragment_background">
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayoutSeekBarMainSound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/setting_txtv"
+            style="@style/AppTheme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="@string/settings"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/setting_txtv"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_marginTop="40dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_sound"
+                android:textSize="20sp" />
+
+            <SeekBar
+                android:id="@+id/seekBarMainSound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/main_sound_txtv"
+                android:max="100"
+                android:thumb="@drawable/ic_seekbar_bar" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/RelativeLayoutSeekBarSoundEffects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/RelativeLayoutSeekBarMainSound"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/sound_efects_txtv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sound_effects"
+            android:textSize="20sp" />
+
+        <SeekBar
+            android:id="@+id/seekBarSoundEffects"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:thumb="@drawable/ic_seekbar_bar"
+            android:max="100"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnGameReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/reset_game"
+        android:text="@string/reset_game_levels"
+        android:textAllCaps="false"
+        android:layout_margin="20dp"
+        android:layout_alignParentBottom="true"/>
+
+    <ImageButton
+        android:id="@+id/btnCloseSettings"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:background="@color/Transparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/close_icon" />
+</RelativeLayout>

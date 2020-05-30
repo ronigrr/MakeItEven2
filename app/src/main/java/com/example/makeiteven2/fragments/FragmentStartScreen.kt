@@ -18,17 +18,22 @@ import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 
 class FragmentStartScreen : Fragment() {
 
-    private lateinit var callBack : OnButtonClicked
+    private lateinit var callBack : StartScreenCallBack
     private lateinit var stageModeBtn : Button
     lateinit var arcadeModeBtn : Button
     lateinit var tutorialBtn : Button
     lateinit var scoreBoardBtn : ImageButton
     lateinit var logoIv : ImageView
 
-    interface OnButtonClicked {
-        fun onButtonClicked(view : View)
+    interface StartScreenCallBack {
+        fun onStartScreenButtonClicked(view : View)
+        fun showToolBar()
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        callBack.showToolBar()
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,15 +63,15 @@ class FragmentStartScreen : Fragment() {
         tutorialBtn.setOnTouchListener(btnTouchAnimation)
         arcadeModeBtn.setOnTouchListener(btnTouchAnimation)
 
-        stageModeBtn.setOnClickListener { callBack.onButtonClicked(it) }
-        scoreBoardBtn.setOnClickListener{ callBack.onButtonClicked(it) }
-        tutorialBtn.setOnClickListener { callBack.onButtonClicked(it) }
-        arcadeModeBtn.setOnClickListener { callBack.onButtonClicked(it) }
+        stageModeBtn.setOnClickListener { callBack.onStartScreenButtonClicked(it) }
+        scoreBoardBtn.setOnClickListener{ callBack.onStartScreenButtonClicked(it) }
+        tutorialBtn.setOnClickListener { callBack.onStartScreenButtonClicked(it) }
+        arcadeModeBtn.setOnClickListener { callBack.onStartScreenButtonClicked(it) }
         return rootView
     }
 
     override fun onAttach(context: Context) {
-        if (context is OnButtonClicked) {
+        if (context is StartScreenCallBack) {
             callBack = context
         }
         else{
