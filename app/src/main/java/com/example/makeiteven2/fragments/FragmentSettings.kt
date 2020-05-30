@@ -16,12 +16,12 @@ class FragmentSettings : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_setting,container,false)
-        mainVolumeBar = rootView.seekBarMainSound
-        soundEffectsBar =rootView.seekBarSoundEffects
-        resetGameBtn=rootView.btnGameReset
-        exitBtn=rootView.btnCloseSettings
+        mMainVolumeBar = rootView.seekBarMainSound
+        mSoundEffectsBar =rootView.seekBarSoundEffects
+        mResetGameBtn=rootView.btnGameReset
+        mExitBtn=rootView.btnCloseSettings
 
-        exitBtn.setOnClickListener{
+        mExitBtn.setOnClickListener{
             callBack.onExitFromSettingsFragment()
         }
         //TODO:finish settings fragment after game logic and datastore is working
@@ -30,10 +30,10 @@ class FragmentSettings : Fragment() {
     }
 
     private lateinit var callBack : SettingsFragmentCallBack
-    private lateinit var mainVolumeBar: SeekBar
-    private lateinit var soundEffectsBar :SeekBar
-    private lateinit var resetGameBtn: Button
-    private lateinit var exitBtn: ImageButton
+    private lateinit var mMainVolumeBar: SeekBar
+    private lateinit var mSoundEffectsBar :SeekBar
+    private lateinit var mResetGameBtn: Button
+    private lateinit var mExitBtn: ImageButton
 
     internal interface SettingsFragmentCallBack {
         fun onSeekBarMainVolume(mainVolume: Int)

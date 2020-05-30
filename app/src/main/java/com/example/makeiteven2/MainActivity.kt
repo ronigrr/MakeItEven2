@@ -2,6 +2,7 @@ package com.example.makeiteven2
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.Display
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -25,7 +26,9 @@ class MainActivity : AppCompatActivity(),FragmentStartScreen.StartScreenCallBack
         setContentView(R.layout.activity_main)
 
         appToolbar= toolBar as Toolbar
+        appToolbar.title =" "
         setSupportActionBar(appToolbar)
+
 
         fragmentManager.beginTransaction().add(R.id.fragmentContainer,fragmentStartScreen,Constants.START_SCREEN_FRAGMENT_TAG).commit()
 
