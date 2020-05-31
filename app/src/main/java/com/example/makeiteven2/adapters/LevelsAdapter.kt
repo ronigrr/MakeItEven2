@@ -16,30 +16,26 @@ class LevelsAdapter(private var mLevelsList : List<Level> = ArrayList(), private
     : RecyclerView.Adapter<LevelsAdapter.ViewHolder>(){
 
     class ViewHolder(private val view : View,private val context: Context) : RecyclerView.ViewHolder(view){
-        private val onTouchAnimation = OnTouchAnimation(context)
-
+        
         @SuppressLint("ClickableViewAccessibility")
         fun bind(level : Level, currentStage: Int) {
-            val lockStage : View = view.ivLock
-            val stageNumberLayout : View = view.layoutStageNumber
-            val stageNumberTv : TextView = view.tvStageNumber
-
-            stageNumberTv.text = level.levelNum.toString()
+            val onTouchAnimation = OnTouchAnimation(context)
+            view.tvStageNumber.text = level.levelNum.toString()
             view.btnLevel.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
 
             when  {
                 level.levelNum == 0 -> {
-                    stageNumberLayout.visibility = View.VISIBLE
-                    lockStage.visibility = View.INVISIBLE
-                    stageNumberTv.setText(R.string.tutorial)
+                    view.layoutStageNumber.visibility = View.VISIBLE
+                    view.ivLock.visibility = View.INVISIBLE
+                    view.tvStageNumber.setText(R.string.tutorial)
                 }
                 level.levelNum <= currentStage-> {
-                    stageNumberLayout.visibility = View.VISIBLE
-                    lockStage.visibility = View.INVISIBLE
+                    view.layoutStageNumber.visibility = View.VISIBLE
+                    view.ivLock.visibility = View.INVISIBLE
                 }
                 level.levelNum > currentStage -> {
-                    lockStage.visibility = View.VISIBLE
-                    stageNumberLayout.visibility = View.INVISIBLE
+                    view.ivLock.visibility = View.VISIBLE
+                    view.layoutStageNumber.visibility = View.INVISIBLE
                 }
             }
 
