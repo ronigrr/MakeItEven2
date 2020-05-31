@@ -16,7 +16,7 @@ class LevelsAdapter(private var mLevelsList : List<Level> = ArrayList(), private
     : RecyclerView.Adapter<LevelsAdapter.ViewHolder>(){
 
     class ViewHolder(private val view : View,private val context: Context) : RecyclerView.ViewHolder(view){
-        
+
         @SuppressLint("ClickableViewAccessibility")
         fun bind(level : Level, currentStage: Int) {
             val onTouchAnimation = OnTouchAnimation(context)

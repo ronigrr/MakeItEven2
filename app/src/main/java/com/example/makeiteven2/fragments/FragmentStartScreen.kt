@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 
 class FragmentStartScreen : Fragment() {
 
-    private lateinit var callBack : IFragmentsStartsScreenCallback
+    private lateinit var mCallBack : IFragmentsStartsScreenCallback
     private lateinit var mStageModeBtn : Button
     private lateinit var mOnTouchAnimation : OnTouchAnimation
     private lateinit var mArcadeModeBtn : Button
@@ -46,16 +46,16 @@ class FragmentStartScreen : Fragment() {
         mTutorialBtn.setOnTouchListener(mOnTouchAnimation.btnTouchAnimation)
         mArcadeModeBtn.setOnTouchListener(mOnTouchAnimation.btnTouchAnimation)
 
-        mStageModeBtn.setOnClickListener { callBack.onStartScreenFragmentButtonClicked(it) }
-        mScoreBoardBtn.setOnClickListener{ callBack.onStartScreenFragmentButtonClicked(it) }
-        mTutorialBtn.setOnClickListener { callBack.onStartScreenFragmentButtonClicked(it) }
-        mArcadeModeBtn.setOnClickListener { callBack.onStartScreenFragmentButtonClicked(it) }
+        mStageModeBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
+        mScoreBoardBtn.setOnClickListener{ mCallBack.onStartScreenFragmentButtonClicked(it) }
+        mTutorialBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
+        mArcadeModeBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
         return rootView
     }
 
     override fun onAttach(context: Context) {
         if (context is IFragmentsStartsScreenCallback) {
-            callBack = context
+            mCallBack = context
         }
         else{
             throw ClassCastException(context.toString() + "must implement OnButtonClicked")

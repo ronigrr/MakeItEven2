@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_levels.view.*
 
 class FragmentLevelsScreen : Fragment() {
 
-    private lateinit var callBack : IFragmentLevelsScreenCallback
+    private lateinit var mCallBack : IFragmentLevelsScreenCallback
     private lateinit var mLevelsRecyclerView : RecyclerView
     private lateinit var mLevelsAdapter : LevelsAdapter
     private  var mCurrentStage = 0
@@ -49,7 +49,7 @@ class FragmentLevelsScreen : Fragment() {
     }
     override fun onAttach(context: Context) {
         if (context is IFragmentLevelsScreenCallback) {
-            callBack = context
+            mCallBack = context
         }
         else{
             throw ClassCastException(context.toString() + "must implement OnLevelClicked")
