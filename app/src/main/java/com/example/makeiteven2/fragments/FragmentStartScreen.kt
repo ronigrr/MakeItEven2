@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -27,8 +29,13 @@ class FragmentStartScreen : Fragment() {
 
     interface IFragmentsStartsScreenCallback {
         fun onStartScreenFragmentButtonClicked(view : View)
+        fun showToolBar()
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        mCallBack.showToolBar()
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
