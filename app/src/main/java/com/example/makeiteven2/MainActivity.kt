@@ -3,13 +3,14 @@ package com.example.makeiteven2
 import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Display
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.fragments.FragmentGameScreen
 import com.example.makeiteven2.fragments.FragmentSettings
 import com.example.makeiteven2.fragments.FragmentLevelsScreen
 import com.example.makeiteven2.fragments.FragmentStartScreen
@@ -17,12 +18,13 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 
 class MainActivity : AppCompatActivity(),FragmentStartScreen.IFragmentsStartsScreenCallback
-, FragmentLevelsScreen.IFragmentLevelsScreenCallback,FragmentSettings.SettingsFragmentCallBack {
+,FragmentSettings.SettingsFragmentCallBack,LevelsAdapter.ILevelsAdapter {
 
     private val fragmentManager = supportFragmentManager
     private val fragmentStartScreen : FragmentStartScreen = FragmentStartScreen()
     private val fragmentSettings :FragmentSettings = FragmentSettings()
     private val fragmentLevelsScreen : FragmentLevelsScreen = FragmentLevelsScreen()
+    private val fragmentGameScreen : FragmentGameScreen = FragmentGameScreen()
     private lateinit var appToolbar : Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,20 +82,21 @@ class MainActivity : AppCompatActivity(),FragmentStartScreen.IFragmentsStartsScr
         }
 
         private fun loadStageMode() {
+
             fragmentManager.beginTransaction().replace(
                 R.id.fragmentContainer,
                 fragmentLevelsScreen,
                 Constants.LEVELS_SCREEN_FRAGMENT_TAG
             )
                 .addToBackStack(null).commit()
-        }
-
-        override fun onLevelsFragmentLevelClicked(view: View) {
-            //TODO: implement method
+            hideToolBar()
         }
 
         override fun onBackPressed() {
             super.onBackPressed()
+            if(fragmentManager.findFragmentById(R.id.fragmentContainer)?.equals(fragmentStartScreen)!!){
+                showToolBar()
+            }
             //TODO: Bug that reloads the recyclerview in levelsScreenFragment when you backpress and press stagemode again
         }
 
@@ -116,4 +119,17 @@ class MainActivity : AppCompatActivity(),FragmentStartScreen.IFragmentsStartsScr
         override fun onExitFromSettingsFragment() {
             onBackPressed()
         }
+
+        fun hideToolBar(){
+            appToolbar.visibility = View.GONE
+        }
+
+    override fun levelsAdapterItemClicked(levelNumber: Int) {
+        fragmentManager.beginTransaction().replace(
+            R.id.fragmentContainer,
+            fragmentGameScreen,
+            Constants.GAME_SCREEN_FRAGMENT_TAG
+        )
+            .addToBackStack(null).commit()
     }
+}

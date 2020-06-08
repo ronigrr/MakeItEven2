@@ -15,15 +15,15 @@ import kotlinx.android.synthetic.main.fragment_levels.view.*
 
 class FragmentLevelsScreen : Fragment() {
 
-    private lateinit var mCallBack : IFragmentLevelsScreenCallback
+    //private lateinit var mCallBack : IFragmentLevelsScreenCallback
     private lateinit var mLevelsRecyclerView : RecyclerView
     private lateinit var mLevelsAdapter : LevelsAdapter
     private  var mCurrentStage = 0
     var  mLevelItemsList : ArrayList<Level> = ArrayList()
 
-    interface IFragmentLevelsScreenCallback {
-        fun onLevelsFragmentLevelClicked(view : View)
-    }
+//    interface IFragmentLevelsScreenCallback {
+//        fun onLevelsFragmentLevelClicked(levelNumber : Int)
+//    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_levels,container,false)
@@ -47,13 +47,5 @@ class FragmentLevelsScreen : Fragment() {
         mLevelsRecyclerView.adapter = mLevelsAdapter
 
     }
-    override fun onAttach(context: Context) {
-        if (context is IFragmentLevelsScreenCallback) {
-            mCallBack = context
-        }
-        else{
-            throw ClassCastException(context.toString() + "must implement OnLevelClicked")
-        }
-        super.onAttach(context)
-    }
+
 }
