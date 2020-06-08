@@ -48,14 +48,4 @@ class FragmentLevelsScreen : Fragment() {
 
     }
 
-    override fun onAttach(context: Context) {
-//        if (context is IFragmentLevelsScreenCallback) {
-//            mCallBack = context
-//        }
-//        else{
-//            throw ClassCastException(context.toString() + "must implement OnLevelClicked")
-//        }
-        super.onAttach(context)
-    }
-
 }

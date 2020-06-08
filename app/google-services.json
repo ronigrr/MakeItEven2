@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "346105722610",
+    "firebase_url": "https://makeiteven2.firebaseio.com",
+    "project_id": "makeiteven2",
+    "storage_bucket": "makeiteven2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346105722610:android:f67efb740f9bf41aaf026b",
+        "android_client_info": {
+          "package_name": "com.example.makeiteven2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "346105722610-p5n9ac883kk8f3qs4pp8i5c6ik036gtu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.makeiteven2",
+            "certificate_hash": "86629a1f7f08498a3f79eb6df48824879e634637"
+          }
+        },
+        {
+          "client_id": "346105722610-raq52f7tr1i2aa9lmojbd8hjjdaqrqr2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCceK5_pM1VPRz4v-hzDj2csg5qXfTO0Vc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "346105722610-raq52f7tr1i2aa9lmojbd8hjjdaqrqr2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
