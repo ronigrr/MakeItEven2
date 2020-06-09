@@ -10,10 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.extras.Constants
-import com.example.makeiteven2.fragments.FragmentGameScreen
-import com.example.makeiteven2.fragments.FragmentSettings
-import com.example.makeiteven2.fragments.FragmentLevelsScreen
-import com.example.makeiteven2.fragments.FragmentStartScreen
+import com.example.makeiteven2.fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 
@@ -24,7 +21,9 @@ class MainActivity : AppCompatActivity(),FragmentStartScreen.IFragmentsStartsScr
     private val fragmentStartScreen : FragmentStartScreen = FragmentStartScreen()
     private val fragmentSettings :FragmentSettings = FragmentSettings()
     private val fragmentLevelsScreen : FragmentLevelsScreen = FragmentLevelsScreen()
-    private val fragmentGameScreen : FragmentGameScreen = FragmentGameScreen()
+    private val fragmentStageModeScreen : FragmentStageModeScreen = FragmentStageModeScreen()
+    private val fragmentArcadeModeScreen: FragmentArcadeModeScreen = FragmentArcadeModeScreen()
+
     private lateinit var appToolbar : Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +42,23 @@ class MainActivity : AppCompatActivity(),FragmentStartScreen.IFragmentsStartsScr
     override fun onStartScreenFragmentButtonClicked(view: View) {
         when (view.id) {
             btnStageMode.id -> loadStageMode()
-            btnArcadeMode.id -> Toast.makeText(this, "ArcadeMode", Toast.LENGTH_SHORT).show()
+            btnArcadeMode.id -> loadArcadeMode()
             btnScoreBoard.id -> Toast.makeText(this, "ScoreBoard", Toast.LENGTH_SHORT).show()
             btnTutorial.id -> Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show()
         }
     }
-        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+
+    private fun loadArcadeMode() {
+        fragmentManager.beginTransaction().replace(
+            R.id.fragmentContainer,
+            fragmentArcadeModeScreen,
+            Constants.ARCADE_MODE_SCREEN_FRAGMENT_TAG
+        )
+            .addToBackStack(null).commit()
+        hideToolBar()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
             menuInflater.inflate(R.menu.action_menu, menu)
             return true
         }
@@ -86,7 +96,7 @@ class MainActivity : AppCompatActivity(),FragmentStartScreen.IFragmentsStartsScr
             fragmentManager.beginTransaction().replace(
                 R.id.fragmentContainer,
                 fragmentLevelsScreen,
-                Constants.LEVELS_SCREEN_FRAGMENT_TAG
+                Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG
             )
                 .addToBackStack(null).commit()
             hideToolBar()
@@ -127,8 +137,8 @@ class MainActivity : AppCompatActivity(),FragmentStartScreen.IFragmentsStartsScr
     override fun levelsAdapterItemClicked(levelNumber: Int) {
         fragmentManager.beginTransaction().replace(
             R.id.fragmentContainer,
-            fragmentGameScreen,
-            Constants.GAME_SCREEN_FRAGMENT_TAG
+            fragmentStageModeScreen,
+            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG
         )
             .addToBackStack(null).commit()
     }

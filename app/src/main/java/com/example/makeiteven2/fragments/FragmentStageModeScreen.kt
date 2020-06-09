@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 
-class FragmentGameScreen : Fragment() {
+class FragmentStageModeScreen : Fragment() {
 
 
     override fun onAttach(context: Context) {
@@ -17,7 +17,7 @@ class FragmentGameScreen : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_game,container,false)
-        //TODO: Finish the game fragment
+        //TODO: Finish the SageMode fragment
         return rootView
     }
 }
