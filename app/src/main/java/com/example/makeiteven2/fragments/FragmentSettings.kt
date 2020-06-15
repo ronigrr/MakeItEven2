@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
+import com.example.makeiteven2.extras.Constants
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 
 class FragmentSettings : Fragment() {
@@ -20,6 +21,9 @@ class FragmentSettings : Fragment() {
         mSoundEffectsBar =rootView.seekBarSoundEffects
         mResetGameBtn=rootView.btnGameReset
         mExitBtn=rootView.btnCloseSettings
+
+        rootView.seekBarMainSound.progress = Constants.User.mainSoundLevel!!
+        rootView.seekBarSoundEffects.progress = Constants.User.soundEffectsLevel!!
 
         mExitBtn.setOnClickListener{
             callBack.onExitFromSettingsFragment()

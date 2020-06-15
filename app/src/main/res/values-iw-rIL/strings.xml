@@ -80,4 +80,7 @@
     <string name="Tap_me_to_continue">לחץ עלי להמשך</string>
     <string name="stage">שלב</string>
     <string name="hints_left">רמזים:</string>
+    <string name="enter_your_name_or_nickname">הכנס שם או כינוי</string>
+    <string name="example">דוגמה</string>
+    <string name="done">אישור</string>
 </resources>
