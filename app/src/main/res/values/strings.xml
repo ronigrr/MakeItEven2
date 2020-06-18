@@ -78,7 +78,10 @@
     <string name="finish">Finish</string>
     <string name="tutorial_level">Tutorial level</string>
     <string name="Tap_me_to_continue">Tap me to continue</string>
-    <string name="stage"></string>
+    <string name="stage">stage</string>
     <string name="hints_left">Hints:</string>
+    <string name="enter_your_name_or_nickname">Enter your name or nickname</string>
+    <string name="example">example</string>
+    <string name="done">Done</string>
 
 </resources>

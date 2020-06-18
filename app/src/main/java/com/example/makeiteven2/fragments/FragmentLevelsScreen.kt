@@ -1,6 +1,5 @@
 package com.example.makeiteven2.fragments
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.Level
+import com.example.makeiteven2.extras.Constants
 import kotlinx.android.synthetic.main.fragment_levels.view.*
 
 class FragmentLevelsScreen : Fragment() {
@@ -28,8 +28,9 @@ class FragmentLevelsScreen : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_levels,container,false)
         mLevelsRecyclerView = rootView.recyclerLevels
+        mCurrentStage = Constants.User.currentLevel!!
         //TODO: insted of 10 in testings, replase the spanCount to mCurrentStage
-        mLevelsAdapter = LevelsAdapter(mLevelItemsList,rootView.context,10)
+        mLevelsAdapter = LevelsAdapter(mLevelItemsList,rootView.context,mCurrentStage)
         initLevels()
         initRecyclerView()
 
