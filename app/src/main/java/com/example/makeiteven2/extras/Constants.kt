@@ -17,5 +17,7 @@ object Constants {
 
     lateinit var User : RoomUserNote
 
+    //Todo: note sure if i want to do it like this "lateinit var mAudioManager: AudioManager"
+
 
 }

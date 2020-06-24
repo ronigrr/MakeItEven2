@@ -1,5 +1,6 @@
 package com.example.makeiteven2
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
@@ -13,7 +14,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.makeiteven2.adapters.LevelsAdapter
-import com.example.makeiteven2.extras.*
+import com.example.makeiteven2.extras.AudioManager
+import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.room.NoteDao
 import com.example.makeiteven2.room.RoomNoteDatabase
@@ -37,9 +39,9 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private val fragmentLevelsScreen: FragmentLevelsScreen = FragmentLevelsScreen()
     private val fragmentStageModeScreen: FragmentStageModeScreen = FragmentStageModeScreen()
     private val fragmentArcadeModeScreen: FragmentArcadeModeScreen = FragmentArcadeModeScreen()
-    private val dialogFragmentFragmentNickName: FragmentDialogNickName =
-        FragmentDialogNickName()
-    private lateinit var mNoteDatabase: RoomNoteDatabase
+    private val dialogFragmentFragmentNickName: FragmentDialogNickName = FragmentDialogNickName()
+    private lateinit var mAudioManager : AudioManager
+    private lateinit var mNoteDatabase : RoomNoteDatabase
     private lateinit var mNoteDao: NoteDao
     private lateinit var uiHandler: Handler
 
@@ -57,16 +59,15 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         mNoteDao = mNoteDatabase.roomNoteDao()
         uiHandler = Handler()
 
-        mSharedPref =
-            applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
+        mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
         mEditor = mSharedPref.edit()
-
+        mAudioManager = AudioManager(this).getInstance(this)
 
         if (mSharedPref.getBoolean(Constants.SHARED_KEY_IS_USER_EXISTS, FALSE) == FALSE) {
             firstTimeInApp()
         } else {
-            loadStartScreen()
             loadUser()
+            loadStartScreen()
         }
 
     }
@@ -80,6 +81,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private fun loadUser() {
         GlobalScope.launch {
             Constants.User = mNoteDao.getNotes()[0]
+            mAudioManager.startGameMusic()
         }
     }
 
@@ -169,18 +171,32 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     }
 
     override fun onSeekBarMainVolume(mainVolume: Int) {
-        TODO("Not yet implemented")
+        mAudioManager.setGameVolume(mainVolume)
     }
 
     override fun onSeekBarSoundEffects(soundEffectsVolume: Int) {
-        TODO("Not yet implemented")
+        mAudioManager.setEffectVolume(soundEffectsVolume)
     }
 
     override fun onResetGame() {
-        TODO("Not yet implemented")
+        //TODO: may not work properly,need to check it after the game i ready (check the code inside positive btn)
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
+        alertDialogBuilder.setIcon(R.drawable.warning_icon)
+        alertDialogBuilder.setMessage(R.string.Progress).setCancelable(false).setPositiveButton(R.string.Yes) { dialog, _ ->
+                Constants.User.currentLevel = 1
+                insertOrUpdateUserToDataBase(Constants.User)
+                //DataStore.getInstance(this@StartScreenActivity).resetLevels()
+                dialog.cancel()
+            }
+        alertDialogBuilder.setNegativeButton(R.string.No) { dialog, _ -> dialog.cancel() }
+
+        val alert = alertDialogBuilder.create()
+        alert.show()
     }
 
     override fun onExitFromSettingsFragment() {
+        insertOrUpdateUserToDataBase(Constants.User)
         onBackPressed()
     }
 
@@ -204,14 +220,18 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         loadStartScreen()
     }
 
+    private fun insertOrUpdateUserToDataBase(userNote: RoomUserNote){
+        GlobalScope.launch {
+            mNoteDatabase.roomNoteDao().insertOrUpdateNote(userNote)
+        }
+    }
+
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
             UUID.randomUUID().toString(), nickname, 1, 50, 50, 3
         )
         Constants.User = newUserNote
-        GlobalScope.launch {
-            mNoteDatabase.roomNoteDao().insertOrUpdateNote(newUserNote)
-        }
+        insertOrUpdateUserToDataBase(newUserNote)
     }
 
     private fun firstTimeInApp() {
@@ -221,5 +241,13 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
             .commit()
     }
 
+    override fun onPause() {
+        super.onPause()
+        mAudioManager.stopGameMusic()
+    }
 
+    override fun onRestart() {
+        super.onRestart()
+        mAudioManager.startGameMusic()
+    }
 }
