@@ -11,13 +11,13 @@
     android:layout_margin="10dp">
 
     <RelativeLayout
-        android:id="@+id/RelativeLayoutSeekBarMainSound"
+        android:id="@+id/seekBarMainSoundRelativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
 
         <TextView
-            android:id="@+id/setting_txtv"
+            android:id="@+id/tvSettingHeadLine"
             style="@style/AppTheme"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/setting_txtv"
+            android:layout_below="@id/tvSettingHeadLine"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:layout_marginTop="40dp">
@@ -52,16 +52,15 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/RelativeLayoutSeekBarSoundEffects"
+        android:id="@+id/seekBarSoundEffectsRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/RelativeLayoutSeekBarMainSound"
+        android:layout_below="@+id/seekBarMainSoundRelativeLayout"
         android:layout_marginTop="40dp"
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
         <TextView
-            android:id="@+id/sound_efects_txtv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sound_effects"
@@ -84,7 +83,7 @@
         android:text="@string/reset_game_levels"
         android:textAllCaps="false"
         android:layout_margin="20dp"
-        android:layout_below="@+id/RelativeLayoutSeekBarSoundEffects" />
+        android:layout_below="@+id/seekBarSoundEffectsRelativeLayout" />
 
     <ImageButton
         android:id="@+id/btnCloseSettings"

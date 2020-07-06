@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.extras.Constants.mAudioManager
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.room.NoteDao
 import com.example.makeiteven2.room.RoomNoteDatabase
@@ -40,7 +41,6 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private val fragmentStageModeScreen: FragmentStageModeScreen = FragmentStageModeScreen()
     private val fragmentArcadeModeScreen: FragmentArcadeModeScreen = FragmentArcadeModeScreen()
     private val dialogFragmentFragmentNickName: FragmentDialogNickName = FragmentDialogNickName()
-    private lateinit var mAudioManager : AudioManager
     private lateinit var mNoteDatabase : RoomNoteDatabase
     private lateinit var mNoteDao: NoteDao
     private lateinit var uiHandler: Handler
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
         mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
         mEditor = mSharedPref.edit()
-        mAudioManager = AudioManager(this).getInstance(this)
+        mAudioManager = AudioManager(this).getInstance(this) // mAudioManager from constants
 
         if (mSharedPref.getBoolean(Constants.SHARED_KEY_IS_USER_EXISTS, FALSE) == FALSE) {
             firstTimeInApp()
