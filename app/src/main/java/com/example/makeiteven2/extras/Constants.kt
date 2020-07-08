@@ -16,6 +16,5 @@ object Constants {
     const val SHARED_KEY_IS_USER_EXISTS = "is_user_exists"
 
     lateinit var User : RoomUserNote
-    lateinit var mAudioManager: AudioManager
 
 }

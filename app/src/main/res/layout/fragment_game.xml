@@ -106,7 +106,7 @@
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
-                    android:textSize="40sp" />
+                    android:textSize="40sp"/>
 
                 <ToggleButton
                     android:id="@+id/btn2"

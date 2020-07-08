@@ -16,7 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
-import com.example.makeiteven2.extras.Constants.mAudioManager
+//import com.example.makeiteven2.extras.Constants.mAudioManager
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.room.NoteDao
 import com.example.makeiteven2.room.RoomNoteDatabase
@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
     private lateinit var appToolbar: Toolbar
 
+    //private lateinit var mAudioManager : AudioManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -61,7 +62,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
         mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
         mEditor = mSharedPref.edit()
-        mAudioManager = AudioManager(this).getInstance(this) // mAudioManager from constants
+        AudioManager.getInstance(this)
 
         if (mSharedPref.getBoolean(Constants.SHARED_KEY_IS_USER_EXISTS, FALSE) == FALSE) {
             firstTimeInApp()
@@ -81,7 +82,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private fun loadUser() {
         GlobalScope.launch {
             Constants.User = mNoteDao.getNotes()[0]
-            mAudioManager.startGameMusic()
+            AudioManager.startGameMusic()
         }
     }
 
@@ -171,11 +172,11 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     }
 
     override fun onSeekBarMainVolume(mainVolume: Int) {
-        mAudioManager.setGameVolume(mainVolume)
+        AudioManager.setGameVolume(mainVolume)
     }
 
     override fun onSeekBarSoundEffects(soundEffectsVolume: Int) {
-        mAudioManager.setEffectVolume(soundEffectsVolume)
+        AudioManager.setEffectVolume(soundEffectsVolume)
     }
 
     override fun onResetGame() {
@@ -243,11 +244,11 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
     override fun onPause() {
         super.onPause()
-        mAudioManager.stopGameMusic()
+        AudioManager.stopGameMusic()
     }
 
     override fun onRestart() {
         super.onRestart()
-        mAudioManager.startGameMusic()
+        AudioManager.startGameMusic()
     }
 }
