@@ -4,7 +4,8 @@
     android:id="@+id/game_root_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutDirection="ltr">
+    android:layoutDirection="ltr"
+    android:background="@color/lightGray">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -105,7 +106,7 @@
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
-                    android:textSize="40sp" />
+                    android:textSize="40sp"/>
 
                 <ToggleButton
                     android:id="@+id/btn2"

@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:layoutDirection="ltr"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/lightGray">
 
     <ImageView
         android:id="@+id/ivGameLogo"

@@ -22,7 +22,7 @@
     </style>
 
     <style name="CustomToolBarStyle" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:background">#FFFF</item>
+        <item name="android:background">#f2f2f2</item>
         >
     </style>
 
