@@ -49,7 +49,7 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
 
     private var mHintString: String = ""
     private var mNumberHintsLeft = 3
-    private var mLevelNum = 0 //should get from init fragment
+    private var mLevelNum = 1 //should get from init fragment
     private var mTargetNumber = 0 //should get from save
     private val mGame = GameFactory.getGame(Constants.STAGE_GAME_TYPE, 12)
 
@@ -188,7 +188,7 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
         var min = 0
         var max = 0
         var difficulty = 6
-        val currentStage = 0 //todo: get from datastore
+        val currentStage = 1 //todo: get from datastore
         mStageInfoArray = ArrayList<StageInfo>()
         if (mStageInfoArray.size < mLevelNum || currentStage < mLevelNum) {
             when (mLevelNum) {
