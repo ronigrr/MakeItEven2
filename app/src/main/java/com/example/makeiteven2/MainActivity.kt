@@ -32,7 +32,7 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsScreenCallback
     , FragmentSettings.SettingsFragmentCallBack, LevelsAdapter.ILevelsAdapter,
-    FragmentDialogNickName.DialogListener {
+    FragmentDialogNickName.DialogListener,IFragmentStageModeListener {
 
     private val fragmentManager = supportFragmentManager
     private val fragmentStartScreen: FragmentStartScreen = FragmentStartScreen()
@@ -250,5 +250,9 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     override fun onRestart() {
         super.onRestart()
         AudioManager.startGameMusic()
+    }
+
+    override fun backButtonPressed() {
+        TODO("Not yet implemented")
     }
 }
