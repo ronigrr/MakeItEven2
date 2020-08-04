@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -14,14 +12,14 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
-import com.example.makeiteven2.extras.OnTouchAnimation
+import com.example.makeiteven2.extras.Animations
 import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 
 class FragmentStartScreen : Fragment() {
 
     private lateinit var mCallBack : IFragmentsStartsScreenCallback
     private lateinit var mStageModeBtn : Button
-    private lateinit var mOnTouchAnimation : OnTouchAnimation
+    private lateinit var mOnTouchAnimation : Animations
     private lateinit var mArcadeModeBtn : Button
     private lateinit var mTutorialBtn : Button
     private lateinit var mScoreBoardBtn : ImageButton
@@ -45,13 +43,13 @@ class FragmentStartScreen : Fragment() {
         mTutorialBtn =rootView.btnTutorial
         mScoreBoardBtn = rootView.btnScoreBoard
         mLogoIv = rootView.ivGameLogo
-        mOnTouchAnimation = OnTouchAnimation(inflater.context)
 
-        mLogoIv.startAnimation(AnimationUtils.loadAnimation(context,R.anim.bounce))
-        mScoreBoardBtn.setOnTouchListener(mOnTouchAnimation.btnTouchAnimation)
-        mStageModeBtn.setOnTouchListener(mOnTouchAnimation.btnTouchAnimation)
-        mTutorialBtn.setOnTouchListener(mOnTouchAnimation.btnTouchAnimation)
-        mArcadeModeBtn.setOnTouchListener(mOnTouchAnimation.btnTouchAnimation)
+
+        mLogoIv.startAnimation(Animations.getBounceAnimation(context!!))
+        mScoreBoardBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        mStageModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        mTutorialBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        mArcadeModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
 
         mStageModeBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
         mScoreBoardBtn.setOnClickListener{ mCallBack.onStartScreenFragmentButtonClicked(it) }

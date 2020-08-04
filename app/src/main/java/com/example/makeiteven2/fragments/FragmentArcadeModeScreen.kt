@@ -15,7 +15,7 @@ class FragmentArcadeModeScreen : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_game,container,false)
+        val rootView = inflater.inflate(R.layout.fragment_game_stage,container,false)
         //TODO: Finish the arcadeMode fragment
         return rootView
     }

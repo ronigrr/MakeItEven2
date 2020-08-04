@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/game_root_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layoutDirection="ltr"
-    android:background="@color/lightGray">
+    android:layoutDirection="ltr">
 
     <RelativeLayout
+        android:id="@+id/viewOfAllGameBtns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/layoutUpper"
-        android:layout_centerInParent="true"
-        android:id="@+id/viewOfAllGameBtns">
+        android:layout_centerInParent="true">
 
 
         <LinearLayout
@@ -20,32 +20,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-
-            android:orientation="vertical"
-            android:visibility="invisible">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvTimer"
+                android:id="@+id/levelTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:padding="5dp"
                 android:layout_marginTop="10dp"
-                android:text=""
+                android:padding="5dp"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="24sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="2:30" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:orientation="horizontal"
                 android:layoutDirection="locale"
+                android:orientation="horizontal"
                 android:textDirection="locale">
 
                 <TextView
-                    android:id="@+id/tvScore"
+                    android:id="@+id/scoreTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/score"
@@ -54,35 +52,35 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvActualScore"
+                    android:id="@+id/actualScoreTV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="5dp"
-                    android:text=""
                     android:textColor="@color/blue"
                     android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:text="10" />
             </LinearLayout>
 
         </LinearLayout>
 
 
         <TextView
-            android:id="@+id/tvTheTargetNumber"
+            android:id="@+id/theTargetNumberTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/arcade_container"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:textSize="55sp"
             android:textColor="@color/primaryTextColor"
-            />
+            android:textSize="55sp"
+            tools:text="5" />
 
         <LinearLayout
             android:id="@+id/btn_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTheTargetNumber"
+            android:layout_below="@id/theTargetNumberTV"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
@@ -95,7 +93,7 @@
                 app:tbgRowSpacing="5dp">
 
                 <ToggleButton
-                    android:id="@+id/btn1"
+                    android:id="@+id/btn1TB"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_margin="15dp"
@@ -106,10 +104,11 @@
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
-                    android:textSize="40sp"/>
+                    android:textSize="40sp"
+                    tools:textOff="5" />
 
                 <ToggleButton
-                    android:id="@+id/btn2"
+                    android:id="@+id/btn2TB"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_margin="15dp"
@@ -120,10 +119,11 @@
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
-                    android:textSize="40sp" />
+                    android:textSize="40sp"
+                    tools:textOff="5" />
 
                 <ToggleButton
-                    android:id="@+id/btn3"
+                    android:id="@+id/btn3TB"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_margin="15dp"
@@ -134,10 +134,11 @@
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
-                    android:textSize="40sp" />
+                    android:textSize="40sp"
+                    tools:textOff="5" />
 
                 <ToggleButton
-                    android:id="@+id/btn4"
+                    android:id="@+id/btn4TB"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:layout_margin="15dp"
@@ -148,7 +149,8 @@
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
-                    android:textSize="40sp" />
+                    android:textSize="40sp"
+                    tools:textOff="5" />
             </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
         </LinearLayout>
 
@@ -166,7 +168,7 @@
                 android:layout_height="match_parent">
 
                 <ToggleButton
-                    android:id="@+id/tbPlus"
+                    android:id="@+id/plusTB"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/selector_plus_img"
@@ -175,7 +177,7 @@
                     android:textOn="" />
 
                 <ToggleButton
-                    android:id="@+id/tbMinus"
+                    android:id="@+id/minusTB"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginStart="20dp"
@@ -185,7 +187,7 @@
                     android:textOn="" />
 
                 <ToggleButton
-                    android:id="@+id/tbMultiply"
+                    android:id="@+id/multiplyTB"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginStart="20dp"
@@ -195,7 +197,7 @@
                     android:textOn="" />
 
                 <ToggleButton
-                    android:id="@+id/tbDivide"
+                    android:id="@+id/divideTB"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginStart="20dp"
@@ -215,7 +217,7 @@
         android:layout_height="wrap_content">
 
         <ImageButton
-            android:id="@+id/ibtnBack"
+            android:id="@+id/backButtonIB"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_margin="5dp"
@@ -229,17 +231,7 @@
             android:padding="5dp">
 
             <ImageButton
-                android:id="@+id/ibtnRestartLevel"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginEnd="5dp"
-                android:background="@color/Transparent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_restart" />
-
-            <ImageButton
-                android:id="@+id/ibtnHint3"
+                android:id="@+id/hintButton3IB"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="7dp"
@@ -248,7 +240,7 @@
                 android:src="@drawable/ic_help" />
 
             <ImageButton
-                android:id="@+id/ibtnHint2"
+                android:id="@+id/hintButton2IB"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="7dp"
@@ -257,22 +249,13 @@
                 android:src="@drawable/ic_help" />
 
             <ImageButton
-                android:id="@+id/ibtnHint1"
+                android:id="@+id/hintButton1IB"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="7dp"
                 android:background="@color/Transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_help" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/hints_left"
-                android:id="@+id/tvHintsLeft"
-                android:textColor="#000"
-                android:gravity="center|start"
-                />
-
 
         </LinearLayout>
 
@@ -283,8 +266,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffff"
-android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/ivCountdown"
