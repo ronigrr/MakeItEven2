@@ -5,50 +5,50 @@ import java.util.*
 import kotlin.random.Random
 
 open class Game(private var mDifficulty: Int) {
-    private var hint: String = ""
+    private var mHint: String = ""
 
     fun setDifficulty(difficulty: Int) {
         mDifficulty = difficulty
     }
 
     fun getHint(): String {
-        return hint
+        return mHint
     }
 
     fun gameGenerator(playButtons: List<ToggleButton>, minSum: Int, maxSum: Int): Int {
         val randomList = List(4) { Random.nextInt(mDifficulty) }
         //reset hint for new game generate
-        hint = ""
+        mHint = ""
 
-        var btn1: Int = randomList[0] + Random.nextInt(0, 4)
-        var btn2: Int = randomList[1] + Random.nextInt(0, 4)
-        var btn3: Int = randomList[2] + Random.nextInt(0, 4)
-        var btn4: Int = randomList[3] + Random.nextInt(0, 4)
+        val btn1: Int = randomList[0] + Random.nextInt(0, 4)
+        val btn2: Int = randomList[1] + Random.nextInt(0, 4)
+        val btn3: Int = randomList[2] + Random.nextInt(0, 4)
+        val btn4: Int = randomList[3] + Random.nextInt(0, 4)
         var sum: Int
 
         var randIdx = Random.nextInt(0, 4)
         if (randIdx == 3) {
             if (btn1 % btn2 == 0) {
                 sum = btn1 / btn2
-                hint = "$hint($btn1/$btn2)"
+                mHint = "$mHint($btn1/$btn2)"
             } else {
                 sum = btn1 + btn2
-                hint = "$hint($btn1+$btn2)"
+                mHint = "$mHint($btn1+$btn2)"
             }
         } else if (randIdx == 2) {
             sum = btn1 * btn2
-            hint = "$hint($btn1*$btn2)"
+            mHint = "$mHint($btn1*$btn2)"
         } else if (randIdx == 1) {
             if (btn1 - btn2 > 0) {
                 sum = btn1 - btn2
-                hint = "$hint($btn1-$btn2)"
+                mHint = "$mHint($btn1-$btn2)"
             } else {
                 sum = btn1 + btn2
-                hint = "$hint($btn1+$btn2)"
+                mHint = "$mHint($btn1+$btn2)"
             }
         } else {
             sum = btn1 + btn2
-            hint = "$hint($btn1+$btn2)"
+            mHint = "$mHint($btn1+$btn2)"
         }
 
         randIdx = Random.nextInt(0, 4)
@@ -57,50 +57,50 @@ open class Game(private var mDifficulty: Int) {
         if (randIdx == 3) {
             if (sum % btn3 == 0) {
                 sum /= btn3
-                hint = "$hint/$btn3)"
+                mHint = "$mHint/$btn3)"
             } else {
                 sum += btn3
-                hint = "$hint+$btn3)"
+                mHint = "$mHint+$btn3)"
             }
         } else if (randIdx == 2) {
             sum *= btn3
-            hint = "$hint*$btn3)"
+            mHint = "$mHint*$btn3)"
         } else if (randIdx == 1) {
             if (sum - btn3 > 0) {
                 sum -= btn3
-                hint = "$hint-$btn3)"
+                mHint = "$mHint-$btn3)"
             } else {
                 sum += btn3
-                hint = "$hint+$btn3)"
+                mHint = "$mHint+$btn3)"
             }
         } else {
             sum += btn3
-            hint = "$hint+$btn3)"
+            mHint = "$mHint+$btn3)"
         }
         randIdx = Random.nextInt(0, 4)
 
         if (randIdx == 3) {
             if (sum % btn4 == 0) {
                 sum /= btn4
-                hint = "$hint/$btn4)"
+                mHint = "$mHint/$btn4)"
             } else {
                 sum += btn4
-                hint = "$hint+$btn4)"
+                mHint = "$mHint+$btn4)"
             }
         } else if (randIdx == 2) {
             sum *= btn4
-            hint = "$hint*$btn4)"
+            mHint = "$mHint*$btn4)"
         } else if (randIdx == 1) {
             if (sum - btn4 > 0) {
                 sum -= btn4
-                hint = "$hint-$btn4)"
+                mHint = "$mHint-$btn4)"
             } else {
                 sum += btn4
-                hint = "$hint+$btn4)"
+                mHint = "$mHint+$btn4)"
             }
         } else {
             sum += btn4
-            hint = "$hint+$btn4)"
+            mHint = "$mHint+$btn4)"
         }
 
         Collections.shuffle(playButtons)

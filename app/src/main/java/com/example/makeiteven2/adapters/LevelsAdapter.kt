@@ -5,12 +5,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.Level
-import com.example.makeiteven2.extras.OnTouchAnimation
-import com.example.makeiteven2.fragments.FragmentLevelsScreen
+import com.example.makeiteven2.extras.Animations
 import kotlinx.android.synthetic.main.level_cell.view.*
 
 class LevelsAdapter(private var mLevelsList : List<Level> = ArrayList(), private val context: Context,private var mCurrentStage : Int)
@@ -35,9 +33,8 @@ class LevelsAdapter(private var mLevelsList : List<Level> = ArrayList(), private
 
         @SuppressLint("ClickableViewAccessibility")
         fun bind(level : Level, currentStage: Int,callback : ILevelsAdapter) {
-            val onTouchAnimation = OnTouchAnimation(context)
             view.tvStageNumber.text = level.levelNum.toString()
-            view.btnLevel.setOnTouchListener(onTouchAnimation.btnTouchAnimation)
+            view.btnLevel.setOnTouchListener(Animations.getTouchAnimation(context))
 
             when  {
                 level.levelNum == 0 -> {
