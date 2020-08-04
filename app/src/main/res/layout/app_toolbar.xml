@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/CustomToolBarStyle"
     app:popupTheme="@style/CustomPopUpStyle"
+    android:background="@color/lightGray"
     >
 
 </androidx.appcompat.widget.Toolbar>

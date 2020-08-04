@@ -20,5 +20,4 @@ object Constants {
 
     lateinit var User : RoomUserNote
 
-
 }
