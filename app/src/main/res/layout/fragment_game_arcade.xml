@@ -222,7 +222,7 @@
             android:layout_height="50dp"
             android:layout_margin="5dp"
             android:background="@color/Transparent"
-            android:src="@drawable/ic_back_game" />
+            android:src="@drawable/ic_back" />
 
         <LinearLayout
             android:layout_width="match_parent"

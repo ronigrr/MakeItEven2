@@ -1,5 +1,6 @@
 package com.example.makeiteven2
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -7,13 +8,15 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.os.Handler
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
+import android.view.View.inflate
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.makeiteven2.adapters.LevelsAdapter
+import com.example.makeiteven2.extras.Animations
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 //import com.example.makeiteven2.extras.Constants.mAudioManager
@@ -70,7 +73,6 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
             loadUser()
             loadStartScreen()
         }
-
     }
 
     private fun initToolBar() {
@@ -97,11 +99,11 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
             btnStageMode.id -> loadStageMode()
             btnArcadeMode.id -> loadArcadeMode()
             btnScoreBoard.id -> {
-                Toast.makeText(this, "ScoreBoard", Toast.LENGTH_SHORT).show()
             }
             btnTutorial.id -> Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun loadArcadeMode() {
         fragmentManager.beginTransaction().replace(
@@ -256,3 +258,5 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         TODO("Not yet implemented")
     }
 }
+
+//TODO: need to licence arcade_win , super_duper,tada,wa wa and also for the owl image
