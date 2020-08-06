@@ -1,16 +1,17 @@
 package com.example.makeiteven2.fragments
 
+import android.app.Dialog
 import android.content.Context
-import android.media.MediaPlayer
+import android.content.res.Resources
+import android.opengl.Visibility
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
-import android.widget.ToggleButton
+import android.view.Window
+import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.StageInfo
@@ -20,6 +21,7 @@ import com.example.makeiteven2.game.GameFactory
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_stage.view.*
+import kotlinx.android.synthetic.main.win_loose_dialog.*
 
 class FragmentStageModeScreen : Fragment(), View.OnClickListener {
 
@@ -48,7 +50,7 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
     private val mOperatorsList = ArrayList<ToggleButton>()
 
     private var mHintString: String = ""
-    private var mNumberHintsLeft = 3
+    private var mNumberHintsLeft = 3 //TODO: Note to ilya,why default hints are 3?,also mLevelnum you can take from database
     private var mLevelNum = 1 //should get from init fragment
     private var mTargetNumber = 0 //should get from save
     private val mGame = GameFactory.getGame(Constants.STAGE_GAME_TYPE, 12)
@@ -107,6 +109,7 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
             context?.let { letContext ->
                 Toasty.info(letContext, mHintString, Toast.LENGTH_SHORT, true).show()
             }
+            //TODO:Why not work directly with the hints in user obj
             mNumberHintsLeft--
             //TODO:save updated num of hints
             val textToShow = "${resources.getText(R.string.hints_left)}" + " $mNumberHintsLeft"
@@ -188,7 +191,7 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
         var min = 0
         var max = 0
         var difficulty = 6
-        val currentStage = 1 //todo: get from datastore
+        val currentStage = Constants.User.currentLevel!!
         mStageInfoArray = ArrayList<StageInfo>()
         if (mStageInfoArray.size < mLevelNum || currentStage < mLevelNum) {
             when (mLevelNum) {
@@ -287,12 +290,12 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
         mNumberGroup = rootView.group_choices_of_numbers
 
 
-        mNumberHintsLeft//TODO:get from memo
+        mNumberHintsLeft = Constants.User.hintsLeft!!
         if (mNumberHintsLeft == 0) {
             mHintIB.isEnabled = false
             mHintIB.setImageResource(R.drawable.ic_help_off)
         }
-        mLevelNum //TODO: get from memo
+        mLevelNum = Constants.User.currentLevel!!
         var textToShow = resources.getText(R.string.level_number).toString() + mLevelNum.toString()
         mLevelNumberTV.text = textToShow
         textToShow = resources.getString(R.string.hints_left) + " $mNumberHintsLeft"
@@ -318,12 +321,44 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
 //                btn_off.start()
 //            }
 //        }
-
-
+        correctAnswerDialog(context!!,Constants.WIN_DIALOG)
     }
 }
 
 interface IFragmentStageModeListener {
     fun backButtonPressed()
+}
+
+fun correctAnswerDialog(context: Context,mWinOrLose : String){
+    val winLooseDialog = Dialog(context)
+    winLooseDialog.setCanceledOnTouchOutside(false)
+    winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+    winLooseDialog.setCancelable(false)
+    winLooseDialog.setContentView(R.layout.win_loose_dialog)
+
+    winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(context))
+    winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(context))
+    winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(context))
+
+    winLooseDialog.ibtnRetry.setOnClickListener{
+        //TODO:Add Reload stage fun
+    }
+    winLooseDialog.ibtnNext.setOnClickListener{
+        //TODO:Add next stage fun
+    }
+    winLooseDialog.ibtnHome.setOnClickListener {
+        //TODO:Add inteface and go back to main menu
+    }
+    when(mWinOrLose){
+       Constants.WIN_DIALOG ->{
+           winLooseDialog.tvText.text = context.resources.getString(R.string.correct_answer)
+           //TODO:implement win fun
+       }
+        Constants.LOSE_DIALOG->{
+            winLooseDialog.ibtnNext.visibility = View.GONE
+            winLooseDialog.tvText.text = context.resources.getString(R.string.wrong_answer)
+        }
+    }
+    winLooseDialog.show()
 }
 

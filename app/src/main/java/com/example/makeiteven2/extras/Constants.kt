@@ -17,6 +17,8 @@ object Constants {
     const val NICK_NAME_DIALOG_TAG = "nickname_dialog"
     const val SHARED_PREFS = "sharedPref"
     const val SHARED_KEY_IS_USER_EXISTS = "is_user_exists"
+    const val WIN_DIALOG = "win_dialog"
+    const val LOSE_DIALOG = "lose_dialog"
 
     lateinit var User : RoomUserNote
 
