@@ -20,14 +20,15 @@ import com.example.makeiteven2.extras.Animations
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.game.GameFactory
+import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_stage.view.*
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 
-class FragmentStageModeScreen : Fragment(), View.OnClickListener {
+class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener {
 
-    private lateinit var mStageInfoArray: ArrayList<StageInfo>
+    private var mStageInfoArray: ArrayList<StageInfo> = Constants.User.stageList
     private lateinit var mLevelNumberTV: TextView
     private lateinit var mHintsLeftTV: TextView
     private lateinit var mTargetNumberTV: TextView
@@ -54,12 +55,11 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
     private lateinit var rootView: View
 
     private var mHintString: String = ""
-    private var mNumberHintsLeft =
-        3 //TODO: Note to ilya,why default hints are 3?,also mLevelnum you can take from database
-    private var mLevelNum = 1 //should get from init fragment
-    private var mTargetNumber = 0 //should get from save
+    private var mNumberHintsLeft = Constants.User.hintsLeft
+    private var mLevelNum = levelNumber
+    private var mTargetNumber = 0 //should get from save TODO
     private val mGame = GameFactory.getGame(Constants.STAGE_GAME_TYPE, 12)
-    private var soundEffectsVolume: Float = 0.0f
+    private var soundEffectsVolume: Float = Constants.User.soundEffectsLevel.toFloat()
 
     private lateinit var listener: IFragmentStageModeListener
 
@@ -82,11 +82,7 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_game_stage, container, false)
         initToasty()
         gameSetup()
@@ -110,6 +106,44 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
 
     }
 
+    private fun showFinishDialog(mWinOrLose: String) {
+        val winLooseDialog = Dialog(context!!)
+
+        winLooseDialog.setCanceledOnTouchOutside(false)
+        winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        winLooseDialog.setCancelable(false)
+        winLooseDialog.setContentView(R.layout.win_loose_dialog)
+
+        winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(context!!))
+
+        winLooseDialog.ibtnRetry.setOnClickListener {
+            gameInit()
+            winLooseDialog.dismiss()
+        }
+        winLooseDialog.ibtnNext.setOnClickListener {
+            mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + (++mLevelNum).toString()
+            gameInit()
+            winLooseDialog.dismiss()
+        }
+        winLooseDialog.ibtnHome.setOnClickListener {
+            listener.backButtonPressed()
+            winLooseDialog.dismiss()
+        }
+        when (mWinOrLose) {
+            Constants.WIN_DIALOG -> {
+                winLooseDialog.tvText.text = context!!.resources.getString(R.string.correct_answer)
+                //TODO:implement win fun
+            }
+            Constants.LOSE_DIALOG -> {
+                winLooseDialog.ibtnNext.visibility = View.GONE
+                winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
+            }
+        }
+        winLooseDialog.show()
+    }
+
     private fun initToasty() {
         Toasty.Config.getInstance().tintIcon(false).setTextSize(30).allowQueue(true).apply()
     }
@@ -119,9 +153,8 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
             context?.let { letContext ->
                 Toasty.info(letContext, mHintString, Toast.LENGTH_SHORT, true).show()
             }
-            //TODO:Why not work directly with the hints in user obj
             mNumberHintsLeft--
-            //TODO:save updated num of hints
+            DatabaseHelper.saveHintsToDataBase(context!!.applicationContext, mNumberHintsLeft)
             val textToShow = "${resources.getText(R.string.hints_left)}" + " $mNumberHintsLeft"
             mHintsLeftTV.text = textToShow
             if (mNumberHintsLeft == 0) {
@@ -188,6 +221,7 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
                 visibility = View.VISIBLE
                 isEnabled = true
                 isChecked = false
+                startAnimation(Animations.getBounceAnimation(context!!))
             }
         }
         for (tb in mOperatorsList) {
@@ -202,7 +236,7 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
         var max = 0
         var difficulty = 6
         val currentStage = Constants.User.currentLevel!!
-        mStageInfoArray = ArrayList<StageInfo>()
+        mStageInfoArray = Constants.User.stageList
         if (mStageInfoArray.size < mLevelNum || currentStage < mLevelNum) {
             when (mLevelNum) {
                 in 0..10 -> {
@@ -247,7 +281,7 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
                 mTargetNumber,
                 mHintString
             )
-            //Todo: save stage info
+            DatabaseHelper.saveStageInfo(context!!.applicationContext, stageInfo)
 
         } else {
             startSavedGameInfo()
@@ -314,10 +348,6 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onClick(v: View?) {
         Handler().post {
             val btnOffPlayer: MediaPlayer = MediaPlayer.create(context, R.raw.btn_off_sound)
@@ -331,7 +361,6 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
             }
         }
         /// checks that nobody checked
-        /// checks that nobody checked
         var i = 0
         for (toggleButton in mGameButtonsList) {
             if (toggleButton.isChecked) break
@@ -342,7 +371,6 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
             isNumberSelected = false
             selectedNumberID1 = 0
         }
-        //checks that no operator checked
         //checks that no operator checked
         i = 0
         for (toggleButton in mOperatorsList) {
@@ -401,33 +429,33 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
                 if (tb.isEnabled) i++
             }
             if (isDivideZero || isFraction) {
-                showFinishDialog(context!!, Constants.LOSE_DIALOG)
+                showFinishDialog(Constants.LOSE_DIALOG)
                 AudioManager.startWaWaSound()
                 gameInit()
             }
 
-            if (i == 1){
+            if (i == 1) {
                 //game finished
 
-                if (mTargetNumber == sum){
+                if (mTargetNumber == sum) {
                     //you win
-                    var currentStage  = 1 //todo: need to take from database
-                    if (mLevelNum == currentStage){
+                    var currentStage = Constants.User.currentLevel
+                    if (mLevelNum == currentStage) {
                         currentStage++
                     }
-                    //todo: save the current stage to database
-                    Handler().postDelayed(Runnable {
-                        showFinishDialog(context!!, Constants.WIN_DIALOG)
-                        AudioManager.startTaDaSound()
-                        Animations.getConfetti(rootView.game_root_container) },200)
+                    currentStage?.let { DatabaseHelper.saveCurrentStage(context!!.applicationContext, it) }
 
-                }else{
+                    Handler().postDelayed({
+                        showFinishDialog(Constants.WIN_DIALOG)
+                        AudioManager.startTaDaSound()
+                        Animations.getConfetti(rootView.game_root_container)
+                    }, 200)
+
+                } else {
                     //you loose
-                    Handler().postDelayed(Runnable {
-                        showFinishDialog(
-                            context!!,
-                            Constants.LOSE_DIALOG
-                        ) },200)
+                    Handler().postDelayed({
+                        showFinishDialog(Constants.LOSE_DIALOG)
+                    }, 200)
 
                     gameInit()
                 }
@@ -441,36 +469,5 @@ interface IFragmentStageModeListener {
     fun backButtonPressed()
 }
 
-fun showFinishDialog(context: Context, mWinOrLose: String) {
-    val winLooseDialog = Dialog(context)
-    winLooseDialog.setCanceledOnTouchOutside(false)
-    winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-    winLooseDialog.setCancelable(false)
-    winLooseDialog.setContentView(R.layout.win_loose_dialog)
 
-    winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(context))
-    winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(context))
-    winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(context))
-
-    winLooseDialog.ibtnRetry.setOnClickListener {
-        //TODO:Add Reload stage fun
-    }
-    winLooseDialog.ibtnNext.setOnClickListener {
-        //TODO:Add next stage fun
-    }
-    winLooseDialog.ibtnHome.setOnClickListener {
-        //TODO:Add inteface and go back to main menu
-    }
-    when (mWinOrLose) {
-        Constants.WIN_DIALOG -> {
-            winLooseDialog.tvText.text = context.resources.getString(R.string.correct_answer)
-            //TODO:implement win fun
-        }
-        Constants.LOSE_DIALOG -> {
-            winLooseDialog.ibtnNext.visibility = View.GONE
-            winLooseDialog.tvText.text = context.resources.getString(R.string.wrong_answer)
-        }
-    }
-    winLooseDialog.show()
-}
 

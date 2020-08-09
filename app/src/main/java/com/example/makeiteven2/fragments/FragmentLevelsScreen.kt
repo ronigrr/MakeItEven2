@@ -29,7 +29,6 @@ class FragmentLevelsScreen : Fragment() {
         val rootView = inflater.inflate(R.layout.fragment_levels,container,false)
         mLevelsRecyclerView = rootView.recyclerLevels
         mCurrentStage = Constants.User.currentLevel!!
-        //TODO: insted of 10 in testings, replase the spanCount to mCurrentStage
         mLevelsAdapter = LevelsAdapter(mLevelItemsList,rootView.context,mCurrentStage)
         initLevels()
         initRecyclerView()
