@@ -3,7 +3,6 @@ package com.example.makeiteven2.extras
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.text.Layout
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup

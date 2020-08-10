@@ -56,7 +56,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private var mHintString: String = ""
     private var mNumberHintsLeft = Constants.User.hintsLeft
     private var mLevelNum = levelNumber
-    private var mTargetNumber = 0 //should get from save TODO
+    private var mTargetNumber = 0
     private val mGame = GameFactory.getGame(Constants.STAGE_GAME_TYPE, 12)
     private var soundEffectsVolume: Float = Constants.User.soundEffectsLevel.toFloat()
     private var mStageInfoArray: ArrayList<StageInfo> = Constants.User.stageList
@@ -296,20 +296,20 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
         mGameButtonsList.shuffle()
 
-        mGameButtonsList[0].text    = mStageInfoArray[mLevelNum - 1].num1.toString()
-        mGameButtonsList[0].textOn  = mStageInfoArray[mLevelNum - 1].num1.toString()
+        mGameButtonsList[0].text = mStageInfoArray[mLevelNum - 1].num1.toString()
+        mGameButtonsList[0].textOn = mStageInfoArray[mLevelNum - 1].num1.toString()
         mGameButtonsList[0].textOff = mStageInfoArray[mLevelNum - 1].num1.toString()
 
-        mGameButtonsList[1].text    = mStageInfoArray[mLevelNum - 1].num2.toString()
-        mGameButtonsList[1].textOn  = mStageInfoArray[mLevelNum - 1].num2.toString()
+        mGameButtonsList[1].text = mStageInfoArray[mLevelNum - 1].num2.toString()
+        mGameButtonsList[1].textOn = mStageInfoArray[mLevelNum - 1].num2.toString()
         mGameButtonsList[1].textOff = mStageInfoArray[mLevelNum - 1].num2.toString()
 
-        mGameButtonsList[2].text    = mStageInfoArray[mLevelNum - 1].num3.toString()
-        mGameButtonsList[2].textOn  = mStageInfoArray[mLevelNum - 1].num3.toString()
+        mGameButtonsList[2].text = mStageInfoArray[mLevelNum - 1].num3.toString()
+        mGameButtonsList[2].textOn = mStageInfoArray[mLevelNum - 1].num3.toString()
         mGameButtonsList[2].textOff = mStageInfoArray[mLevelNum - 1].num3.toString()
 
-        mGameButtonsList[3].text    = mStageInfoArray[mLevelNum - 1].num4.toString()
-        mGameButtonsList[3].textOn  = mStageInfoArray[mLevelNum - 1].num4.toString()
+        mGameButtonsList[3].text = mStageInfoArray[mLevelNum - 1].num4.toString()
+        mGameButtonsList[3].textOn = mStageInfoArray[mLevelNum - 1].num4.toString()
         mGameButtonsList[3].textOff = mStageInfoArray[mLevelNum - 1].num4.toString()
 
         mTargetNumber = mStageInfoArray[mLevelNum - 1].target

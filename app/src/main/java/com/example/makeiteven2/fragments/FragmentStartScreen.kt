@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -17,16 +16,16 @@ import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 
 class FragmentStartScreen : Fragment() {
 
-    private lateinit var mCallBack : IFragmentsStartsScreenCallback
-    private lateinit var mStageModeBtn : Button
-    private lateinit var mOnTouchAnimation : Animations
-    private lateinit var mArcadeModeBtn : Button
-    private lateinit var mTutorialBtn : Button
-    private lateinit var mScoreBoardBtn : ImageButton
-    private lateinit var mLogoIv : ImageView
+    private lateinit var mCallBack: IFragmentsStartsScreenCallback
+    private lateinit var mStageModeBtn: Button
+    private lateinit var mOnTouchAnimation: Animations
+    private lateinit var mArcadeModeBtn: Button
+    private lateinit var mTutorialBtn: Button
+    private lateinit var mScoreBoardBtn: ImageButton
+    private lateinit var mLogoIv: ImageView
 
     interface IFragmentsStartsScreenCallback {
-        fun onStartScreenFragmentButtonClicked(view : View)
+        fun onStartScreenFragmentButtonClicked(view: View)
         fun showToolBar()
     }
 
@@ -37,10 +36,10 @@ class FragmentStartScreen : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_start_screen,container,false)
+        val rootView = inflater.inflate(R.layout.fragment_start_screen, container, false)
         mStageModeBtn = rootView.btnStageMode
         mArcadeModeBtn = rootView.btnArcadeMode
-        mTutorialBtn =rootView.btnTutorial
+        mTutorialBtn = rootView.btnTutorial
         mScoreBoardBtn = rootView.btnScoreBoard
         mLogoIv = rootView.ivGameLogo
 
@@ -52,7 +51,7 @@ class FragmentStartScreen : Fragment() {
         mArcadeModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
 
         mStageModeBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
-        mScoreBoardBtn.setOnClickListener{ mCallBack.onStartScreenFragmentButtonClicked(it) }
+        mScoreBoardBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
         mTutorialBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
         mArcadeModeBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
         return rootView
@@ -61,8 +60,7 @@ class FragmentStartScreen : Fragment() {
     override fun onAttach(context: Context) {
         if (context is IFragmentsStartsScreenCallback) {
             mCallBack = context
-        }
-        else{
+        } else {
             throw ClassCastException(context.toString() + "must implement OnButtonClicked")
         }
         super.onAttach(context)

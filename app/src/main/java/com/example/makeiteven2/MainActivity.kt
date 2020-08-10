@@ -1,5 +1,6 @@
 package com.example.makeiteven2
 
+//import com.example.makeiteven2.extras.Constants.mAudioManager
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -7,21 +8,20 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.os.Handler
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
-//import com.example.makeiteven2.extras.Constants.mAudioManager
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.RoomUserNote
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
 import java.util.*

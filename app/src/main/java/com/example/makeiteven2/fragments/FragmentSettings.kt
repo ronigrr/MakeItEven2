@@ -11,31 +11,31 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
-import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 
 class FragmentSettings : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_setting,container,false)
+        val rootView = inflater.inflate(R.layout.fragment_setting, container, false)
         mMainVolumeBar = rootView.seekBarMainSound
-        mSoundEffectsBar =rootView.seekBarSoundEffects
-        mExitBtn=rootView.btnCloseSettings
+        mSoundEffectsBar = rootView.seekBarSoundEffects
+        mExitBtn = rootView.btnCloseSettings
 
-        rootView.seekBarMainSound.progress = Constants.User.mainSoundLevel!!
-        rootView.seekBarSoundEffects.progress = Constants.User.soundEffectsLevel!!
+        rootView.seekBarMainSound.progress = Constants.User.mainSoundLevel
+        rootView.seekBarSoundEffects.progress = Constants.User.soundEffectsLevel
 
         rootView.btnGameReset.setOnClickListener {
             mCallBack.onResetGame()
         }
 
-        mExitBtn.setOnClickListener{
+        mExitBtn.setOnClickListener {
             mCallBack.onExitFromSettingsFragment()
         }
 
         val seekBarListener: OnSeekBarChangeListener = object : OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean
+            override fun onProgressChanged(
+                seekBar: SeekBar, progress: Int, fromUser: Boolean
             ) {
                 if (seekBar.id == R.id.seekBarMainSound) {
                     Constants.User.mainSoundLevel = seekBar.progress
@@ -55,13 +55,9 @@ class FragmentSettings : Fragment() {
         return rootView
     }
 
-    override fun onPause() {
-        super.onPause()
-    }
-
-    private lateinit var mCallBack : SettingsFragmentCallBack
+    private lateinit var mCallBack: SettingsFragmentCallBack
     private lateinit var mMainVolumeBar: SeekBar
-    private lateinit var mSoundEffectsBar :SeekBar
+    private lateinit var mSoundEffectsBar: SeekBar
     private lateinit var mResetGameBtn: Button
     private lateinit var mExitBtn: ImageButton
 

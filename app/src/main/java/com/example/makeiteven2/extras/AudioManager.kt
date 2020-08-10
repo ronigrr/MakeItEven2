@@ -4,18 +4,18 @@ import android.content.Context
 import android.media.MediaPlayer
 import com.example.makeiteven2.R
 
-class AudioManager () {
+class AudioManager {
     companion object {
 
         private var mInstance: AudioManager? = null
         private var mGameMediaPlayer = MediaPlayer()
         private var mEffectsMediaPlayer = MediaPlayer()
-        private lateinit var mContext : Context
+        private lateinit var mContext: Context
         private var mSoundEffectsVolume = 0f
         private var mCurrentMainVolume = 0f
 
         @Synchronized
-        fun getInstance (context: Context) : Companion {
+        fun getInstance(context: Context): Companion {
             mContext = context
             if (mInstance == null) {
                 mInstance = AudioManager()
@@ -34,14 +34,14 @@ class AudioManager () {
         }
 
         fun playBtnOn() {
-            mSoundEffectsVolume = (Constants.User.soundEffectsLevel!! / 100).toFloat()
+            mSoundEffectsVolume = (Constants.User.soundEffectsLevel / 100).toFloat()
             mEffectsMediaPlayer = MediaPlayer.create(mContext, R.raw.btn_on_sound)
             mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
             mEffectsMediaPlayer.start()
         }
 
         fun playBtnOff() {
-            mSoundEffectsVolume = (Constants.User.soundEffectsLevel!! / 100).toFloat()
+            mSoundEffectsVolume = (Constants.User.soundEffectsLevel / 100).toFloat()
             mGameMediaPlayer = MediaPlayer.create(mContext, R.raw.btn_off_sound)
             mGameMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
             mGameMediaPlayer.start()
@@ -55,14 +55,14 @@ class AudioManager () {
         }
 
         fun startTaDaSound() {
-            mSoundEffectsVolume = (Constants.User.soundEffectsLevel!! / 100).toFloat()
+            mSoundEffectsVolume = (Constants.User.soundEffectsLevel / 100).toFloat()
             mEffectsMediaPlayer = MediaPlayer.create(mContext, R.raw.ta_da)
             mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
             mEffectsMediaPlayer.start()
         }
 
         fun startGameMusic() {
-            mCurrentMainVolume = Constants.User.mainSoundLevel!!.toFloat()
+            mCurrentMainVolume = Constants.User.mainSoundLevel.toFloat()
             mGameMediaPlayer = MediaPlayer.create(mContext, R.raw.super_duper_by_ian_post)
             mGameMediaPlayer.setVolume(mCurrentMainVolume / 100, mCurrentMainVolume / 100)
             mGameMediaPlayer.isLooping = true

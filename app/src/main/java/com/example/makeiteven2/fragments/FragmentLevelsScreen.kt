@@ -16,20 +16,20 @@ import kotlinx.android.synthetic.main.fragment_levels.view.*
 class FragmentLevelsScreen : Fragment() {
 
     //private lateinit var mCallBack : IFragmentLevelsScreenCallback
-    private lateinit var mLevelsRecyclerView : RecyclerView
-    private lateinit var mLevelsAdapter : LevelsAdapter
-    private  var mCurrentStage = 0
-    var  mLevelItemsList : ArrayList<Level> = ArrayList()
+    private lateinit var mLevelsRecyclerView: RecyclerView
+    private lateinit var mLevelsAdapter: LevelsAdapter
+    private var mCurrentStage = 0
+    var mLevelItemsList: ArrayList<Level> = ArrayList()
 
 //    interface IFragmentLevelsScreenCallback {
 //        fun onLevelsFragmentLevelClicked(levelNumber : Int)
 //    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_levels,container,false)
+        val rootView = inflater.inflate(R.layout.fragment_levels, container, false)
         mLevelsRecyclerView = rootView.recyclerLevels
-        mCurrentStage = Constants.User.currentLevel!!
-        mLevelsAdapter = LevelsAdapter(mLevelItemsList,rootView.context,mCurrentStage)
+        mCurrentStage = Constants.User.currentLevel
+        mLevelsAdapter = LevelsAdapter(mLevelItemsList, rootView.context, mCurrentStage)
         initLevels()
         initRecyclerView()
 
@@ -38,7 +38,7 @@ class FragmentLevelsScreen : Fragment() {
 
     private fun initLevels() {
         for (i in 1..100)
-           mLevelItemsList.add(Level(i))
+            mLevelItemsList.add(Level(i))
     }
 
     private fun initRecyclerView() {

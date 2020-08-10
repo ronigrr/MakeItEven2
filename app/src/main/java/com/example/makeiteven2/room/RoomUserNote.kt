@@ -10,17 +10,17 @@ import com.example.makeiteven2.extras.Constants
     tableName = Constants.ROOM_DATA_BASE_NAME
 )
 
-data class RoomUserNote (
+data class RoomUserNote(
 
     @PrimaryKey
     @ColumnInfo(name = "player_token_id")
-    val playerTokenId : String,
+    val playerTokenId: String,
 
     @ColumnInfo(name = "player_name")
-    var playerName : String,
+    var playerName: String,
 
-    @ColumnInfo(name= "current_level")
-    var currentLevel : Int,
+    @ColumnInfo(name = "current_level")
+    var currentLevel: Int,
 
     @ColumnInfo(name = "main_sound_level")
     var mainSoundLevel: Int,
