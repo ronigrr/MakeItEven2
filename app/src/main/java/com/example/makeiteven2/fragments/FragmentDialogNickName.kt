@@ -18,23 +18,23 @@ import kotlinx.android.synthetic.main.nickname_dialog.view.*
 class FragmentDialogNickName : DialogFragment() {
 
     interface DialogListener {
-        fun onFinishEditDialog(inputText:String)
+        fun onFinishEditDialog(inputText: String)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        if(arguments != null){
-            if(arguments?.getBoolean("notAlertDialog")!!){
+        if (arguments != null) {
+            if (arguments?.getBoolean("notAlertDialog")!!) {
                 return super.onCreateDialog(savedInstanceState)
             }
         }
         val builder = AlertDialog.Builder(activity)
-        builder.setPositiveButton("Cool", object: DialogInterface.OnClickListener {
-            override fun onClick(dialog:DialogInterface, which:Int) {
+        builder.setPositiveButton("Cool", object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface, which: Int) {
                 dismiss()
             }
         })
-        builder.setNegativeButton("Cancel", object: DialogInterface.OnClickListener {
-            override fun onClick(dialog:DialogInterface, which:Int) {
+        builder.setNegativeButton("Cancel", object : DialogInterface.OnClickListener {
+            override fun onClick(dialog: DialogInterface, which: Int) {
                 dismiss()
             }
         })
@@ -51,12 +51,11 @@ class FragmentDialogNickName : DialogFragment() {
         if (arguments != null && !TextUtils.isEmpty(arguments?.getString(Constants.NICK_NAME_kYE)))
             nicknameEt.setText(arguments?.getString(Constants.NICK_NAME_kYE))
 
-        view.btnDone.setOnClickListener(object : View.OnClickListener{
+        view.btnDone.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                if (nicknameEt.text.isEmpty()){
-                    Toast.makeText(view.context,"You must chose name or nickname",Toast.LENGTH_SHORT).show()
-                }
-                else {
+                if (nicknameEt.text.isEmpty()) {
+                    Toast.makeText(view.context, "You must chose name or nickname", Toast.LENGTH_SHORT).show()
+                } else {
                     val dialogListener = activity as DialogListener
                     dialogListener.onFinishEditDialog(nicknameEt.text.toString())
                     dismiss()
@@ -67,7 +66,7 @@ class FragmentDialogNickName : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var  setFullScreen = false
+        var setFullScreen = false
         if (arguments != null) {
             setFullScreen = requireNotNull(arguments?.getBoolean("fullScreen"))
         }

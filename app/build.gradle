@@ -54,6 +54,8 @@ dependencies {
     implementation 'com.nex3z:toggle-button-group:1.2.0'
     //Toasty
     implementation 'com.github.GrenderG:Toasty:1.4.0'
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.5'
 
 
     //room

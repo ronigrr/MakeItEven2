@@ -2,30 +2,32 @@ package com.example.makeiteven2.fragments
 
 import android.app.Dialog
 import android.content.Context
-import android.content.res.Resources
-import android.opengl.Visibility
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.*
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
+import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.StageInfo
 import com.example.makeiteven2.extras.Animations
+import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.game.GameFactory
+import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_stage.view.*
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 
-class FragmentStageModeScreen : Fragment(), View.OnClickListener {
+class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener {
 
-    private lateinit var mStageInfoArray: ArrayList<StageInfo>
     private lateinit var mLevelNumberTV: TextView
     private lateinit var mHintsLeftTV: TextView
     private lateinit var mTargetNumberTV: TextView
@@ -49,18 +51,23 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
     private val mGameButtonsList = ArrayList<ToggleButton>()
     private val mOperatorsList = ArrayList<ToggleButton>()
 
+    private lateinit var rootView: View
+
     private var mHintString: String = ""
-    private var mNumberHintsLeft = 3 //TODO: Note to ilya,why default hints are 3?,also mLevelnum you can take from database
-    private var mLevelNum = 1 //should get from init fragment
-    private var mTargetNumber = 0 //should get from save
+    private var mNumberHintsLeft = Constants.User.hintsLeft
+    private var mLevelNum = levelNumber
+    private var mTargetNumber = 0
     private val mGame = GameFactory.getGame(Constants.STAGE_GAME_TYPE, 12)
+    private var soundEffectsVolume: Float = Constants.User.soundEffectsLevel.toFloat()
+    private var mStageInfoArray: ArrayList<StageInfo> = Constants.User.stageList
+
 
     private lateinit var listener: IFragmentStageModeListener
 
     private var isNumberSelected = false
     private var isOperatorSelected = false
-    private var num1 = 0
-    private var num2 = 0
+    private var num1 = Int.MAX_VALUE
+    private var num2 = Int.MAX_VALUE
     private var selectedNumberID1 = 0
     private var selectedNumberID2 = 0
     private var operator = ""
@@ -77,17 +84,17 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater.inflate(R.layout.fragment_game_stage, container, false)
+        rootView = inflater.inflate(R.layout.fragment_game_stage, container, false)
         initToasty()
-        gameSetup(rootView)
+        gameSetup()
         gameInit()
 
 
         return rootView
     }
 
-    private fun gameSetup(view: View) {
-        initFragmentMembersFromView(view)
+    private fun gameSetup() {
+        initFragmentMembersFromView()
         mGameButtonsList.add(mGameButton1TB)
         mGameButtonsList.add(mGameButton2TB)
         mGameButtonsList.add(mGameButton3TB)
@@ -100,6 +107,44 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
 
     }
 
+    private fun showFinishDialog(mWinOrLose: String) {
+        val winLooseDialog = Dialog(context!!)
+
+        winLooseDialog.setCanceledOnTouchOutside(false)
+        winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        winLooseDialog.setCancelable(false)
+        winLooseDialog.setContentView(R.layout.win_loose_dialog)
+
+        winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(context!!))
+
+        winLooseDialog.ibtnRetry.setOnClickListener {
+            gameInit()
+            winLooseDialog.dismiss()
+        }
+        winLooseDialog.ibtnNext.setOnClickListener {
+            mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + (++mLevelNum).toString()
+            gameInit()
+            winLooseDialog.dismiss()
+        }
+        winLooseDialog.ibtnHome.setOnClickListener {
+            listener.backButtonPressed()
+            winLooseDialog.dismiss()
+        }
+        when (mWinOrLose) {
+            Constants.WIN_DIALOG -> {
+                winLooseDialog.tvText.text = context!!.resources.getString(R.string.correct_answer)
+                //TODO:implement win fun
+            }
+            Constants.LOSE_DIALOG -> {
+                winLooseDialog.ibtnNext.visibility = View.GONE
+                winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
+            }
+        }
+        winLooseDialog.show()
+    }
+
     private fun initToasty() {
         Toasty.Config.getInstance().tintIcon(false).setTextSize(30).allowQueue(true).apply()
     }
@@ -109,9 +154,8 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
             context?.let { letContext ->
                 Toasty.info(letContext, mHintString, Toast.LENGTH_SHORT, true).show()
             }
-            //TODO:Why not work directly with the hints in user obj
             mNumberHintsLeft--
-            //TODO:save updated num of hints
+            DatabaseHelper.saveHintsToDataBase(context!!.applicationContext, mNumberHintsLeft)
             val textToShow = "${resources.getText(R.string.hints_left)}" + " $mNumberHintsLeft"
             mHintsLeftTV.text = textToShow
             if (mNumberHintsLeft == 0) {
@@ -146,6 +190,7 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
                 } else {
                     num1 = checkedTB.text.toString().toInt()
                     selectedNumberID1 = checkedId
+                    isNumberSelected = true
                 }
             }
         }
@@ -178,6 +223,7 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
                 visibility = View.VISIBLE
                 isEnabled = true
                 isChecked = false
+                startAnimation(Animations.getBounceAnimation(context!!))
             }
         }
         for (tb in mOperatorsList) {
@@ -190,9 +236,9 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
 
         var min = 0
         var max = 0
-        var difficulty = 6
-        val currentStage = Constants.User.currentLevel!!
-        mStageInfoArray = ArrayList<StageInfo>()
+        var difficulty = 0
+        val currentStage = Constants.User.currentLevel
+        mStageInfoArray = Constants.User.stageList
         if (mStageInfoArray.size < mLevelNum || currentStage < mLevelNum) {
             when (mLevelNum) {
                 in 0..10 -> {
@@ -225,20 +271,22 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
             do {
                 if (mGame != null) {
                     mTargetNumber = mGame.gameGenerator(mGameButtonsList, min, max)
+                    mHintString = mGame.getHint()
                 }
             } while (mTargetNumber > max || mTargetNumber < min)
 
             mTargetNumberTV.text = mTargetNumber.toString()
             val stageInfo = StageInfo(
-                    mGameButtonsList[0].text.toString().toInt(),
-                    mGameButtonsList[1].text.toString().toInt(),
-                    mGameButtonsList[2].text.toString().toInt(),
-                    mGameButtonsList[3].text.toString().toInt(),
-                    mTargetNumber,
-                    mHintString)
-            //Todo: save stage info
+                mGameButtonsList[0].text.toString().toInt(),
+                mGameButtonsList[1].text.toString().toInt(),
+                mGameButtonsList[2].text.toString().toInt(),
+                mGameButtonsList[3].text.toString().toInt(),
+                mTargetNumber,
+                mHintString
+            )
+            DatabaseHelper.saveStageInfo(context!!.applicationContext, stageInfo)
 
-        }else{
+        } else {
             startSavedGameInfo()
         }
 
@@ -248,29 +296,29 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
 
         mGameButtonsList.shuffle()
 
-        mGameButtonsList[0].textOff = mStageInfoArray[mLevelNum-1].num1.toString()
-        mGameButtonsList[0].textOff = mStageInfoArray[mLevelNum-1].num1.toString()
-        mGameButtonsList[0].textOff = mStageInfoArray[mLevelNum-1].num1.toString()
+        mGameButtonsList[0].text = mStageInfoArray[mLevelNum - 1].num1.toString()
+        mGameButtonsList[0].textOn = mStageInfoArray[mLevelNum - 1].num1.toString()
+        mGameButtonsList[0].textOff = mStageInfoArray[mLevelNum - 1].num1.toString()
 
-        mGameButtonsList[1].textOff = mStageInfoArray[mLevelNum-1].num2.toString()
-        mGameButtonsList[1].textOff = mStageInfoArray[mLevelNum-1].num2.toString()
-        mGameButtonsList[1].textOff = mStageInfoArray[mLevelNum-1].num2.toString()
+        mGameButtonsList[1].text = mStageInfoArray[mLevelNum - 1].num2.toString()
+        mGameButtonsList[1].textOn = mStageInfoArray[mLevelNum - 1].num2.toString()
+        mGameButtonsList[1].textOff = mStageInfoArray[mLevelNum - 1].num2.toString()
 
-        mGameButtonsList[2].textOff = mStageInfoArray[mLevelNum-1].num3.toString()
-        mGameButtonsList[2].textOff = mStageInfoArray[mLevelNum-1].num3.toString()
-        mGameButtonsList[2].textOff = mStageInfoArray[mLevelNum-1].num3.toString()
+        mGameButtonsList[2].text = mStageInfoArray[mLevelNum - 1].num3.toString()
+        mGameButtonsList[2].textOn = mStageInfoArray[mLevelNum - 1].num3.toString()
+        mGameButtonsList[2].textOff = mStageInfoArray[mLevelNum - 1].num3.toString()
 
-        mGameButtonsList[3].textOff = mStageInfoArray[mLevelNum-1].num4.toString()
-        mGameButtonsList[3].textOff = mStageInfoArray[mLevelNum-1].num4.toString()
-        mGameButtonsList[3].textOff = mStageInfoArray[mLevelNum-1].num4.toString()
+        mGameButtonsList[3].text = mStageInfoArray[mLevelNum - 1].num4.toString()
+        mGameButtonsList[3].textOn = mStageInfoArray[mLevelNum - 1].num4.toString()
+        mGameButtonsList[3].textOff = mStageInfoArray[mLevelNum - 1].num4.toString()
 
-        mTargetNumber = mStageInfoArray[mLevelNum-1].target
+        mTargetNumber = mStageInfoArray[mLevelNum - 1].target
         mTargetNumberTV.text = mTargetNumber.toString()
-        mHintString = mStageInfoArray[mLevelNum-1].hint
+        mHintString = mStageInfoArray[mLevelNum - 1].hint
     }
 
 
-    private fun initFragmentMembersFromView(rootView: View) {
+    private fun initFragmentMembersFromView() {
         mLevelNumberTV = rootView.levelTV // "Level: X"
         mHintsLeftTV = rootView.hintsLeftTV //"Hints: X"
         mTargetNumberTV = rootView.theTargetNumberTV
@@ -290,12 +338,12 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
         mNumberGroup = rootView.group_choices_of_numbers
 
 
-        mNumberHintsLeft = Constants.User.hintsLeft!!
+        mNumberHintsLeft = Constants.User.hintsLeft
         if (mNumberHintsLeft == 0) {
             mHintIB.isEnabled = false
             mHintIB.setImageResource(R.drawable.ic_help_off)
         }
-        mLevelNum = Constants.User.currentLevel!!
+//        mLevelNum = Constants.User.currentLevel!!
         var textToShow = resources.getText(R.string.level_number).toString() + mLevelNum.toString()
         mLevelNumberTV.text = textToShow
         textToShow = resources.getString(R.string.hints_left) + " $mNumberHintsLeft"
@@ -303,25 +351,120 @@ class FragmentStageModeScreen : Fragment(), View.OnClickListener {
 
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onClick(v: View?) {
-//        Handler().post {
-//            val btn_off: MediaPlayer
-//            val btn_On: MediaPlayer
-//            btn_off = MediaPlayer.create(this@GameActivity, R.raw.btn_off_sound)
-//            btn_On = MediaPlayer.create(this@GameActivity, R.raw.btn_on_sound)
-//            btn_On.setVolume(sound_Effects_Volume, sound_Effects_Volume)
-//            btn_off.setVolume(sound_Effects_Volume, sound_Effects_Volume)
-//            if (!(v as ToggleButton).isChecked) {
-//                btn_On.start()
-//            } else if ((v as ToggleButton).isChecked) {
-//                btn_off.start()
-//            }
-//        }
-        correctAnswerDialog(context!!,Constants.WIN_DIALOG)
+        Handler().post {
+            val btnOffPlayer: MediaPlayer = MediaPlayer.create(context, R.raw.btn_off_sound)
+            val btnOnPlayer: MediaPlayer = MediaPlayer.create(context, R.raw.btn_on_sound)
+            btnOnPlayer.setVolume(soundEffectsVolume, soundEffectsVolume)
+            btnOffPlayer.setVolume(soundEffectsVolume, soundEffectsVolume)
+            if (!(v as ToggleButton).isChecked) {
+                btnOnPlayer.start()
+            } else if (v.isChecked) {
+                btnOffPlayer.start()
+            }
+        }
+        /// checks that nobody checked
+        var i = 0
+        for (toggleButton in mGameButtonsList) {
+            if (toggleButton.isChecked) break
+            i++
+        }
+        if (i == 4) {
+            num1 = Int.MAX_VALUE
+            isNumberSelected = false
+            selectedNumberID1 = 0
+        }
+        //checks that no operator checked
+        i = 0
+        for (toggleButton in mOperatorsList) {
+            if (toggleButton.isChecked) break
+            i++
+        }
+        if (i == 4) {
+            operator = ""
+            isOperatorSelected = false
+            selectedOperatorID = 0
+        }
+//        Toast.makeText(this, "" + num1, Toast.LENGTH_SHORT).show();
+        if (num2 != Int.MAX_VALUE) {
+            var sum = 0
+            var isDivideZero = false
+            var isFraction = false
+            when (operator) {
+                "plus" -> sum = num1 + num2
+                "minus" -> sum = num1 - num2
+                "div" -> if (num2 == 0) {
+                    isDivideZero = true
+                } else if (num1 % num2 != 0) {
+                    isFraction = true
+                } else sum = num1 / num2
+                "mul" -> sum = num1 * num2
+            }
+
+            //set new button
+            val toggleButton: ToggleButton = rootView.findViewById(selectedNumberID2)
+            toggleButton.startAnimation(Animations.getScaleOutAnimation(context!!))
+            toggleButton.textOn = sum.toString()
+            toggleButton.textOff = sum.toString()
+            toggleButton.text = sum.toString()
+            toggleButton.isChecked = false
+
+
+            //button to remove+anim
+            val toggleButtonToHide: ToggleButton = rootView.findViewById(selectedNumberID1)
+            toggleButtonToHide.startAnimation(Animations.getScaleOutAnimation(context!!))
+            toggleButtonToHide.visibility = View.INVISIBLE
+            toggleButtonToHide.isEnabled = false
+
+
+            toggleButton.startAnimation(Animations.getScaleInAnimation(context!!))
+
+            val operator: ToggleButton = rootView.findViewById(selectedOperatorID)
+            operator.isChecked = false
+
+            //reset flags
+            isOperatorSelected = false
+            isNumberSelected = false
+            num2 = Int.MAX_VALUE
+
+            i = 0
+            for (tb in mGameButtonsList) {
+                if (tb.isEnabled) i++
+            }
+            if (isDivideZero || isFraction) {
+                showFinishDialog(Constants.LOSE_DIALOG)
+                AudioManager.startWaWaSound()
+                gameInit()
+            }
+
+            if (i == 1) {
+                //game finished
+
+                if (mTargetNumber == sum) {
+                    //you win
+                    var currentStage = Constants.User.currentLevel
+                    if (mLevelNum == currentStage) {
+                        currentStage++
+                    }
+                    DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
+
+                    Handler().postDelayed({
+                        showFinishDialog(Constants.WIN_DIALOG)
+                        AudioManager.startTaDaSound()
+                        Animations.getConfetti(rootView.game_root_container)
+                    }, 200)
+
+                } else {
+                    //you loose
+                    Handler().postDelayed({
+                        showFinishDialog(Constants.LOSE_DIALOG)
+                    }, 200)
+
+                    gameInit()
+                }
+            }
+
+        }
     }
 }
 
@@ -329,36 +472,5 @@ interface IFragmentStageModeListener {
     fun backButtonPressed()
 }
 
-fun correctAnswerDialog(context: Context,mWinOrLose : String){
-    val winLooseDialog = Dialog(context)
-    winLooseDialog.setCanceledOnTouchOutside(false)
-    winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-    winLooseDialog.setCancelable(false)
-    winLooseDialog.setContentView(R.layout.win_loose_dialog)
 
-    winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(context))
-    winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(context))
-    winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(context))
-
-    winLooseDialog.ibtnRetry.setOnClickListener{
-        //TODO:Add Reload stage fun
-    }
-    winLooseDialog.ibtnNext.setOnClickListener{
-        //TODO:Add next stage fun
-    }
-    winLooseDialog.ibtnHome.setOnClickListener {
-        //TODO:Add inteface and go back to main menu
-    }
-    when(mWinOrLose){
-       Constants.WIN_DIALOG ->{
-           winLooseDialog.tvText.text = context.resources.getString(R.string.correct_answer)
-           //TODO:implement win fun
-       }
-        Constants.LOSE_DIALOG->{
-            winLooseDialog.ibtnNext.visibility = View.GONE
-            winLooseDialog.tvText.text = context.resources.getString(R.string.wrong_answer)
-        }
-    }
-    winLooseDialog.show()
-}
 
