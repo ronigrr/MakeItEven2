@@ -293,20 +293,20 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
         mGameButtonsList.shuffle()
 
-        mGameButtonsList[0].textOff = mStageInfoArray[mLevelNum - 1].num1.toString()
-        mGameButtonsList[0].textOff = mStageInfoArray[mLevelNum - 1].num1.toString()
+        mGameButtonsList[0].text    = mStageInfoArray[mLevelNum - 1].num1.toString()
+        mGameButtonsList[0].textOn  = mStageInfoArray[mLevelNum - 1].num1.toString()
         mGameButtonsList[0].textOff = mStageInfoArray[mLevelNum - 1].num1.toString()
 
-        mGameButtonsList[1].textOff = mStageInfoArray[mLevelNum - 1].num2.toString()
-        mGameButtonsList[1].textOff = mStageInfoArray[mLevelNum - 1].num2.toString()
+        mGameButtonsList[1].text    = mStageInfoArray[mLevelNum - 1].num2.toString()
+        mGameButtonsList[1].textOn  = mStageInfoArray[mLevelNum - 1].num2.toString()
         mGameButtonsList[1].textOff = mStageInfoArray[mLevelNum - 1].num2.toString()
 
-        mGameButtonsList[2].textOff = mStageInfoArray[mLevelNum - 1].num3.toString()
-        mGameButtonsList[2].textOff = mStageInfoArray[mLevelNum - 1].num3.toString()
+        mGameButtonsList[2].text    = mStageInfoArray[mLevelNum - 1].num3.toString()
+        mGameButtonsList[2].textOn  = mStageInfoArray[mLevelNum - 1].num3.toString()
         mGameButtonsList[2].textOff = mStageInfoArray[mLevelNum - 1].num3.toString()
 
-        mGameButtonsList[3].textOff = mStageInfoArray[mLevelNum - 1].num4.toString()
-        mGameButtonsList[3].textOff = mStageInfoArray[mLevelNum - 1].num4.toString()
+        mGameButtonsList[3].text    = mStageInfoArray[mLevelNum - 1].num4.toString()
+        mGameButtonsList[3].textOn  = mStageInfoArray[mLevelNum - 1].num4.toString()
         mGameButtonsList[3].textOff = mStageInfoArray[mLevelNum - 1].num4.toString()
 
         mTargetNumber = mStageInfoArray[mLevelNum - 1].target

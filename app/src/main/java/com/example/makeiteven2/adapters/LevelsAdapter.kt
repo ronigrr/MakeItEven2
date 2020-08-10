@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.Level
 import com.example.makeiteven2.extras.Animations
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.level_cell.view.*
 
 class LevelsAdapter(private var mLevelsList : List<Level> = ArrayList(), private val context: Context,private var mCurrentStage : Int)
@@ -53,7 +54,13 @@ class LevelsAdapter(private var mLevelsList : List<Level> = ArrayList(), private
             }
 
             view.btnLevel.setOnClickListener {
-                callback.levelsAdapterItemClicked(level.levelNum)
+                if (view.ivLock.visibility == View.VISIBLE)
+                {
+                    Toasty.custom(context,"You did not reach this stage yet",null,Toasty.LENGTH_SHORT,false).show()
+                }
+                else {
+                    callback.levelsAdapterItemClicked(level.levelNum)
+                }
                 //TODO: Implement onClick listener with callback to start the game level
             }
 
