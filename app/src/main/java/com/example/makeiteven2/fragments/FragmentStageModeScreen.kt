@@ -28,7 +28,6 @@ import kotlinx.android.synthetic.main.win_loose_dialog.*
 
 class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener {
 
-    private var mStageInfoArray: ArrayList<StageInfo> = Constants.User.stageList
     private lateinit var mLevelNumberTV: TextView
     private lateinit var mHintsLeftTV: TextView
     private lateinit var mTargetNumberTV: TextView
@@ -60,6 +59,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private var mTargetNumber = 0 //should get from save TODO
     private val mGame = GameFactory.getGame(Constants.STAGE_GAME_TYPE, 12)
     private var soundEffectsVolume: Float = Constants.User.soundEffectsLevel.toFloat()
+    private var mStageInfoArray: ArrayList<StageInfo> = Constants.User.stageList
+
 
     private lateinit var listener: IFragmentStageModeListener
 
@@ -189,6 +190,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 } else {
                     num1 = checkedTB.text.toString().toInt()
                     selectedNumberID1 = checkedId
+                    isNumberSelected = true
                 }
             }
         }
@@ -234,8 +236,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
         var min = 0
         var max = 0
-        var difficulty = 6
-        val currentStage = Constants.User.currentLevel!!
+        var difficulty = 0
+        val currentStage = Constants.User.currentLevel
         mStageInfoArray = Constants.User.stageList
         if (mStageInfoArray.size < mLevelNum || currentStage < mLevelNum) {
             when (mLevelNum) {
@@ -269,6 +271,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             do {
                 if (mGame != null) {
                     mTargetNumber = mGame.gameGenerator(mGameButtonsList, min, max)
+                    mHintString = mGame.getHint()
                 }
             } while (mTargetNumber > max || mTargetNumber < min)
 
@@ -335,12 +338,12 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mNumberGroup = rootView.group_choices_of_numbers
 
 
-        mNumberHintsLeft = Constants.User.hintsLeft!!
+        mNumberHintsLeft = Constants.User.hintsLeft
         if (mNumberHintsLeft == 0) {
             mHintIB.isEnabled = false
             mHintIB.setImageResource(R.drawable.ic_help_off)
         }
-        mLevelNum = Constants.User.currentLevel!!
+//        mLevelNum = Constants.User.currentLevel!!
         var textToShow = resources.getText(R.string.level_number).toString() + mLevelNum.toString()
         mLevelNumberTV.text = textToShow
         textToShow = resources.getString(R.string.hints_left) + " $mNumberHintsLeft"
@@ -443,7 +446,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     if (mLevelNum == currentStage) {
                         currentStage++
                     }
-                    currentStage?.let { DatabaseHelper.saveCurrentStage(context!!.applicationContext, it) }
+                    DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
 
                     Handler().postDelayed({
                         showFinishDialog(Constants.WIN_DIALOG)

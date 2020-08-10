@@ -242,7 +242,8 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     }
 
     override fun backButtonPressed() {
-        TODO("Not yet implemented")
+        fragmentManager.popBackStack()
+
     }
 }
 
