@@ -65,8 +65,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private var isNumberSelected = false
     private var isOperatorSelected = false
-    private var num1 = 0
-    private var num2 = 0
+    private var num1 = Int.MAX_VALUE
+    private var num2 = Int.MAX_VALUE
     private var selectedNumberID1 = 0
     private var selectedNumberID2 = 0
     private var operator = ""
