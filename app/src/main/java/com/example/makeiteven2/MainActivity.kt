@@ -30,7 +30,7 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsScreenCallback
     , FragmentSettings.SettingsFragmentCallBack, LevelsAdapter.ILevelsAdapter,
-    FragmentDialogNickName.DialogListener, IFragmentStageModeListener {
+    FragmentDialogNickName.DialogListener, IFragmentStageModeListener,FragmentLevelsScreen.IFragmentLevelsScreenCallback {
 
     private val fragmentManager = supportFragmentManager
     private val fragmentStartScreen: FragmentStartScreen = FragmentStartScreen()
@@ -39,8 +39,6 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private val fragmentArcadeModeScreen: FragmentArcadeModeScreen = FragmentArcadeModeScreen()
     private val dialogFragmentFragmentNickName: FragmentDialogNickName = FragmentDialogNickName()
 
-    //    private lateinit var mNoteDatabase : RoomNoteDatabase
-//    private lateinit var mNoteDao: NoteDao
     private lateinit var databaseHelper: DatabaseHelper
     private lateinit var uiHandler: Handler
 
@@ -49,14 +47,12 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
     private lateinit var appToolbar: Toolbar
 
-    //private lateinit var mAudioManager : AudioManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initToolBar()
-//        mNoteDatabase = RoomNoteDatabase.getInstance(applicationContext)
-//        mNoteDao = mNoteDatabase.roomNoteDao()
         uiHandler = Handler()
 
         mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
@@ -91,12 +87,10 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         when (view.id) {
             btnStageMode.id -> loadStageModeLevelScreen()
             btnArcadeMode.id -> loadArcadeMode()
-            btnScoreBoard.id -> {
-            }
+            btnScoreBoard.id -> { }
             btnTutorial.id -> Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun loadArcadeMode() {
         fragmentManager.beginTransaction().replace(
@@ -201,11 +195,8 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     }
 
     override fun levelsAdapterItemClicked(levelNumber: Int) {
-        fragmentManager.beginTransaction().replace(
-            R.id.fragmentContainer,
-            FragmentStageModeScreen(levelNumber),
-            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG
-        )
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, FragmentStageModeScreen(levelNumber),
+            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG)
             .addToBackStack(null).commit()
     }
 
@@ -243,7 +234,10 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
     override fun backButtonPressed() {
         fragmentManager.popBackStack()
+    }
 
+    override fun onLevelsFragmentBackPressed() {
+        backButtonPressed()
     }
 }
 

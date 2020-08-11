@@ -18,7 +18,6 @@ class FragmentStartScreen : Fragment() {
 
     private lateinit var mCallBack: IFragmentsStartsScreenCallback
     private lateinit var mStageModeBtn: Button
-    private lateinit var mOnTouchAnimation: Animations
     private lateinit var mArcadeModeBtn: Button
     private lateinit var mTutorialBtn: Button
     private lateinit var mScoreBoardBtn: ImageButton
