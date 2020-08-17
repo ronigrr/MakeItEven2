@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
@@ -73,6 +74,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private var operator = ""
     private var selectedOperatorID = 0
 
+    private lateinit var mCountDownTimer :CountDownTimer
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -129,7 +132,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             winLooseDialog.dismiss()
         }
         winLooseDialog.ibtnHome.setOnClickListener {
-            listener.backButtonPressed()
+            listener.backButtonPressedStage()
             winLooseDialog.dismiss()
         }
         when (mWinOrLose) {
@@ -168,7 +171,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             setOnTouchListener(Animations.getTouchAnimation(context))
         }
         mBackButtonIB.apply {
-            setOnClickListener { listener.backButtonPressed() }
+            setOnClickListener { listener.backButtonPressedStage() }
             setOnTouchListener(Animations.getTouchAnimation(context))
         }
         mRetryButtonIB.apply {
@@ -466,10 +469,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
         }
     }
-}
-
-interface IFragmentStageModeListener {
-    fun backButtonPressed()
 }
 
 

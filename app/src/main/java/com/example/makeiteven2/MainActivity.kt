@@ -30,13 +30,14 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsScreenCallback
     , FragmentSettings.SettingsFragmentCallBack, LevelsAdapter.ILevelsAdapter,
-    FragmentDialogNickName.DialogListener, IFragmentStageModeListener {
+    FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener {
 
     private val fragmentManager = supportFragmentManager
     private val fragmentStartScreen: FragmentStartScreen = FragmentStartScreen()
     private val fragmentSettings: FragmentSettings = FragmentSettings()
     private val fragmentLevelsScreen: FragmentLevelsScreen = FragmentLevelsScreen()
-    private val fragmentArcadeModeScreen: FragmentArcadeModeScreen = FragmentArcadeModeScreen()
+
+    //    private val fragmentArcadeModeScreen: FragmentArcadeModeScreen = FragmentArcadeModeScreen()
     private val dialogFragmentFragmentNickName: FragmentDialogNickName = FragmentDialogNickName()
 
     //    private lateinit var mNoteDatabase : RoomNoteDatabase
@@ -101,7 +102,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private fun loadArcadeMode() {
         fragmentManager.beginTransaction().replace(
             R.id.fragmentContainer,
-            fragmentArcadeModeScreen,
+            FragmentArcadeModeScreen(),
             Constants.ARCADE_MODE_SCREEN_FRAGMENT_TAG
         )
             .addToBackStack(null).commit()
@@ -241,10 +242,14 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         AudioManager.startGameMusic()
     }
 
-    override fun backButtonPressed() {
+    override fun backButtonPressedArcade() {
         fragmentManager.popBackStack()
-
     }
+
+    override fun backButtonPressedStage() {
+        fragmentManager.popBackStack()
+    }
+
 }
 
 //TODO: need to licence arcade_win , super_duper,tada,wa wa and also for the owl image
