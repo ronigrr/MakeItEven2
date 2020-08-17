@@ -34,14 +34,14 @@ class AudioManager {
         }
 
         fun playBtnOn() {
-            mSoundEffectsVolume = (Constants.User.soundEffectsLevel / 100).toFloat()
+            mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
             mEffectsMediaPlayer = MediaPlayer.create(mContext, R.raw.btn_on_sound)
             mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
             mEffectsMediaPlayer.start()
         }
 
         fun playBtnOff() {
-            mSoundEffectsVolume = (Constants.User.soundEffectsLevel / 100).toFloat()
+            mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
             mGameMediaPlayer = MediaPlayer.create(mContext, R.raw.btn_off_sound)
             mGameMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
             mGameMediaPlayer.start()

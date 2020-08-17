@@ -49,4 +49,11 @@ object DatabaseHelper {
         Constants.User.currentLevel = currentStage
         GlobalScope.launch { mNoteDao.insertOrUpdateNote(Constants.User) }
     }
+    fun addHints(context: Context,hintsToAdd : Int){
+        getDataBase(context)
+        Constants.User.hintsLeft+=hintsToAdd
+        GlobalScope.launch {
+            mNoteDao.insertOrUpdateNote(Constants.User)
+        }
+    }
 }

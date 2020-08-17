@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.makeiteven2.adapters.LevelsAdapter
+import com.example.makeiteven2.data_models.StageInfo
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.fragments.*
@@ -87,9 +88,24 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         when (view.id) {
             btnStageMode.id -> loadStageModeLevelScreen()
             btnArcadeMode.id -> loadArcadeMode()
-            btnScoreBoard.id -> { }
-            btnTutorial.id -> Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show()
+            btnScoreBoard.id -> loadScoreBoard()
+            btnTutorial.id -> loadTutorialStage()
         }
+    }
+
+    private fun loadScoreBoard() {
+//        val intent = Intent(this@MainActivity,HintsService::class.java).apply {
+//            intent.action = Constants.ADD_HINTS
+//        }
+//        startService(intent)
+        //TODO: REMOVE just cheked the HintService
+    }
+
+    private fun loadTutorialStage() {
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, FragmentStageModeScreen(1),
+            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG)
+            .addToBackStack(null).commit()
+        hideToolBar()
     }
 
     private fun loadArcadeMode() {
@@ -169,14 +185,13 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     }
 
     override fun onResetGame() {
-        //TODO: may not work properly,need to check it after the game i ready (check the code inside positive btn)
+        //TODO: may not work properly,need to check it after the game is ready (check the code inside positive btn)
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
         alertDialogBuilder.setIcon(R.drawable.warning_icon)
         alertDialogBuilder.setMessage(R.string.Progress).setCancelable(false).setPositiveButton(R.string.Yes) { dialog, _ ->
             Constants.User.currentLevel = 1
             DatabaseHelper.createOrUpdateUser(applicationContext, Constants.User)
-            //DataStore.getInstance(this@StartScreenActivity).resetLevels()
             dialog.cancel()
         }
         alertDialogBuilder.setNegativeButton(R.string.No) { dialog, _ -> dialog.cancel() }
@@ -194,7 +209,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         appToolbar.visibility = View.GONE
     }
 
-    override fun levelsAdapterItemClicked(levelNumber: Int) {
+    override fun onLevelsAdapterItemClicked(levelNumber: Int) {
         fragmentManager.beginTransaction().replace(R.id.fragmentContainer, FragmentStageModeScreen(levelNumber),
             Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG)
             .addToBackStack(null).commit()
@@ -208,11 +223,11 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     }
 
     private fun createNewUser(nickname: String) {
-        val newUserNote = RoomUserNote(
-            UUID.randomUUID().toString(), nickname, 1, 50, 50, 3, ArrayList()
-        )
+        val newUserNote = RoomUserNote(UUID.randomUUID().toString(), nickname, 1, 50, 50, 3, ArrayList())
+        newUserNote.stageList.add(StageInfo(1,1,1,1,4,"1+1+1+1"))
         Constants.User = newUserNote
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
+        AudioManager.startGameMusic()
     }
 
     private fun firstTimeInApp() {
@@ -239,6 +254,8 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     override fun onLevelsFragmentBackPressed() {
         backButtonPressed()
     }
+
+
 }
 
-//TODO: need to licence arcade_win , super_duper,tada,wa wa and also for the owl image
+//TODO: need to licence super_duper,tada,wa wa

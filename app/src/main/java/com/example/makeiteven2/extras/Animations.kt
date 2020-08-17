@@ -57,5 +57,4 @@ object Animations {
 
     fun getScaleInAnimation(context: Context): Animation =
         AnimationUtils.loadAnimation(context, R.anim.scale_in)
-
 }

@@ -19,7 +19,7 @@
 
     <string name="correct_answer">Correct Answer</string>
 
-    <string name="wrong_answer">You Are Worng</string>
+    <string name="wrong_answer">Wrong Answer,you can always try again!</string>
 
     <string name="division">Division by 0 or not Neutral Division</string>
 
