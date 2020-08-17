@@ -267,7 +267,6 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener {
 
     }
 
-
     private fun initFragmentMembersFromView() {
         mTimerTV = rootView.timerTV // "Level: X"
         mActualScoreTV = rootView.actualScoreTV //"Hints: X"
@@ -375,7 +374,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener {
             }
             if (isDivideZero || isFraction) {
                 AudioManager.startBuzzerSound()
-                gameInit()
+                showFinishDialog(Constants.LOSE_DIALOG)
             }
 
             if (i == 1) {
@@ -383,11 +382,8 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener {
 
                 if (mTargetNumber == sum) {
                     //you win
-                    Handler().postDelayed({
-                        showFinishDialog(Constants.WIN_DIALOG)
-                        AudioManager.startTaDaSound()
-                        Animations.getConfetti(rootView.game_root_container)
-                    }, 200)
+                    AudioManager.startTaDaSound()
+                    Animations.getConfetti(rootView.game_root_container)
                     gameInit()
                     mWinsCounter++
                     mScoreCounter = when {
@@ -404,8 +400,6 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener {
                     Handler().postDelayed({
                         showFinishDialog(Constants.LOSE_DIALOG)
                     }, 200)
-
-                    gameInit()
                 }
             }
 
