@@ -3,29 +3,33 @@ package com.example.makeiteven2.fragments
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.res.Resources
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.ToggleButton
+import android.widget.*
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.WorkRequest
+import androidx.work.*
 import com.example.makeiteven2.R
 import com.example.makeiteven2.extras.*
 import com.example.makeiteven2.room.DatabaseHelper
 import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 import kotlinx.android.synthetic.main.store_dialog.*
+import java.sql.Timestamp
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
+import kotlin.math.absoluteValue
 
-class FragmentStartScreen : Fragment(),SimpleCountDownTimerKotlin.OnCountDownListener {
+class FragmentStartScreen : Fragment(){
 
     private lateinit var mCallBack: IFragmentsStartsScreenCallback
     private lateinit var mStageModeBtn: Button
@@ -35,9 +39,8 @@ class FragmentStartScreen : Fragment(),SimpleCountDownTimerKotlin.OnCountDownLis
     private lateinit var mLogoIv: ImageView
     private lateinit var mStoreBtn: ImageView
 
-    private lateinit var storeDialog : Dialog
-    private val countDownTimer = SimpleCountDownTimerKotlin(0, 30, this)
     private lateinit var uiHandler : Handler
+    private lateinit var hintTimer : HintTimer
 
     interface IFragmentsStartsScreenCallback {
         fun onStartScreenFragmentButtonClicked(view: View)
@@ -67,37 +70,90 @@ class FragmentStartScreen : Fragment(),SimpleCountDownTimerKotlin.OnCountDownLis
         mArcadeModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
 
         mStageModeBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
-        mScoreBoardBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
+        mScoreBoardBtn.setOnClickListener { Log.v("user",Constants.User.hintTimeStampStart) }
         mTutorialBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
         mArcadeModeBtn.setOnClickListener { mCallBack.onStartScreenFragmentButtonClicked(it) }
 
-        storeDialog = Dialog(context!!)
         uiHandler = Handler()
 
         mStoreBtn.setOnClickListener{
             openStoreDialog()
         }
-
         return rootView
     }
+
+    private fun initTimerForDialog(tvTimer: TextView) {
+        lateinit var time1 : LocalDateTime
+        lateinit var time2 : LocalDateTime
+        val timeBetweenInMilli : Long
+        val stringTimeStamp = System.currentTimeMillis()
+        val tsTemp = Timestamp(stringTimeStamp)
+        val currentTsToParse = tsTemp.toString().replace(" ","T")
+            .replaceAfter(".","").replace(".","")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            time1 = LocalDateTime.parse(currentTsToParse)
+            time2 = LocalDateTime.parse(Constants.User.hintTimeStampStart)
+            Log.v("time2",Constants.User.hintTimeStampStart)
+            Log.v("time1",currentTsToParse)
+            timeBetweenInMilli = Constants.TIME_UNITS_FOR_HINTS_IN_MILLI - ChronoUnit.MILLIS.between(time1,time2).absoluteValue
+            //TODO: somthing to work on build < 21
+            hintTimer =  HintTimer(timeBetweenInMilli,tvTimer)
+            hintTimer.start()
+        }
+        else
+        {
+            tvTimer.text=""
+        }
+
+    }
+
     private fun openStoreDialog(){
-        storeDialog = Dialog(context!!)
+        val storeDialog = Dialog(context!!)
         storeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         storeDialog.setContentView(R.layout.store_dialog)
         storeDialog.setCancelable(true)
-        storeDialog.btnGetHint.setOnClickListener {
-            //DatabaseHelper.addHints(context!!,1)
-            //countDownTimer.start(true)
-            //countDownTimer.runOnBackgroundThread()
-            //val addHintWorkRequest : WorkRequest = PeriodicWorkRequestBuilder<HintsWorker>(1,TimeUnit.HOURS,
-            //15,TimeUnit.MINUTES).build()
-            val addHintWorkRequest : WorkRequest = OneTimeWorkRequestBuilder<HintsWorker>().setInitialDelay(10,TimeUnit.SECONDS).build()
-            WorkManager.getInstance(context!!).enqueue(addHintWorkRequest)
-           //HintTimer(30*1000,storeDialog.tvTimer).start()
-
+        if (Constants.User.isHintGiftGiven){//disable btn and set timer
+            initTimerForDialog(storeDialog.tvTimer)
+            storeDialog.btnGetHint.isEnabled = false
+            storeDialog.btnGetHint.isClickable = false
+            storeDialog.btnGetHint.setTextColor(Color.BLACK)
+            storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!,R.drawable.reset_game)
+            storeDialog.btnGetHint.setTextColor(Color.GRAY)
+        }
+        else{
+            storeDialog.btnGetHint.setOnTouchListener(Animations.getTouchAnimation(context!!))
+            storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!,R.drawable.game_qube_btns)
+            //onClick
+            storeDialog.btnGetHint.setOnClickListener {
+                //add hint
+                DatabaseHelper.addHints(context!!,Constants.GIFT_HINTS_TO_GIVE)
+                DatabaseHelper.setGiftGiven(context!!,true)
+                //disable btn
+                storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!,R.drawable.reset_game)
+                storeDialog.btnGetHint.isEnabled = false
+                storeDialog.btnGetHint.isClickable = false
+                storeDialog.btnGetHint.setTextColor(Color.GRAY)
+                //save time stamp to db
+                val stringTimeStamp = System.currentTimeMillis()
+                val tsTemp = Timestamp(stringTimeStamp)
+                val currentTsToSave = tsTemp.toString().replace(" ","T")
+                    .replaceAfter(".","").replace(".","")
+                DatabaseHelper.setGiftStartTimeStamp(context!!,currentTsToSave)
+                Log.v("time stamp",currentTsToSave)
+                //start timer with the time needed
+                hintTimer = HintTimer(Constants.TIME_UNITS_FOR_HINTS_IN_MILLI,storeDialog.tvTimer).start() as HintTimer
+                //start a work
+                val addHintWorkRequest : WorkRequest = OneTimeWorkRequestBuilder<HintsWorker>().setInitialDelay(Constants.TIME_UNITS_FOR_HINTS_IN_MILLI,TimeUnit.MILLISECONDS).build()
+                WorkManager.getInstance(context!!).enqueue(addHintWorkRequest)
+            }
+        }
+        storeDialog.setOnDismissListener {
+            storeDialog.cancel()
+            hintTimer?.onFinish()
         }
         storeDialog.show()
     }
+
     override fun onAttach(context: Context) {
         if (context is IFragmentsStartsScreenCallback) {
             mCallBack = context
@@ -105,16 +161,5 @@ class FragmentStartScreen : Fragment(),SimpleCountDownTimerKotlin.OnCountDownLis
             throw ClassCastException(context.toString() + "must implement OnButtonClicked")
         }
         super.onAttach(context)
-    }
-
-    override fun onCountDownActive(time: String) {
-           uiHandler.post {
-               if (storeDialog.isShowing)
-                storeDialog.tvTimer.text = time
-            }
-    }
-
-    override fun onCountDownFinished() {
-
     }
 }

@@ -109,5 +109,8 @@ allprojects {
 
         // optional - Test helpers
         androidTestImplementation "androidx.work:work-testing:$work_version"
+
+        //volley
+        implementation 'com.android.volley:volley:1.1.1'
     }
 }

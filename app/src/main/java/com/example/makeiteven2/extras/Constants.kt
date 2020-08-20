@@ -22,6 +22,8 @@ object Constants {
     const val LOSE_DIALOG = "lose_dialog"
     const val SHOWCASE_ID = "showcase_id"
     const val ADD_HINTS ="add_hints"
+    const val TIME_UNITS_FOR_HINTS_IN_MILLI : Long = 21600000
+    const val GIFT_HINTS_TO_GIVE = 1
 
     lateinit var User: RoomUserNote
 

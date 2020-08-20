@@ -6,18 +6,25 @@ import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.StageInfo
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.extras.HintsWorker
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.RoomUserNote
@@ -25,8 +32,17 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.time.Duration
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Period
+import java.time.temporal.ChronoUnit
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import kotlin.math.absoluteValue
 
 
 class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsScreenCallback
@@ -63,8 +79,10 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         if (mSharedPref.getBoolean(Constants.SHARED_KEY_IS_USER_EXISTS, FALSE) == FALSE) {
             firstTimeInApp()
         } else {
-            loadUser()
-            loadStartScreen()
+            loadUser() //TODO:LOAD USER ON SPLASH SCREEN
+            Handler().postDelayed(Runnable {
+                loadStartScreen()
+            },1000)
         }
     }
 
@@ -94,11 +112,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     }
 
     private fun loadScoreBoard() {
-//        val intent = Intent(this@MainActivity,HintsService::class.java).apply {
-//            intent.action = Constants.ADD_HINTS
-//        }
-//        startService(intent)
-        //TODO: REMOVE just cheked the HintService
+
     }
 
     private fun loadTutorialStage() {
@@ -106,6 +120,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
             Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG)
             .addToBackStack(null).commit()
         hideToolBar()
+            //TODO:add the flag to know if you came from tuturial or not in stage mod
     }
 
     private fun loadArcadeMode() {
@@ -223,7 +238,8 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     }
 
     private fun createNewUser(nickname: String) {
-        val newUserNote = RoomUserNote(UUID.randomUUID().toString(), nickname, 1, 50, 50, 3, ArrayList())
+        val newUserNote = RoomUserNote(UUID.randomUUID().toString(), nickname, 1, 50, 50, 3, ArrayList()
+            ,"","",false)
         newUserNote.stageList.add(StageInfo(1,1,1,1,4,"1+1+1+1"))
         Constants.User = newUserNote
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)

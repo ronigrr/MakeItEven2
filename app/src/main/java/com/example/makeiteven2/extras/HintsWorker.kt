@@ -8,20 +8,19 @@ import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.RoomNoteDatabase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.util.logging.Handler
+import java.util.*
 
-class HintsWorker(appContext: Context,workerParams:WorkerParameters): Worker(appContext,workerParams){
-    val context = appContext
+class HintsWorker(private val appContext: Context,workerParams:WorkerParameters): Worker(appContext,workerParams){
     override fun doWork(): Result {
-        val mNoteDatabase = RoomNoteDatabase.getInstance(context)
-        val  mNoteDao = mNoteDatabase.roomNoteDao()
-        GlobalScope.launch{
-            val mUser = mNoteDao.getNotes()[0]
-            Constants.User.hintsLeft++
-            mNoteDao.insertOrUpdateNote(mUser)
-            Log.v("hint","hint++")
+        val mNoteDatabase = RoomNoteDatabase.getInstance(appContext)
+        val mNoteDao = mNoteDatabase.roomNoteDao()
+        GlobalScope.launch {
+            Constants.User = mNoteDao.getNotes()[0]
+            Constants.User.isHintGiftGiven = false
+            Constants.User.hintTimeStampStart=""
+            mNoteDao.insertOrUpdateNote(Constants.User)
+            Log.v("test","GiftsGiven = True from hints worker")
         }
-
         return Result.success()
     }
     //TODO:maybe dont need it,we only need a countdown yo enable free hint btn
