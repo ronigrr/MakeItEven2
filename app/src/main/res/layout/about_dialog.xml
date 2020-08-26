@@ -97,6 +97,20 @@
             android:textSize="16sp"
             android:text="Animation by @Splash Animation /LottieFiles">
         </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:text="Animation by @Studio Wassink /LottieFiles">
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:text="Animation by @ada /LottieFiles">
+        </TextView>
 
     </LinearLayout>
 

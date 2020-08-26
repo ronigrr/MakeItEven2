@@ -1,10 +1,12 @@
 package com.example.makeiteven2.fragments
 
+import android.animation.Animator
 import android.app.Dialog
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,18 +16,17 @@ import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
-import com.example.makeiteven2.extras.Animations
-import com.example.makeiteven2.extras.AudioManager
-import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.extras.*
 import com.example.makeiteven2.game.GameFactory
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_arcade.view.*
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 
-class FragmentArcadeModeScreen : Fragment(), View.OnClickListener {
+class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer {
 
 
+    private lateinit var mTimer: HintTimer
     private lateinit var mTimerTV: TextView
     private lateinit var mActualScoreTV: TextView
     private lateinit var mTargetNumberTV: TextView
@@ -72,6 +73,11 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener {
     private var selectedOperatorID = 0
 
 
+    override fun onStop() {
+        super.onStop()
+        mTimer.cancel()
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is IFragmentArcadeModeListener) {
@@ -86,9 +92,46 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener {
         initToasty()
         gameSetup()
         gameInit()
+        initTimer()
+        startCountDownAnimation()
+
 
 
         return rootView
+    }
+
+    private fun initTimer() {
+        mTimer = HintTimer(this, (1.5 * 60 * 1000).toLong(), mTimerTV, Constants.ARCADE_TIMER)
+    }
+
+    private fun startCountDownAnimation() {
+        rootView.countDownAnim.apply {
+            setAnimation(R.raw.coundown321go)
+            addAnimatorListener(object : Animator.AnimatorListener {
+                override fun onAnimationStart(animation: Animator) {
+                    Log.e("Animation:", "start")
+                }
+
+                override fun onAnimationEnd(animation: Animator) {
+                    Log.e("Animation:", "end")
+
+                    countDownAnim.visibility = View.GONE
+                    mTimer.start()
+
+                }
+
+                override fun onAnimationCancel(animation: Animator) {
+                    Log.e("Animation:", "cancel")
+                }
+
+                override fun onAnimationRepeat(animation: Animator) {
+                    Log.e("Animation:", "repeat")
+                }
+            })
+            playAnimation()
+        }
+
+
     }
 
     private fun gameSetup() {
@@ -121,25 +164,17 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener {
             gameInit()
             winLooseDialog.dismiss()
         }
-        winLooseDialog.ibtnNext.setOnClickListener {
-            mTimerTV.text = context!!.resources.getText(R.string.level_number).toString() + (++mLevelNum).toString()
-            gameInit()
-            winLooseDialog.dismiss()
-        }
         winLooseDialog.ibtnHome.setOnClickListener {
             listener.backButtonPressedArcade()
             winLooseDialog.dismiss()
         }
-        when (mWinOrLose) {
-            Constants.WIN_DIALOG -> {
-                winLooseDialog.tvText.text = context!!.resources.getString(R.string.correct_answer)
-                //TODO:implement win fun
-            }
-            Constants.LOSE_DIALOG -> {
-                winLooseDialog.ibtnNext.visibility = View.GONE
-                winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
-            }
-        }
+
+        winLooseDialog.ibtnNext.visibility = View.GONE
+        winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
+        winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
+        winLooseDialog.animationView.playAnimation()
+
+
         winLooseDialog.show()
     }
 
@@ -404,6 +439,10 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener {
             }
 
         }
+    }
+
+    override fun onFinishTimer() {
+        showFinishDialog(Constants.LOSE_DIALOG)
     }
 }
 

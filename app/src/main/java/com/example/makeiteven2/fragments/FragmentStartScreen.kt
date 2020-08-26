@@ -3,7 +3,6 @@ package com.example.makeiteven2.fragments
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -15,7 +14,6 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.*
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.work.*
 import com.example.makeiteven2.R
@@ -29,7 +27,7 @@ import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import kotlin.math.absoluteValue
 
-class FragmentStartScreen : Fragment(){
+class FragmentStartScreen : Fragment(),IFinishTimer{
 
     private lateinit var mCallBack: IFragmentsStartsScreenCallback
     private lateinit var mStageModeBtn: Button
@@ -40,7 +38,7 @@ class FragmentStartScreen : Fragment(){
     private lateinit var mStoreBtn: ImageView
 
     private lateinit var uiHandler : Handler
-    private lateinit var hintTimer : HintTimer
+    private var hintTimer : HintTimer? = null
 
     interface IFragmentsStartsScreenCallback {
         fun onStartScreenFragmentButtonClicked(view: View)
@@ -97,8 +95,8 @@ class FragmentStartScreen : Fragment(){
             Log.v("time1",currentTsToParse)
             timeBetweenInMilli = Constants.TIME_UNITS_FOR_HINTS_IN_MILLI - ChronoUnit.MILLIS.between(time1,time2).absoluteValue
             //TODO: somthing to work on build < 21
-            hintTimer =  HintTimer(timeBetweenInMilli,tvTimer)
-            hintTimer.start()
+            hintTimer =  HintTimer(this,timeBetweenInMilli,tvTimer,Constants.HINTS_TIMER)
+            hintTimer?.start()
         }
         else
         {
@@ -141,7 +139,7 @@ class FragmentStartScreen : Fragment(){
                 DatabaseHelper.setGiftStartTimeStamp(context!!,currentTsToSave)
                 Log.v("time stamp",currentTsToSave)
                 //start timer with the time needed
-                hintTimer = HintTimer(Constants.TIME_UNITS_FOR_HINTS_IN_MILLI,storeDialog.tvTimer).start() as HintTimer
+                hintTimer = HintTimer(this,Constants.TIME_UNITS_FOR_HINTS_IN_MILLI,storeDialog.tvTimer,Constants.HINTS_TIMER).start() as HintTimer
                 //start a work
                 val addHintWorkRequest : WorkRequest = OneTimeWorkRequestBuilder<HintsWorker>().setInitialDelay(Constants.TIME_UNITS_FOR_HINTS_IN_MILLI,TimeUnit.MILLISECONDS).build()
                 WorkManager.getInstance(context!!).enqueue(addHintWorkRequest)
@@ -149,7 +147,7 @@ class FragmentStartScreen : Fragment(){
         }
         storeDialog.setOnDismissListener {
             storeDialog.cancel()
-            hintTimer?.onFinish()
+            hintTimer?.cancel()
         }
         storeDialog.show()
     }
@@ -161,5 +159,9 @@ class FragmentStartScreen : Fragment(){
             throw ClassCastException(context.toString() + "must implement IFragmentsStartsScreenCallback")
         }
         super.onAttach(context)
+    }
+
+    override fun onFinishTimer() {
+        TODO("Not yet implemented")
     }
 }

@@ -159,7 +159,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             Constants.LOSE_DIALOG -> {
                 winLooseDialog.ibtnNext.visibility = View.GONE
                 winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
-                winLooseDialog.animationView.setAnimation(R.raw.lern_own_anim)
+                winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
                 winLooseDialog.animationView.playAnimation()
             }
         }

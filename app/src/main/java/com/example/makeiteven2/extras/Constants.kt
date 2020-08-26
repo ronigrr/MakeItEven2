@@ -5,6 +5,8 @@ import com.example.makeiteven2.room.RoomUserNote
 object Constants {
 
 
+    const val ARCADE_TIMER = "arcade_timer"
+    const val HINTS_TIMER = "hint_timer"
     const val TUTORIAL_GAME_TYPE = "tutorial_game_type"
     const val STAGE_GAME_TYPE = "stage_game_type"
     const val ARCADE_GAME_TYPE = "arcade_game_type"
