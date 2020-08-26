@@ -6,17 +6,25 @@ import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkRequest
 import com.example.makeiteven2.adapters.LevelsAdapter
+import com.example.makeiteven2.data_models.StageInfo
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.extras.HintsWorker
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.RoomUserNote
@@ -24,13 +32,22 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
+import java.sql.Timestamp
+import java.text.SimpleDateFormat
+import java.time.Duration
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Period
+import java.time.temporal.ChronoUnit
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
+import kotlin.math.absoluteValue
 
 
 class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsScreenCallback
     , FragmentSettings.SettingsFragmentCallBack, LevelsAdapter.ILevelsAdapter,
-    FragmentDialogNickName.DialogListener, IFragmentStageModeListener {
+    FragmentDialogNickName.DialogListener, IFragmentStageModeListener,FragmentLevelsScreen.IFragmentLevelsScreenCallback {
 
     private val fragmentManager = supportFragmentManager
     private val fragmentStartScreen: FragmentStartScreen = FragmentStartScreen()
@@ -39,8 +56,6 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private val fragmentArcadeModeScreen: FragmentArcadeModeScreen = FragmentArcadeModeScreen()
     private val dialogFragmentFragmentNickName: FragmentDialogNickName = FragmentDialogNickName()
 
-    //    private lateinit var mNoteDatabase : RoomNoteDatabase
-//    private lateinit var mNoteDao: NoteDao
     private lateinit var databaseHelper: DatabaseHelper
     private lateinit var uiHandler: Handler
 
@@ -49,14 +64,12 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
     private lateinit var appToolbar: Toolbar
 
-    //private lateinit var mAudioManager : AudioManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         initToolBar()
-//        mNoteDatabase = RoomNoteDatabase.getInstance(applicationContext)
-//        mNoteDao = mNoteDatabase.roomNoteDao()
         uiHandler = Handler()
 
         mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
@@ -66,8 +79,10 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         if (mSharedPref.getBoolean(Constants.SHARED_KEY_IS_USER_EXISTS, FALSE) == FALSE) {
             firstTimeInApp()
         } else {
-            loadUser()
-            loadStartScreen()
+            loadUser() //TODO:LOAD USER ON SPLASH SCREEN
+            Handler().postDelayed(Runnable {
+                loadStartScreen()
+            },1000)
         }
     }
 
@@ -91,12 +106,22 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         when (view.id) {
             btnStageMode.id -> loadStageModeLevelScreen()
             btnArcadeMode.id -> loadArcadeMode()
-            btnScoreBoard.id -> {
-            }
-            btnTutorial.id -> Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show()
+            btnScoreBoard.id -> loadScoreBoard()
+            btnTutorial.id -> loadTutorialStage()
         }
     }
 
+    private fun loadScoreBoard() {
+
+    }
+
+    private fun loadTutorialStage() {
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, FragmentStageModeScreen(1),
+            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG)
+            .addToBackStack(null).commit()
+        hideToolBar()
+            //TODO:add the flag to know if you came from tuturial or not in stage mod
+    }
 
     private fun loadArcadeMode() {
         fragmentManager.beginTransaction().replace(
@@ -175,14 +200,13 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     }
 
     override fun onResetGame() {
-        //TODO: may not work properly,need to check it after the game i ready (check the code inside positive btn)
+        //TODO: may not work properly,need to check it after the game is ready (check the code inside positive btn)
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
         alertDialogBuilder.setIcon(R.drawable.warning_icon)
         alertDialogBuilder.setMessage(R.string.Progress).setCancelable(false).setPositiveButton(R.string.Yes) { dialog, _ ->
             Constants.User.currentLevel = 1
             DatabaseHelper.createOrUpdateUser(applicationContext, Constants.User)
-            //DataStore.getInstance(this@StartScreenActivity).resetLevels()
             dialog.cancel()
         }
         alertDialogBuilder.setNegativeButton(R.string.No) { dialog, _ -> dialog.cancel() }
@@ -200,12 +224,9 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         appToolbar.visibility = View.GONE
     }
 
-    override fun levelsAdapterItemClicked(levelNumber: Int) {
-        fragmentManager.beginTransaction().replace(
-            R.id.fragmentContainer,
-            FragmentStageModeScreen(levelNumber),
-            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG
-        )
+    override fun onLevelsAdapterItemClicked(levelNumber: Int) {
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, FragmentStageModeScreen(levelNumber),
+            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG)
             .addToBackStack(null).commit()
     }
 
@@ -217,11 +238,12 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     }
 
     private fun createNewUser(nickname: String) {
-        val newUserNote = RoomUserNote(
-            UUID.randomUUID().toString(), nickname, 1, 50, 50, 3, ArrayList()
-        )
+        val newUserNote = RoomUserNote(UUID.randomUUID().toString(), nickname, 1, 50, 50, 3, ArrayList()
+            ,"","",false)
+        newUserNote.stageList.add(StageInfo(1,1,1,1,4,"1+1+1+1"))
         Constants.User = newUserNote
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
+        AudioManager.startGameMusic()
     }
 
     private fun firstTimeInApp() {
@@ -243,8 +265,13 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
     override fun backButtonPressed() {
         fragmentManager.popBackStack()
-
     }
+
+    override fun onLevelsFragmentBackPressed() {
+        backButtonPressed()
+    }
+
+
 }
 
-//TODO: need to licence arcade_win , super_duper,tada,wa wa and also for the owl image
+//TODO: need to licence super_duper,tada,wa wa

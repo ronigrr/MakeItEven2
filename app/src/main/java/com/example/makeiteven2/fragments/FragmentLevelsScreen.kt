@@ -1,5 +1,6 @@
 package com.example.makeiteven2.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,21 +16,24 @@ import kotlinx.android.synthetic.main.fragment_levels.view.*
 
 class FragmentLevelsScreen : Fragment() {
 
-    //private lateinit var mCallBack : IFragmentLevelsScreenCallback
+    private lateinit var mCallBack : IFragmentLevelsScreenCallback
     private lateinit var mLevelsRecyclerView: RecyclerView
     private lateinit var mLevelsAdapter: LevelsAdapter
     private var mCurrentStage = 0
     var mLevelItemsList: ArrayList<Level> = ArrayList()
 
-//    interface IFragmentLevelsScreenCallback {
-//        fun onLevelsFragmentLevelClicked(levelNumber : Int)
-//    }
+    interface IFragmentLevelsScreenCallback {
+        fun onLevelsFragmentBackPressed()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_levels, container, false)
         mLevelsRecyclerView = rootView.recyclerLevels
         mCurrentStage = Constants.User.currentLevel
         mLevelsAdapter = LevelsAdapter(mLevelItemsList, rootView.context, mCurrentStage)
+        rootView.ibBack.setOnClickListener {
+            mCallBack.onLevelsFragmentBackPressed()
+        }
         initLevels()
         initRecyclerView()
 
@@ -48,4 +52,12 @@ class FragmentLevelsScreen : Fragment() {
 
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is IFragmentLevelsScreenCallback) {
+            mCallBack = context
+        } else {
+            throw RuntimeException(context.toString() + "The activity must implement IFragmentLevelsScreenCallback interface")
+        }
+    }
 }

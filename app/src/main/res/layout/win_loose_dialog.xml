@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root_dialog"
     android:layout_width="300dp"
     android:layout_height="wrap_content"
-    android:layout_centerInParent="true"
-    >
+    android:layout_centerInParent="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/root_win_loose"
@@ -19,7 +19,15 @@
             android:layout_width="150dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:src="@drawable/wise_owl" />
+            android:src="@drawable/wise_owl"
+            android:visibility="gone"/>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/animationView"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            app:lottie_loop="true"/>
 
         <TextView
             android:id="@+id/tvText"

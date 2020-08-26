@@ -26,7 +26,7 @@ class LevelsAdapter(private var mLevelsList: List<Level> = ArrayList(), private 
     }
 
     interface ILevelsAdapter {
-        fun levelsAdapterItemClicked(levelNumber: Int)
+        fun onLevelsAdapterItemClicked(levelNumber: Int)
     }
 
     class ViewHolder(private val view: View, private val context: Context) : RecyclerView.ViewHolder(view) {
@@ -56,7 +56,7 @@ class LevelsAdapter(private var mLevelsList: List<Level> = ArrayList(), private 
                 if (view.ivLock.visibility == View.VISIBLE) {
                     Toasty.custom(context, "You did not reach this stage yet", null, Toasty.LENGTH_SHORT, false).show()
                 } else {
-                    callback.levelsAdapterItemClicked(level.levelNum)
+                    callback.onLevelsAdapterItemClicked(level.levelNum)
                 }
                 //TODO: Implement onClick listener with callback to start the game level
             }
