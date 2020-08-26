@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="#FFFF"
-    android:padding="10dp"
     android:layoutDirection="ltr"
+    android:orientation="vertical"
+    android:padding="10dp"
     android:textDirection="ltr">
 
     <ImageView
@@ -52,65 +52,63 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Granovsky Ronald"
-            android:textColor="@color/primaryTextColor"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Icon made by Freepik from www.flaticon.com">
-        </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Icon made by Vectors Market from www.flaticon.com">
-        </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Icon made by Smashicons from www.flaticon.com">
-        </TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Sound effects obtained from www.zapsplat.com“">
-        </TextView>
+            android:textColor="@color/primaryTextColor" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Icon made by Freepik from www.flaticon.com"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Animation by @华灯初上 /LottieFiles">
-        </TextView>
+            android:textSize="16sp"></TextView>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Icon made by Vectors Market from www.flaticon.com"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Animation by @Splash Animation /LottieFiles">
-        </TextView>
+            android:textSize="16sp"></TextView>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Icon made by Smashicons from www.flaticon.com"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Animation by @Studio Wassink /LottieFiles">
-        </TextView>
+            android:textSize="16sp"></TextView>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Sound effects obtained from www.zapsplat.com“"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Animation by @ada /LottieFiles">
-        </TextView>
+            android:textSize="16sp"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Animation by @华灯初上 /LottieFiles"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Animation by @Splash Animation /LottieFiles"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Animation by @Studio Wassink /LottieFiles"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"></TextView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Animation by @ada /LottieFiles"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"></TextView>
 
     </LinearLayout>
 

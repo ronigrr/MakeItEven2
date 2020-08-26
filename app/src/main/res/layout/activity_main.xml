@@ -3,22 +3,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    android:background="@drawable/color_change"
     android:orientation="vertical"
-    android:background="@drawable/color_change">
+    tools:context=".MainActivity">
 
-    <include layout="@layout/app_toolbar"
+    <include
         android:id="@+id/toolBar"
-        android:layout_height="wrap_content"
+        layout="@layout/app_toolbar"
         android:layout_width="match_parent"
-        android:layout_gravity="end">
-    </include>
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"></include>
 
     <LinearLayout
+        android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragmentContainer"
-        android:orientation="vertical"
-        android:gravity="center">
-    </LinearLayout>
+        android:gravity="center"
+        android:orientation="vertical"></LinearLayout>
 </LinearLayout>

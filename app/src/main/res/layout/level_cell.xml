@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_layout_level_cell"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/root_layout_level_cell">
+    android:layout_height="wrap_content">
 
 
     <Button
@@ -36,8 +36,8 @@
         android:layout_height="60dp"
         android:layout_alignEnd="@id/btnLevel"
         android:layout_alignBottom="@id/btnLevel"
-        android:layout_marginBottom="2dp"
         android:layout_centerInParent="true"
+        android:layout_marginBottom="2dp"
         android:background="@drawable/lock" />
 
 

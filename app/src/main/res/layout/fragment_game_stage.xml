@@ -34,6 +34,7 @@
                 tools:text="Level : 5" />
 
         </LinearLayout>
+
         <TextView
             android:id="@+id/theTargetNumberTV"
             android:layout_width="wrap_content"
@@ -69,13 +70,13 @@
                     android:background="@drawable/game_qube_btns"
                     android:fontFamily="@font/robotoslab_bold"
                     android:padding="5dp"
+                    android:soundEffectsEnabled="false"
                     android:stateListAnimator="@null"
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
                     android:textSize="40sp"
-                    tools:textOff="5"
-                    android:soundEffectsEnabled="false"/>
+                    tools:textOff="5" />
 
                 <ToggleButton
                     android:id="@+id/btn2TB"
@@ -85,13 +86,13 @@
                     android:background="@drawable/game_qube_btns"
                     android:fontFamily="@font/robotoslab_bold"
                     android:padding="5dp"
+                    android:soundEffectsEnabled="false"
                     android:stateListAnimator="@null"
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
                     android:textSize="40sp"
-                    tools:textOff="5"
-                    android:soundEffectsEnabled="false"/>
+                    tools:textOff="5" />
 
                 <ToggleButton
                     android:id="@+id/btn3TB"
@@ -101,13 +102,13 @@
                     android:background="@drawable/game_qube_btns"
                     android:fontFamily="@font/robotoslab_bold"
                     android:padding="5dp"
+                    android:soundEffectsEnabled="false"
                     android:stateListAnimator="@null"
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
                     android:textSize="40sp"
-                    tools:textOff="5"
-                    android:soundEffectsEnabled="false"/>
+                    tools:textOff="5" />
 
                 <ToggleButton
                     android:id="@+id/btn4TB"
@@ -117,13 +118,13 @@
                     android:background="@drawable/game_qube_btns"
                     android:fontFamily="@font/robotoslab_bold"
                     android:padding="5dp"
+                    android:soundEffectsEnabled="false"
                     android:stateListAnimator="@null"
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
                     android:textSize="40sp"
-                    tools:textOff="5"
-                    android:soundEffectsEnabled="false"/>
+                    tools:textOff="5" />
             </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
         </LinearLayout>
 
@@ -145,10 +146,10 @@
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:background="@drawable/selector_plus_img"
+                    android:soundEffectsEnabled="false"
                     android:tag="plus"
                     android:textOff=""
-                    android:textOn=""
-                    android:soundEffectsEnabled="false"/>
+                    android:textOn="" />
 
                 <ToggleButton
                     android:id="@+id/minusTB"
@@ -156,10 +157,10 @@
                     android:layout_height="60dp"
                     android:layout_marginStart="20dp"
                     android:background="@drawable/selector_minus_img"
+                    android:soundEffectsEnabled="false"
                     android:tag="minus"
                     android:textOff=""
-                    android:textOn=""
-                    android:soundEffectsEnabled="false"/>
+                    android:textOn="" />
 
                 <ToggleButton
                     android:id="@+id/multiplyTB"
@@ -167,10 +168,10 @@
                     android:layout_height="60dp"
                     android:layout_marginStart="20dp"
                     android:background="@drawable/selector_multipliction_img"
+                    android:soundEffectsEnabled="false"
                     android:tag="mul"
                     android:textOff=""
-                    android:textOn=""
-                    android:soundEffectsEnabled="false"/>
+                    android:textOn="" />
 
                 <ToggleButton
                     android:id="@+id/divideTB"
@@ -178,10 +179,10 @@
                     android:layout_height="60dp"
                     android:layout_marginStart="20dp"
                     android:background="@drawable/selector_division_img"
+                    android:soundEffectsEnabled="false"
                     android:tag="div"
                     android:textOff=""
-                    android:textOn=""
-                    android:soundEffectsEnabled="false"/>
+                    android:textOn="" />
 
 
             </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>

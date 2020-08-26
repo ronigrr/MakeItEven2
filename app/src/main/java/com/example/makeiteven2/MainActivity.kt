@@ -28,9 +28,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsScreenCallback
-    , FragmentSettings.SettingsFragmentCallBack, LevelsAdapter.ILevelsAdapter,
-    FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener,IFragmentLevelsScreenListener {
+class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
+    , FragmentSettings.SettingsFragmentListener, LevelsAdapter.ILevelsAdapter,
+    FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener {
 
     private val fragmentManager = supportFragmentManager
 
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        initToolBar()
+        init3DotToolBar()
 //        mNoteDatabase = RoomNoteDatabase.getInstance(applicationContext)
 //        mNoteDao = mNoteDatabase.roomNoteDao()
         uiHandler = Handler()
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         }
     }
 
-    private fun initToolBar() {
+    private fun init3DotToolBar() {
         appToolbar = toolBar as Toolbar
         appToolbar.title = " "
         setSupportActionBar(appToolbar)
@@ -209,7 +209,8 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
             UUID.randomUUID().toString(), nickname, 1, 50, 50, 3, ArrayList(),
-        "","",false)
+            "", "", false
+        )
         Constants.User = newUserNote
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
     }

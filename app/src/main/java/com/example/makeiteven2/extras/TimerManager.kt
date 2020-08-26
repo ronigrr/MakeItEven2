@@ -26,7 +26,7 @@ class TimerManager(fragment: Any, private var viewToUpdate: TextView?, val modeO
                     Constants.HINTS_TIMER -> timeText = "${if (h >= 10) h else "0$h"}:${if (m >= 10) m else "0$m"}:${if (s >= 10) s else "0$s"}"
                     Constants.ARCADE_TIMER -> timeText = "${if (m >= 10) m else "0$m"}:${if (s >= 10) s else "0$s"}"
                 }
-                Log.v("test",timeText)
+                Log.v("test", timeText)
                 viewToUpdate?.text = timeText
             }
 
@@ -45,10 +45,10 @@ class TimerManager(fragment: Any, private var viewToUpdate: TextView?, val modeO
 
     fun addMoreTime(timeInMillis: Long) {
         mTimer?.cancel()
-        startTimer(currentTimeToFinish+timeInMillis)
+        startTimer(currentTimeToFinish + timeInMillis)
     }
 
-    fun cancelTimer(){
+    fun cancelTimer() {
         mTimer?.cancel()
     }
 }

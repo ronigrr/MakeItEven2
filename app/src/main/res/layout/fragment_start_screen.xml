@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout android:id="@+id/start_activity_layout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/start_activity_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/color_change"
     android:layoutDirection="ltr"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="2dp">
 
     <ImageView
@@ -12,8 +12,8 @@
         android:layout_width="360dp"
         android:layout_height="300dp"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/makeiteven_v2"
-        android:contentDescription="logo"/>
+        android:contentDescription="logo"
+        android:src="@drawable/makeiteven_v2" />
 
     <Button
         android:id="@+id/btnStageMode"
@@ -47,29 +47,29 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="25dp"
         android:background="@drawable/tutorial_btn_background"
+        android:text="@string/tutorial"
         android:textAllCaps="false"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:text="@string/tutorial"/>
+        android:textStyle="bold" />
 
-        <ImageButton
-            android:id="@+id/btnScoreBoard"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="15dp"
-            android:background="@color/Transparent"
-            android:src="@drawable/ic_trophy"
-            android:contentDescription="scoreBoard icon"/>
+    <ImageButton
+        android:id="@+id/btnScoreBoard"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="15dp"
+        android:background="@color/Transparent"
+        android:contentDescription="scoreBoard icon"
+        android:src="@drawable/ic_trophy" />
 
-        <ImageButton
-            android:id="@+id/btnStore"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="10dp"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/ic_store"
-            android:contentDescription="store icon"/>
+    <ImageButton
+        android:id="@+id/btnStore"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="store icon"
+        android:src="@drawable/ic_store" />
 
 </RelativeLayout>
