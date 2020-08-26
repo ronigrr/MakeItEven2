@@ -158,7 +158,7 @@ class FragmentStartScreen : Fragment(){
         if (context is IFragmentsStartsScreenCallback) {
             mCallBack = context
         } else {
-            throw ClassCastException(context.toString() + "must implement OnButtonClicked")
+            throw ClassCastException(context.toString() + "must implement IFragmentsStartsScreenCallback")
         }
         super.onAttach(context)
     }
