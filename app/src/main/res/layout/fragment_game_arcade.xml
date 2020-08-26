@@ -7,11 +7,11 @@
     android:layout_height="match_parent"
     android:layoutDirection="ltr">
 
+
     <RelativeLayout
         android:id="@+id/viewOfAllGameBtns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layoutUpper"
         android:layout_centerInParent="true">
 
 
@@ -279,4 +279,11 @@
     </RelativeLayout>
 
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/countDownAnim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/color_change"
+        app:lottie_loop="false"
+        tools:visibility="gone" />
 </RelativeLayout>

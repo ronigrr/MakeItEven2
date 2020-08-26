@@ -3,23 +3,18 @@
     <item android:state_checked="false">
         <layer-list>
             <!-- SHADOW LAYER -->
-            <item android:top="4dp" >
+            <item android:top="4dp">
                 <shape android:shape="rectangle">
                     <solid android:color="#D89B01" />
-                    <corners android:radius="8dp"/>
+                    <corners android:radius="8dp" />
                 </shape>
             </item>
             <!-- CONTENT LAYER -->
             <item android:bottom="4dp">
                 <shape>
-                    <gradient
-                        android:startColor="#FFC227"
-                        android:endColor="#FFC227"
-                        android:centerColor="#FDC21D"/>
-                    <size
-                        android:width="100dp"
-                        android:height="100dp" />
-                    <corners android:radius="8dp"/>
+                    <gradient android:centerColor="#FDC21D" android:endColor="#FFC227" android:startColor="#FFC227" />
+                    <size android:width="100dp" android:height="100dp" />
+                    <corners android:radius="8dp" />
                 </shape>
             </item>
         </layer-list>
@@ -27,23 +22,18 @@
     <item android:state_checked="true">
         <layer-list>
             <!-- SHADOW LAYER -->
-            <item android:top="4dp" >
+            <item android:top="4dp">
                 <shape android:shape="rectangle">
                     <solid android:color="#D89B01" />
-                    <corners android:radius="8dp"/>
+                    <corners android:radius="8dp" />
                 </shape>
             </item>
             <!-- CONTENT LAYER -->
             <item android:bottom="4dp">
                 <shape>
-                    <gradient
-                        android:startColor="#BE9217"
-                        android:endColor="#D89C11"
-                        android:centerColor="#BE9217"/>
-                    <size
-                        android:width="100dp"
-                        android:height="100dp" />
-                    <corners android:radius="8dp"/>
+                    <gradient android:centerColor="#BE9217" android:endColor="#D89C11" android:startColor="#BE9217" />
+                    <size android:width="100dp" android:height="100dp" />
+                    <corners android:radius="8dp" />
                 </shape>
             </item>
         </layer-list>

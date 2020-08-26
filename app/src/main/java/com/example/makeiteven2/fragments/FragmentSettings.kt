@@ -26,11 +26,11 @@ class FragmentSettings : Fragment() {
         rootView.seekBarSoundEffects.progress = Constants.User.soundEffectsLevel
 
         rootView.btnGameReset.setOnClickListener {
-            mCallBack.onResetGame()
+            mListener.onResetGame()
         }
 
         mExitBtn.setOnClickListener {
-            mCallBack.onExitFromSettingsFragment()
+            mListener.onExitFromSettingsFragment()
         }
 
         val seekBarListener: OnSeekBarChangeListener = object : OnSeekBarChangeListener {
@@ -39,11 +39,11 @@ class FragmentSettings : Fragment() {
             ) {
                 if (seekBar.id == R.id.seekBarMainSound) {
                     Constants.User.mainSoundLevel = seekBar.progress
-                    mCallBack.onSeekBarMainVolume(progress)
+                    mListener.onSeekBarMainVolume(progress)
                 }
                 if (seekBar.id == R.id.seekBarSoundEffects) {
                     Constants.User.soundEffectsLevel = seekBar.progress
-                    mCallBack.onSeekBarSoundEffects(progress)
+                    mListener.onSeekBarSoundEffects(progress)
                 }
             }
 
@@ -55,23 +55,16 @@ class FragmentSettings : Fragment() {
         return rootView
     }
 
-    private lateinit var mCallBack: SettingsFragmentCallBack
+    private lateinit var mListener: IFragmentSettingsListener
     private lateinit var mMainVolumeBar: SeekBar
     private lateinit var mSoundEffectsBar: SeekBar
     private lateinit var mResetGameBtn: Button
     private lateinit var mExitBtn: ImageButton
 
-    internal interface SettingsFragmentCallBack {
-        fun onSeekBarMainVolume(mainVolume: Int)
-        fun onSeekBarSoundEffects(soundEffectsVolume: Int)
-        fun onResetGame()
-        fun onExitFromSettingsFragment()
-    }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is SettingsFragmentCallBack) {
-            mCallBack = context
+        if (context is IFragmentSettingsListener) {
+            mListener = context
         } else {
             throw RuntimeException(context.toString() + "The activity must implement SettingsFragmentCallBack interface")
         }

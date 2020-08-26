@@ -20,14 +20,14 @@
             android:layout_height="200dp"
             android:layout_gravity="center"
             android:src="@drawable/wise_owl"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animationView"
             android:layout_width="150dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            app:lottie_loop="true"/>
+            app:lottie_loop="true" />
 
         <TextView
             android:id="@+id/tvText"
@@ -36,7 +36,6 @@
             android:layout_margin="5dp"
             android:gravity="center"
             android:text="@string/Congrats" />
-
 
 
         <LinearLayout
@@ -52,11 +51,12 @@
                 android:layout_margin="5dp"
                 android:background="@color/Transparent"
                 android:src="@drawable/ic_house" />
+
             <Space
+                android:id="@+id/spacer"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-                android:id="@+id/spacer"/>
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/ibtnRetry"

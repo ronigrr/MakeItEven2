@@ -1,86 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<!--    <string name="app_name">MakeItEven</string>-->
+    <!--    <string name="app_name">MakeItEven</string>-->
 
-<!--    <string name="Stage_mode">מצב שלבים</string>-->
+    <!--    <string name="Stage_mode">מצב שלבים</string>-->
 
-<!--    <string name="Arcade_mode">מצב תחרותי</string>-->
+    <!--    <string name="Arcade_mode">מצב תחרותי</string>-->
 
-<!--    <string name="main_sound">מוזיקה</string>-->
+    <!--    <string name="main_sound">מוזיקה</string>-->
 
-<!--    <string name="sound_effects">צליל אפקטים</string>-->
+    <!--    <string name="sound_effects">צליל אפקטים</string>-->
 
-<!--    <string name="Progress">אתה בטוח שאתה רוצה למחוק את כל ההתקדמות?</string>-->
+    <!--    <string name="Progress">אתה בטוח שאתה רוצה למחוק את כל ההתקדמות?</string>-->
 
-<!--    <string name="Yes">כן</string>-->
+    <!--    <string name="Yes">כן</string>-->
 
-<!--    <string name="No">לא</string>-->
+    <!--    <string name="No">לא</string>-->
 
-<!--    <string name="HigeScore">שיאים</string>-->
+    <!--    <string name="HigeScore">שיאים</string>-->
 
-<!--    <string name="correct_answer">תשובה נכונה</string>-->
+    <!--    <string name="correct_answer">תשובה נכונה</string>-->
 
-<!--    <string name="wrong_answer">תשובה שגויה</string>-->
+    <!--    <string name="wrong_answer">תשובה שגויה</string>-->
 
-<!--    <string name="division">חלוקה ב0 או חלוקה לא חוקית</string>-->
+    <!--    <string name="division">חלוקה ב0 או חלוקה לא חוקית</string>-->
 
-<!--    <string name="game_reset">התחל משחק מחדש</string>-->
+    <!--    <string name="game_reset">התחל משחק מחדש</string>-->
 
-<!--    <string name="about_us">קצת עלינו</string>-->
+    <!--    <string name="about_us">קצת עלינו</string>-->
 
-<!--    <string name="score">ניקוד:</string>-->
+    <!--    <string name="score">ניקוד:</string>-->
 
-<!--    <string name="tutorial">הסבר</string>-->
+    <!--    <string name="tutorial">הסבר</string>-->
 
-<!--    <string name="back">הקודם</string>-->
+    <!--    <string name="back">הקודם</string>-->
 
-<!--    <string name="next">הבא</string>-->
+    <!--    <string name="next">הבא</string>-->
 
-<!--    <string name="time_up">נגמר הזמן!!</string>-->
+    <!--    <string name="time_up">נגמר הזמן!!</string>-->
 
-<!--    <string name="enter_nickname">הכנס שם:</string>-->
+    <!--    <string name="enter_nickname">הכנס שם:</string>-->
 
-<!--    <string name="settings">הגדרות</string>-->
+    <!--    <string name="settings">הגדרות</string>-->
 
-<!--    <string name="reset_game_levels">איפוס שלבים</string>-->
+    <!--    <string name="reset_game_levels">איפוס שלבים</string>-->
 
-<!--    <string name="Congrats">כל הכבוד,הצלחת!!</string>-->
+    <!--    <string name="Congrats">כל הכבוד,הצלחת!!</string>-->
 
-<!--    <string name="level_number">"שלב: "</string>-->
-<!--    <string name="this_fild_requierd">שדה זה נחוץ</string>-->
-<!--    <string name="invalid_fraction">חילוק שגוי,שברים לא מתקבלים</string>-->
-<!--    <string name="Dividing_by_0">חלוקה באפס היא שגיאה מתמטית</string>-->
-<!--    <string-array-->
-<!--        name="tutorial_string_array">-->
-<!--        <item>זה קל ללמוד מתמטיקה איתנו,כל מה שצריך לעשות זה להגיע למספר היעד שכתוב בצבע שחור,תוך כדי שימוש בכל ארבעת המספרים,לחץ הבא</item>-->
-<!--        <item>עכשיו בואו נתחיל מלבחור מספר,נגיד 6</item>-->
-<!--        <item>מצוין,ועכשיו בואו נבחר את הפעולה חיבור</item>-->
-<!--        <item>עכשיו נבחר את 1 כדי לחבר אותו ל-6</item>-->
-<!--        <item>יופי עכשיו שיש לנו את שבע בואו ננסה לחסר את 4 מ-7 אבל הפעם נבחר קודם את הפעולה חיסור</item>-->
-<!--        <item>עכשיו נבחר את המספר 7 שממנו אנחנו רוצים לחסר</item>-->
-<!--        <item>כעת נבחר את 4 כדי לחסרו מ-7</item>-->
-<!--        <item>מצוין אנחנו כמעט שם,עכשיו נבחר את 3</item>-->
-<!--        <item>נבחר שוב את פעולת החיבור,שים לב כי בכל שלב ניתן לקבל רמז בעזרת גלגל ההצלה,אבל שים לב שזהו הפתרון המלא ומומלץ לחשוב לבד</item>-->
-<!--        <item>נבחר את ה-3 שנשאר לא מסומן,ראה כי בכל שלב במשחק ניתן לרענן אותו ולנסות מחדש בעזרת החץ הימני העליון</item>-->
-<!--        <item>כל הכבוד! הגענו למטרה,לחץ הבא כדי להמשיך</item>-->
-<!--        <item>אחרי שהגענו למטרה של השלב ניתן ללחוץ על כפתור הבית,התחלה מחדש של השלב הנוכחי או ללחוץ על הבא</item>-->
-<!--        <item>זהו המצב התחרותי,כאן יש לרשותכם 02:30 דקות לפתור כמה שיותר תרגילים,ולרשותכם שלושה גלגלי הצלה שישנו לכם תרגיל בעלות סמלית של 10 שניות</item>-->
-<!--    </string-array>-->
-<!--    <string-array name="tutorial_string_array_new">-->
-<!--        <item>זהו שלב הסברה</item>-->
-<!--        <item>אתם צריכים להגיע למספר הזה כדי לנצח את השלב</item>-->
-<!--        <item>חובה להשתמש בכל ארבעת המספרים על מנת לעשות זאת</item>-->
-<!--        <item>אפשר להשתמש בכל פעולה ללא הגבלה</item>-->
-<!--        <item>לחיצה כאן תתחיל את השלב מחדש</item>-->
-<!--        <item>ניתן לקבל רמז על ידי לחיצה כאן,במצב תחרותי כל מצוף ישנה שאלה בעלות של 10 שניות</item>-->
+    <!--    <string name="level_number">"שלב: "</string>-->
+    <!--    <string name="this_fild_requierd">שדה זה נחוץ</string>-->
+    <!--    <string name="invalid_fraction">חילוק שגוי,שברים לא מתקבלים</string>-->
+    <!--    <string name="Dividing_by_0">חלוקה באפס היא שגיאה מתמטית</string>-->
+    <!--    <string-array-->
+    <!--        name="tutorial_string_array">-->
+    <!--        <item>זה קל ללמוד מתמטיקה איתנו,כל מה שצריך לעשות זה להגיע למספר היעד שכתוב בצבע שחור,תוך כדי שימוש בכל ארבעת המספרים,לחץ הבא</item>-->
+    <!--        <item>עכשיו בואו נתחיל מלבחור מספר,נגיד 6</item>-->
+    <!--        <item>מצוין,ועכשיו בואו נבחר את הפעולה חיבור</item>-->
+    <!--        <item>עכשיו נבחר את 1 כדי לחבר אותו ל-6</item>-->
+    <!--        <item>יופי עכשיו שיש לנו את שבע בואו ננסה לחסר את 4 מ-7 אבל הפעם נבחר קודם את הפעולה חיסור</item>-->
+    <!--        <item>עכשיו נבחר את המספר 7 שממנו אנחנו רוצים לחסר</item>-->
+    <!--        <item>כעת נבחר את 4 כדי לחסרו מ-7</item>-->
+    <!--        <item>מצוין אנחנו כמעט שם,עכשיו נבחר את 3</item>-->
+    <!--        <item>נבחר שוב את פעולת החיבור,שים לב כי בכל שלב ניתן לקבל רמז בעזרת גלגל ההצלה,אבל שים לב שזהו הפתרון המלא ומומלץ לחשוב לבד</item>-->
+    <!--        <item>נבחר את ה-3 שנשאר לא מסומן,ראה כי בכל שלב במשחק ניתן לרענן אותו ולנסות מחדש בעזרת החץ הימני העליון</item>-->
+    <!--        <item>כל הכבוד! הגענו למטרה,לחץ הבא כדי להמשיך</item>-->
+    <!--        <item>אחרי שהגענו למטרה של השלב ניתן ללחוץ על כפתור הבית,התחלה מחדש של השלב הנוכחי או ללחוץ על הבא</item>-->
+    <!--        <item>זהו המצב התחרותי,כאן יש לרשותכם 02:30 דקות לפתור כמה שיותר תרגילים,ולרשותכם שלושה גלגלי הצלה שישנו לכם תרגיל בעלות סמלית של 10 שניות</item>-->
+    <!--    </string-array>-->
+    <!--    <string-array name="tutorial_string_array_new">-->
+    <!--        <item>זהו שלב הסברה</item>-->
+    <!--        <item>אתם צריכים להגיע למספר הזה כדי לנצח את השלב</item>-->
+    <!--        <item>חובה להשתמש בכל ארבעת המספרים על מנת לעשות זאת</item>-->
+    <!--        <item>אפשר להשתמש בכל פעולה ללא הגבלה</item>-->
+    <!--        <item>לחיצה כאן תתחיל את השלב מחדש</item>-->
+    <!--        <item>ניתן לקבל רמז על ידי לחיצה כאן,במצב תחרותי כל מצוף ישנה שאלה בעלות של 10 שניות</item>-->
 
-<!--    </string-array>-->
-<!--    <string name="finish">סיום</string>-->
-<!--    <string name="tutorial_level">שלב הסברה</string>-->
-<!--    <string name="Tap_me_to_continue">לחץ עלי להמשך</string>-->
-<!--    <string name="stage">שלב</string>-->
-<!--    <string name="hints_left">רמזים:</string>-->
-<!--    <string name="enter_your_name_or_nickname">הכנס שם או כינוי</string>-->
-<!--    <string name="example">דוגמה</string>-->
-<!--    <string name="done">אישור</string>-->
+    <!--    </string-array>-->
+    <!--    <string name="finish">סיום</string>-->
+    <!--    <string name="tutorial_level">שלב הסברה</string>-->
+    <!--    <string name="Tap_me_to_continue">לחץ עלי להמשך</string>-->
+    <!--    <string name="stage">שלב</string>-->
+    <!--    <string name="hints_left">רמזים:</string>-->
+    <!--    <string name="enter_your_name_or_nickname">הכנס שם או כינוי</string>-->
+    <!--    <string name="example">דוגמה</string>-->
+    <!--    <string name="done">אישור</string>-->
 </resources>

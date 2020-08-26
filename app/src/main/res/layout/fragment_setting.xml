@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
-    android:background="@drawable/fragment_background"
-    android:gravity="center"
     android:layout_gravity="center"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    android:background="@drawable/fragment_background"
+    android:gravity="center">
 
     <RelativeLayout
         android:id="@+id/seekBarMainSoundRelativeLayout"
@@ -31,9 +31,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvSettingHeadLine"
+            android:layout_marginTop="40dp"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:layout_marginTop="40dp">
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,8 +57,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/seekBarMainSoundRelativeLayout"
         android:layout_marginTop="40dp"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -70,20 +70,20 @@
             android:id="@+id/seekBarSoundEffects"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:thumb="@drawable/ic_seekbar_bar"
-            android:max="100"/>
+            android:max="100"
+            android:thumb="@drawable/ic_seekbar_bar" />
     </LinearLayout>
 
     <Button
         android:id="@+id/btnGameReset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/seekBarSoundEffectsRelativeLayout"
         android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
         android:background="@drawable/reset_game"
         android:text="@string/reset_game_levels"
-        android:textAllCaps="false"
-        android:layout_margin="20dp"
-        android:layout_below="@+id/seekBarSoundEffectsRelativeLayout" />
+        android:textAllCaps="false" />
 
     <ImageButton
         android:id="@+id/btnCloseSettings"

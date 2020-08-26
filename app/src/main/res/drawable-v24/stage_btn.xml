@@ -1,27 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-<item>
-<layer-list>
-    <!-- SHADOW LAYER -->
-    <item android:top="4dp">
-        <shape android:shape="rectangle">
-            <solid android:color="#2A944F" />
-            <corners android:radius="30dp"/>
-        </shape>
+    <item>
+        <layer-list>
+            <!-- SHADOW LAYER -->
+            <item android:top="4dp">
+                <shape android:shape="rectangle">
+                    <solid android:color="#2A944F" />
+                    <corners android:radius="30dp" />
+                </shape>
+            </item>
+            <!-- CONTENT LAYER -->
+            <item android:bottom="5dp" android:right="0dp">
+                <shape>
+                    <gradient android:centerColor="#4AFA43" android:endColor="#FF14D50D" android:startColor="#14D50D" />
+                    <size android:width="256dp" android:height="64dp" />
+                    <corners android:radius="30dp" />
+                </shape>
+            </item>
+        </layer-list>
     </item>
-    <!-- CONTENT LAYER -->
-    <item android:bottom="5dp" android:right="0dp">
-        <shape>
-            <gradient
-                android:startColor="#14D50D"
-                android:centerColor="#4AFA43"
-                android:endColor="#FF14D50D"/>
-            <size
-                android:width="256dp"
-                android:height="64dp" />
-            <corners android:radius="30dp"/>
-        </shape>
-    </item>
-</layer-list>
-</item>
 </selector>

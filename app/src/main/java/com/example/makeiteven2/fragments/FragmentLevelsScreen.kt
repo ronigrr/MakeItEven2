@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.fragment_levels.view.*
 
 class FragmentLevelsScreen : Fragment() {
 
-    private lateinit var mCallBack : IFragmentLevelsScreenListener
+    private lateinit var mCallBack: IFragmentLevelsScreenListener
     private lateinit var mLevelsRecyclerView: RecyclerView
     private lateinit var mLevelsAdapter: LevelsAdapter
     private var mCurrentStage = 0

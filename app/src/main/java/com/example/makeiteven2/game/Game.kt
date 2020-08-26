@@ -2,8 +2,6 @@ package com.example.makeiteven2.game
 
 import android.util.Log
 import android.widget.ToggleButton
-import java.lang.ArithmeticException
-import java.lang.NullPointerException
 import java.util.*
 import kotlin.random.Random
 
@@ -126,10 +124,9 @@ open class Game(private var mDifficulty: Int) {
             playButtons[3].text = btn4.toString()
 
 
-        }
-        catch (ex:ArithmeticException){
-            Log.e("zero","divide by zero")
-            gameGenerator(playButtons,minSum,maxSum)
+        } catch (ex: ArithmeticException) {
+            Log.e("zero", "divide by zero")
+            gameGenerator(playButtons, minSum, maxSum)
         }
         return sum
     }

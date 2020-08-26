@@ -6,8 +6,6 @@ import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.sql.Time
-import java.util.*
 
 
 object DatabaseHelper {
@@ -51,9 +49,10 @@ object DatabaseHelper {
         Constants.User.currentLevel = currentStage
         GlobalScope.launch { mNoteDao.insertOrUpdateNote(Constants.User) }
     }
-    fun addHints(context: Context,hintsToAdd : Int){
+
+    fun addHints(context: Context, hintsToAdd: Int) {
         getDataBase(context)
-        Constants.User.hintsLeft+=hintsToAdd
+        Constants.User.hintsLeft += hintsToAdd
         GlobalScope.launch {
             mNoteDao.insertOrUpdateNote(Constants.User)
         }
@@ -66,7 +65,8 @@ object DatabaseHelper {
             mNoteDao.insertOrUpdateNote(Constants.User)
         }
     }
-    fun setGiftStartTimeStamp(context: Context,timestamp : String){
+
+    fun setGiftStartTimeStamp(context: Context, timestamp: String) {
         getDataBase(context)
         Constants.User.hintTimeStampStart = timestamp
         GlobalScope.launch {

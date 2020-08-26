@@ -1,6 +1,7 @@
 package com.example.makeiteven2
 
 //import com.example.makeiteven2.extras.Constants.mAudioManager
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -8,6 +9,7 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -20,6 +22,13 @@ import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.RoomUserNote
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdCallback
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.lang.Boolean.FALSE
@@ -28,34 +37,38 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsScreenCallback
-    , FragmentSettings.SettingsFragmentCallBack, LevelsAdapter.ILevelsAdapter,
-    FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener,IFragmentLevelsScreenListener {
+class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
+    , IFragmentSettingsListener, LevelsAdapter.ILevelsAdapter,
+    FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener {
 
     private val fragmentManager = supportFragmentManager
-    private val fragmentStartScreen: FragmentStartScreen = FragmentStartScreen()
-    private val fragmentSettings: FragmentSettings = FragmentSettings()
-    private val fragmentLevelsScreen: FragmentLevelsScreen = FragmentLevelsScreen()
-    private val dialogFragmentFragmentNickName: FragmentDialogNickName = FragmentDialogNickName()
 
-    //    private lateinit var mNoteDatabase : RoomNoteDatabase
-//    private lateinit var mNoteDao: NoteDao
-    private lateinit var databaseHelper: DatabaseHelper
     private lateinit var uiHandler: Handler
 
     private lateinit var mSharedPref: SharedPreferences
     private lateinit var mEditor: Editor
 
     private lateinit var appToolbar: Toolbar
+    lateinit var rewardedAd: RewardedAd
 
     //private lateinit var mAudioManager : AudioManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+//TODO:put inside function/////////////////////////////////////////////////////////
+        rewardedAd= RewardedAd(this, "ca-app-pub-3940256099942544/5224354917")
+        val adLoadCallback = object: RewardedAdLoadCallback() {
+            override fun onRewardedAdLoaded() {
+                Log.v("ad","onRewardedAdLoaded")
+            }
+            override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
+                Log.v("ad","onRewardedAdFailedToLoad")
+            }
+        }
+        rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
+/////////////////////////////////////////////////////////////////////////////////////
+        init3DotToolBar()
 
-        initToolBar()
-//        mNoteDatabase = RoomNoteDatabase.getInstance(applicationContext)
-//        mNoteDao = mNoteDatabase.roomNoteDao()
         uiHandler = Handler()
 
         mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
@@ -70,7 +83,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         }
     }
 
-    private fun initToolBar() {
+    private fun init3DotToolBar() {
         appToolbar = toolBar as Toolbar
         appToolbar.title = " "
         setSupportActionBar(appToolbar)
@@ -82,7 +95,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
     private fun loadStartScreen() {
         fragmentManager.beginTransaction()
-            .add(R.id.fragmentContainer, fragmentStartScreen, Constants.START_SCREEN_FRAGMENT_TAG)
+            .add(R.id.fragmentContainer, FragmentStartScreen(), Constants.START_SCREEN_FRAGMENT_TAG)
             .commit()
     }
 
@@ -91,6 +104,27 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
             btnStageMode.id -> loadStageModeLevelScreen()
             btnArcadeMode.id -> loadArcadeMode()
             btnScoreBoard.id -> {
+                if (rewardedAd.isLoaded) {
+                    val activityContext: Activity = this@MainActivity
+                    val adCallback = object: RewardedAdCallback() {
+                        override fun onRewardedAdOpened() {
+                            Log.v("ad","onRewardedAdOpened")
+                        }
+                        override fun onRewardedAdClosed() {
+                            Log.v("ad","onRewardedAdClosed")
+                        }
+                        override fun onUserEarnedReward(reward: RewardItem) {
+                            Log.v("ad","onUserEarnedReward")
+                        }
+                        override fun onRewardedAdFailedToShow(adError: AdError) {
+                            Log.v("ad","onRewardedAdFailedToShow")
+                        }
+                    }
+                    rewardedAd.show(activityContext, adCallback)
+                }
+                else {
+                    Log.d("TAG", "The rewarded ad wasn't loaded yet.")
+                }
             }
             btnTutorial.id -> Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show()
         }
@@ -104,7 +138,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
             Constants.ARCADE_MODE_SCREEN_FRAGMENT_TAG
         )
             .addToBackStack(null).commit()
-        hideToolBar()
+        hide3DotsToolBar()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -127,7 +161,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
                 //TODO: Change and finish setting fragment
                 fragmentManager.beginTransaction().replace(
                     R.id.fragmentContainer,
-                    fragmentSettings,
+                    FragmentSettings(),
                     Constants.SETTINGS_SCREEN_FRAGMENT_TAG
                 )
                     .addToBackStack(null).commit()
@@ -144,24 +178,22 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
         fragmentManager.beginTransaction().replace(
             R.id.fragmentContainer,
-            fragmentLevelsScreen,
+            FragmentLevelsScreen(),
             Constants.LEVELS_SCREEN_FRAGMENT_TAG
         )
             .addToBackStack(null).commit()
-        hideToolBar()
+        hide3DotsToolBar()
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        if (fragmentManager.findFragmentById(R.id.fragmentContainer)
-                ?.equals(fragmentStartScreen)!!
-        ) {
-            showToolBar()
+        if (fragmentManager.findFragmentByTag(Constants.START_SCREEN_FRAGMENT_TAG)?.isVisible == true) {
+            show3DotsToolBar()
         }
         //TODO: Bug that reloads the recyclerview in levelsScreenFragment when you backpress and press stagemode again
     }
 
-    override fun showToolBar() {
+    override fun show3DotsToolBar() {
         appToolbar.visibility = View.VISIBLE
     }
 
@@ -195,7 +227,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         onBackPressed()
     }
 
-    private fun hideToolBar() {
+    private fun hide3DotsToolBar() {
         appToolbar.visibility = View.GONE
     }
 
@@ -218,15 +250,16 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
             UUID.randomUUID().toString(), nickname, 1, 50, 50, 3, ArrayList(),
-        "","",false)
+            "", "", false
+        )
         Constants.User = newUserNote
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
     }
 
     private fun firstTimeInApp() {
-        hideToolBar()
+        hide3DotsToolBar()
         fragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, dialogFragmentFragmentNickName, Constants.NICK_NAME_DIALOG_TAG)
+            .replace(R.id.fragmentContainer, FragmentDialogNickName(), Constants.NICK_NAME_DIALOG_TAG)
             .commit()
     }
 

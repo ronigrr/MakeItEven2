@@ -6,20 +6,15 @@
             <item android:top="4dp">
                 <shape android:shape="rectangle">
                     <solid android:color="#4AC529" />
-                    <corners android:radius="8dp"/>
+                    <corners android:radius="8dp" />
                 </shape>
             </item>
             <!-- CONTENT LAYER -->
             <item android:bottom="4dp" android:right="0dp">
                 <shape>
-                    <gradient
-                        android:startColor="#62FF5C"
-                        android:centerColor="#81FF78"
-                        android:endColor="#62FF5C"/>
-                    <size
-                        android:width="100dp"
-                        android:height="100dp" />
-                    <corners android:radius="8dp"/>
+                    <gradient android:centerColor="#81FF78" android:endColor="#62FF5C" android:startColor="#62FF5C" />
+                    <size android:width="100dp" android:height="100dp" />
+                    <corners android:radius="8dp" />
                 </shape>
             </item>
         </layer-list>

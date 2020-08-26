@@ -2,7 +2,6 @@ package com.example.makeiteven2.fragments
 
 import android.app.Dialog
 import android.content.Context
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -76,7 +75,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private var operator = ""
     private var selectedOperatorID = 0
 
-    private lateinit var mCountDownTimer :CountDownTimer
+    private lateinit var mCountDownTimer: CountDownTimer
 
 
     override fun onAttach(context: Context) {
@@ -102,11 +101,19 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         config.delay = 500
         val sequence = MaterialShowcaseSequence(activity, Constants.SHOWCASE_ID)
         sequence.setConfig(config)
-        sequence.addSequenceItem(rootView.theTargetNumberTV,"This is the target number you need to reach","GOT IT")
-        sequence.addSequenceItem(rootView.btn_layout,"you need to use all four numbers to do it","GOT IT")
-        sequence.addSequenceItem(rootView.operatorsLayout,"You have thous operators to reach you goal,you can use them as much as you want","GOR IT")
-        sequence.addSequenceItem(rootView.hintButtonIB,"Need a hint? click here for one, notice you get only one for each stage you complete","GOT IT")
-        sequence.addSequenceItem(rootView.restartLevelIB,"If you want to start over,you can always to so with this button","GOT IT")
+        sequence.addSequenceItem(rootView.theTargetNumberTV, "This is the target number you need to reach", "GOT IT")
+        sequence.addSequenceItem(rootView.btn_layout, "you need to use all four numbers to do it", "GOT IT")
+        sequence.addSequenceItem(
+            rootView.operatorsLayout,
+            "You have thous operators to reach you goal,you can use them as much as you want",
+            "GOR IT"
+        )
+        sequence.addSequenceItem(
+            rootView.hintButtonIB,
+            "Need a hint? click here for one, notice you get only one for each stage you complete",
+            "GOT IT"
+        )
+        sequence.addSequenceItem(rootView.restartLevelIB, "If you want to start over,you can always to so with this button", "GOT IT")
         sequence.start()
     }
 
@@ -159,7 +166,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             Constants.LOSE_DIALOG -> {
                 winLooseDialog.ibtnNext.visibility = View.GONE
                 winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
-                winLooseDialog.animationView.setAnimation(R.raw.lern_own_anim)
+                winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
                 winLooseDialog.animationView.playAnimation()
             }
         }
