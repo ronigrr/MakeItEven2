@@ -33,14 +33,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener,IFragmentLevelsScreenListener {
 
     private val fragmentManager = supportFragmentManager
-    private val fragmentStartScreen: FragmentStartScreen = FragmentStartScreen()
-    private val fragmentSettings: FragmentSettings = FragmentSettings()
-    private val fragmentLevelsScreen: FragmentLevelsScreen = FragmentLevelsScreen()
-    private val dialogFragmentFragmentNickName: FragmentDialogNickName = FragmentDialogNickName()
 
-    //    private lateinit var mNoteDatabase : RoomNoteDatabase
-//    private lateinit var mNoteDao: NoteDao
-    private lateinit var databaseHelper: DatabaseHelper
     private lateinit var uiHandler: Handler
 
     private lateinit var mSharedPref: SharedPreferences
@@ -82,7 +75,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
     private fun loadStartScreen() {
         fragmentManager.beginTransaction()
-            .add(R.id.fragmentContainer, fragmentStartScreen, Constants.START_SCREEN_FRAGMENT_TAG)
+            .add(R.id.fragmentContainer, FragmentStartScreen(), Constants.START_SCREEN_FRAGMENT_TAG)
             .commit()
     }
 
@@ -104,7 +97,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
             Constants.ARCADE_MODE_SCREEN_FRAGMENT_TAG
         )
             .addToBackStack(null).commit()
-        hideToolBar()
+        hide3DotsToolBar()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -127,7 +120,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
                 //TODO: Change and finish setting fragment
                 fragmentManager.beginTransaction().replace(
                     R.id.fragmentContainer,
-                    fragmentSettings,
+                    FragmentSettings(),
                     Constants.SETTINGS_SCREEN_FRAGMENT_TAG
                 )
                     .addToBackStack(null).commit()
@@ -144,24 +137,22 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
 
         fragmentManager.beginTransaction().replace(
             R.id.fragmentContainer,
-            fragmentLevelsScreen,
+            FragmentLevelsScreen(),
             Constants.LEVELS_SCREEN_FRAGMENT_TAG
         )
             .addToBackStack(null).commit()
-        hideToolBar()
+        hide3DotsToolBar()
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        if (fragmentManager.findFragmentById(R.id.fragmentContainer)
-                ?.equals(fragmentStartScreen)!!
-        ) {
-            showToolBar()
+        if (fragmentManager.findFragmentByTag(Constants.START_SCREEN_FRAGMENT_TAG)?.isVisible == true) {
+            show3DotsToolBar()
         }
         //TODO: Bug that reloads the recyclerview in levelsScreenFragment when you backpress and press stagemode again
     }
 
-    override fun showToolBar() {
+    override fun show3DotsToolBar() {
         appToolbar.visibility = View.VISIBLE
     }
 
@@ -195,7 +186,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         onBackPressed()
     }
 
-    private fun hideToolBar() {
+    private fun hide3DotsToolBar() {
         appToolbar.visibility = View.GONE
     }
 
@@ -224,9 +215,9 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     }
 
     private fun firstTimeInApp() {
-        hideToolBar()
+        hide3DotsToolBar()
         fragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, dialogFragmentFragmentNickName, Constants.NICK_NAME_DIALOG_TAG)
+            .replace(R.id.fragmentContainer, FragmentDialogNickName(), Constants.NICK_NAME_DIALOG_TAG)
             .commit()
     }
 

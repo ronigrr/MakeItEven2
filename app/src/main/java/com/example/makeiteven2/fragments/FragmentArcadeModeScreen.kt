@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.win_loose_dialog.*
 class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer {
 
 
-    private lateinit var mTimer: HintTimer
+    private lateinit var mTimerManager: TimerManager
     private lateinit var mTimerTV: TextView
     private lateinit var mActualScoreTV: TextView
     private lateinit var mTargetNumberTV: TextView
@@ -71,11 +71,12 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
     private var selectedNumberID2 = 0
     private var operator = ""
     private var selectedOperatorID = 0
+    private var rewardTimeInMillis: Long = 7 * 1000
 
 
     override fun onStop() {
         super.onStop()
-        mTimer.cancel()
+        mTimerManager.cancelTimer()
     }
 
     override fun onAttach(context: Context) {
@@ -101,7 +102,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
     }
 
     private fun initTimer() {
-        mTimer = HintTimer(this, (1.5 * 60 * 1000).toLong(), mTimerTV, Constants.ARCADE_TIMER)
+        mTimerManager = TimerManager(this, mTimerTV, Constants.ARCADE_TIMER)
     }
 
     private fun startCountDownAnimation() {
@@ -116,7 +117,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
                     Log.e("Animation:", "end")
 
                     countDownAnim.visibility = View.GONE
-                    mTimer.start()
+                    mTimerManager.startTimer(Constants.START_COUNTDOWN_ARCADE_TIMER_IN_MILLIS)
 
                 }
 
@@ -420,11 +421,22 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
                     AudioManager.startTaDaSound()
                     Animations.getConfetti(rootView.game_root_container)
                     gameInit()
+                    mTimerManager.addMoreTime(rewardTimeInMillis)
                     mWinsCounter++
-                    mScoreCounter = when {
-                        mWinsCounter < 5 -> mScoreCounter + 100
-                        mWinsCounter < 7 -> mScoreCounter + 200
-                        else -> mScoreCounter + 300
+                    when {
+                        mWinsCounter < 5 -> mScoreCounter += 100
+                        mWinsCounter < 7 -> {
+                            mScoreCounter += 200
+                            //adding more 12sec
+                            val millisToAdd: Long = (9 * 1000)
+                            rewardTimeInMillis = millisToAdd
+                        }
+                        else -> {
+                            mScoreCounter += 300
+                            val millisToAdd: Long = (12 * 1000)
+                            rewardTimeInMillis = millisToAdd
+                        }
+
                     }
 
 

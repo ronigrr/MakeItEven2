@@ -38,16 +38,16 @@ class FragmentStartScreen : Fragment(),IFinishTimer{
     private lateinit var mStoreBtn: ImageView
 
     private lateinit var uiHandler : Handler
-    private var hintTimer : HintTimer? = null
+    private var timerManager : TimerManager? = null
 
     interface IFragmentsStartsScreenCallback {
         fun onStartScreenFragmentButtonClicked(view: View)
-        fun showToolBar()
+        fun show3DotsToolBar()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        mCallBack.showToolBar()
+        mCallBack.show3DotsToolBar()
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -95,8 +95,8 @@ class FragmentStartScreen : Fragment(),IFinishTimer{
             Log.v("time1",currentTsToParse)
             timeBetweenInMilli = Constants.TIME_UNITS_FOR_HINTS_IN_MILLI - ChronoUnit.MILLIS.between(time1,time2).absoluteValue
             //TODO: somthing to work on build < 21
-            hintTimer =  HintTimer(this,timeBetweenInMilli,tvTimer,Constants.HINTS_TIMER)
-            hintTimer?.start()
+            timerManager =  TimerManager(this,tvTimer,Constants.HINTS_TIMER)
+            timerManager?.startTimer(timeBetweenInMilli)
         }
         else
         {
@@ -139,7 +139,8 @@ class FragmentStartScreen : Fragment(),IFinishTimer{
                 DatabaseHelper.setGiftStartTimeStamp(context!!,currentTsToSave)
                 Log.v("time stamp",currentTsToSave)
                 //start timer with the time needed
-                hintTimer = HintTimer(this,Constants.TIME_UNITS_FOR_HINTS_IN_MILLI,storeDialog.tvTimer,Constants.HINTS_TIMER).start() as HintTimer
+                timerManager = TimerManager(this,storeDialog.tvTimer,Constants.HINTS_TIMER)
+                timerManager?.startTimer(Constants.TIME_UNITS_FOR_HINTS_IN_MILLI)
                 //start a work
                 val addHintWorkRequest : WorkRequest = OneTimeWorkRequestBuilder<HintsWorker>().setInitialDelay(Constants.TIME_UNITS_FOR_HINTS_IN_MILLI,TimeUnit.MILLISECONDS).build()
                 WorkManager.getInstance(context!!).enqueue(addHintWorkRequest)
@@ -147,7 +148,7 @@ class FragmentStartScreen : Fragment(),IFinishTimer{
         }
         storeDialog.setOnDismissListener {
             storeDialog.cancel()
-            hintTimer?.cancel()
+            timerManager?.cancelTimer()
         }
         storeDialog.show()
     }
