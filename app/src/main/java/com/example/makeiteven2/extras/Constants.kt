@@ -27,6 +27,7 @@ object Constants {
     const val ADD_HINTS = "add_hints"
     const val TIME_UNITS_FOR_HINTS_IN_MILLI: Long = 21600000
     const val GIFT_HINTS_TO_GIVE = 1
+    const val ADD_MOB = "ca-app-pub-4722610653423402/4300443792"
 
     lateinit var User: RoomUserNote
 

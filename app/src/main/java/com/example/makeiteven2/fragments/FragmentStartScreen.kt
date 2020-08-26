@@ -69,7 +69,7 @@ class FragmentStartScreen : Fragment(), IFinishTimer {
         mArcadeModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
 
         mStageModeBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
-        mScoreBoardBtn.setOnClickListener { Log.v("user", Constants.User.hintTimeStampStart) }
+        mScoreBoardBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it)}
         mTutorialBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
         mArcadeModeBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
 
