@@ -4,6 +4,7 @@ import com.example.makeiteven2.room.RoomUserNote
 
 object Constants {
 
+
     const val TUTORIAL_GAME_TYPE = "tutorial_game_type"
     const val STAGE_GAME_TYPE = "stage_game_type"
     const val ARCADE_GAME_TYPE = "arcade_game_type"
@@ -19,6 +20,10 @@ object Constants {
     const val SHARED_KEY_IS_USER_EXISTS = "is_user_exists"
     const val WIN_DIALOG = "win_dialog"
     const val LOSE_DIALOG = "lose_dialog"
+    const val SHOWCASE_ID = "showcase_id"
+    const val ADD_HINTS ="add_hints"
+    const val TIME_UNITS_FOR_HINTS_IN_MILLI : Long = 21600000
+    const val GIFT_HINTS_TO_GIVE = 1
 
     lateinit var User: RoomUserNote
 

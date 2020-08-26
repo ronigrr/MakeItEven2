@@ -36,8 +36,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private val fragmentStartScreen: FragmentStartScreen = FragmentStartScreen()
     private val fragmentSettings: FragmentSettings = FragmentSettings()
     private val fragmentLevelsScreen: FragmentLevelsScreen = FragmentLevelsScreen()
-
-    //    private val fragmentArcadeModeScreen: FragmentArcadeModeScreen = FragmentArcadeModeScreen()
+    private val fragmentArcadeModeScreen: FragmentArcadeModeScreen = FragmentArcadeModeScreen()
     private val dialogFragmentFragmentNickName: FragmentDialogNickName = FragmentDialogNickName()
 
     //    private lateinit var mNoteDatabase : RoomNoteDatabase
@@ -102,7 +101,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private fun loadArcadeMode() {
         fragmentManager.beginTransaction().replace(
             R.id.fragmentContainer,
-            FragmentArcadeModeScreen(),
+            fragmentArcadeModeScreen,
             Constants.ARCADE_MODE_SCREEN_FRAGMENT_TAG
         )
             .addToBackStack(null).commit()
@@ -249,6 +248,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     override fun backButtonPressedStage() {
         fragmentManager.popBackStack()
     }
+
 
 }
 

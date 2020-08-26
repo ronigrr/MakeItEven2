@@ -26,6 +26,9 @@ import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_stage.view.*
 import kotlinx.android.synthetic.main.win_loose_dialog.*
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
+
 
 class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener {
 
@@ -59,7 +62,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private var mLevelNum = levelNumber
     private var mTargetNumber = 0
     private val mGame = GameFactory.getGame(Constants.STAGE_GAME_TYPE, 12)
-    private var soundEffectsVolume: Float = Constants.User.soundEffectsLevel.toFloat()
     private var mStageInfoArray: ArrayList<StageInfo> = Constants.User.stageList
 
 
@@ -91,9 +93,21 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         initToasty()
         gameSetup()
         gameInit()
-
-
+        startTutorial()
         return rootView
+    }
+
+    private fun startTutorial() {
+        val config = ShowcaseConfig()
+        config.delay = 500
+        val sequence = MaterialShowcaseSequence(activity, Constants.SHOWCASE_ID)
+        sequence.setConfig(config)
+        sequence.addSequenceItem(rootView.theTargetNumberTV,"This is the target number you need to reach","GOT IT")
+        sequence.addSequenceItem(rootView.btn_layout,"you need to use all four numbers to do it","GOT IT")
+        sequence.addSequenceItem(rootView.operatorsLayout,"You have thous operators to reach you goal,you can use them as much as you want","GOR IT")
+        sequence.addSequenceItem(rootView.hintButtonIB,"Need a hint? click here for one, notice you get only one for each stage you complete","GOT IT")
+        sequence.addSequenceItem(rootView.restartLevelIB,"If you want to start over,you can always to so with this button","GOT IT")
+        sequence.start()
     }
 
     private fun gameSetup() {
@@ -138,11 +152,15 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         when (mWinOrLose) {
             Constants.WIN_DIALOG -> {
                 winLooseDialog.tvText.text = context!!.resources.getString(R.string.correct_answer)
+                winLooseDialog.animationView.setAnimation(R.raw.win_owl_anim)
+                winLooseDialog.animationView.playAnimation()
                 //TODO:implement win fun
             }
             Constants.LOSE_DIALOG -> {
                 winLooseDialog.ibtnNext.visibility = View.GONE
                 winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
+                winLooseDialog.animationView.setAnimation(R.raw.lern_own_anim)
+                winLooseDialog.animationView.playAnimation()
             }
         }
         winLooseDialog.show()
@@ -185,7 +203,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             }
         }
         mNumberGroup.apply {
-            setOnCheckedChangeListener { group, checkedId ->
+            setOnCheckedChangeListener { _, checkedId ->
                 val checkedTB = findViewById<ToggleButton>(checkedId)
                 if (isNumberSelected && isOperatorSelected) {
                     num2 = checkedTB.text.toString().toInt()
@@ -244,7 +262,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mStageInfoArray = Constants.User.stageList
         if (mStageInfoArray.size < mLevelNum || currentStage < mLevelNum) {
             when (mLevelNum) {
-                in 0..10 -> {
+                in 1..10 -> {
                     min = 0
                     max = 20
                     difficulty = 6
@@ -320,14 +338,13 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mHintString = mStageInfoArray[mLevelNum - 1].hint
     }
 
-
     private fun initFragmentMembersFromView() {
         mLevelNumberTV = rootView.levelTV // "Level: X"
         mHintsLeftTV = rootView.hintsLeftTV //"Hints: X"
         mTargetNumberTV = rootView.theTargetNumberTV
         mBackButtonIB = rootView.backButtonIB
         mRetryButtonIB = rootView.restartLevelIB
-        mHintIB = rootView.hintButton3IB
+        mHintIB = rootView.hintButtonIB
         mGameButton1TB = rootView.btn1TB
         mGameButton2TB = rootView.btn2TB
         mGameButton3TB = rootView.btn3TB
@@ -356,14 +373,10 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onClick(v: View?) {
         Handler().post {
-            val btnOffPlayer: MediaPlayer = MediaPlayer.create(context, R.raw.btn_off_sound)
-            val btnOnPlayer: MediaPlayer = MediaPlayer.create(context, R.raw.btn_on_sound)
-            btnOnPlayer.setVolume(soundEffectsVolume, soundEffectsVolume)
-            btnOffPlayer.setVolume(soundEffectsVolume, soundEffectsVolume)
             if (!(v as ToggleButton).isChecked) {
-                btnOnPlayer.start()
+                AudioManager.playBtnOn()
             } else if (v.isChecked) {
-                btnOffPlayer.start()
+                AudioManager.playBtnOff()
             }
         }
         /// checks that nobody checked

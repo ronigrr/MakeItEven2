@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/color_change"
     android:layoutDirection="ltr"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="2dp">
 
     <ImageView
         android:id="@+id/ivGameLogo"
@@ -51,11 +52,6 @@
         android:textStyle="bold"
         android:text="@string/tutorial"/>
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/start_activity_container"
-        android:layout_centerInParent="true">
         <ImageButton
             android:id="@+id/btnScoreBoard"
             android:layout_width="80dp"
@@ -63,22 +59,17 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="15dp"
             android:background="@color/Transparent"
-            android:scaleType="fitCenter"
             android:src="@drawable/ic_trophy"
             android:contentDescription="scoreBoard icon"/>
 
         <ImageButton
-            android:id="@+id/btnShoppingCart"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:id="@+id/btnStore"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_alignParentRight="true"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"
-            android:background="@color/Transparent"
-            android:scaleType="fitCenter"
-            android:src="@android:color/holo_red_light"
-            android:visibility="invisible"
-            android:contentDescription="scoreBoard icon"/>
-    </RelativeLayout>
+            android:src="@drawable/ic_store"
+            android:contentDescription="store icon"/>
+
 </RelativeLayout>
