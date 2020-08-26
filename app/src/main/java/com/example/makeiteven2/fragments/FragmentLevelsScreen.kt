@@ -16,15 +16,12 @@ import kotlinx.android.synthetic.main.fragment_levels.view.*
 
 class FragmentLevelsScreen : Fragment() {
 
-    private lateinit var mCallBack : IFragmentLevelsScreenCallback
+    private lateinit var mCallBack : IFragmentLevelsScreenListener
     private lateinit var mLevelsRecyclerView: RecyclerView
     private lateinit var mLevelsAdapter: LevelsAdapter
     private var mCurrentStage = 0
     var mLevelItemsList: ArrayList<Level> = ArrayList()
 
-    interface IFragmentLevelsScreenCallback {
-        fun onLevelsFragmentBackPressed()
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_levels, container, false)
@@ -54,10 +51,10 @@ class FragmentLevelsScreen : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is IFragmentLevelsScreenCallback) {
+        if (context is IFragmentLevelsScreenListener) {
             mCallBack = context
         } else {
-            throw RuntimeException(context.toString() + "The activity must implement IFragmentLevelsScreenCallback interface")
+            throw RuntimeException(context.toString() + "The activity must implement IFragmentLevelsScreenListener interface")
         }
     }
 }

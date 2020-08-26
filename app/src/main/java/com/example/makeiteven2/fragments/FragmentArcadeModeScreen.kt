@@ -274,7 +274,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener {
         mBackButtonIB = rootView.backButtonIB
         mHintIB1 = rootView.hintButton1IB
         mHintIB2 = rootView.hintButton2IB
-        mHintIB3 = rootView.hintButton3IB
+        mHintIB3 = rootView.hintButtonIB
         mGameButton1TB = rootView.btn1TB
         mGameButton2TB = rootView.btn2TB
         mGameButton3TB = rootView.btn3TB
