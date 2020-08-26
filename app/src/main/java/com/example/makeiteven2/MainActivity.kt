@@ -200,7 +200,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
         appToolbar.visibility = View.GONE
     }
 
-    override fun levelsAdapterItemClicked(levelNumber: Int) {
+    override fun onLevelsAdapterItemClicked(levelNumber: Int) {
         fragmentManager.beginTransaction().replace(
             R.id.fragmentContainer,
             FragmentStageModeScreen(levelNumber),
@@ -219,7 +219,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
             UUID.randomUUID().toString(), nickname, 1, 50, 50, 3, ArrayList()
-        )
+                ,"","",false)
         Constants.User = newUserNote
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
     }
@@ -248,6 +248,7 @@ class MainActivity : AppCompatActivity(), FragmentStartScreen.IFragmentsStartsSc
     override fun backButtonPressedStage() {
         fragmentManager.popBackStack()
     }
+
 
 
 }

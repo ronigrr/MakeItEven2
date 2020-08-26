@@ -231,7 +231,7 @@
             android:padding="5dp">
 
             <ImageButton
-                android:id="@+id/hintButtonIB"
+                android:id="@+id/hintButton3IB"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="7dp"
