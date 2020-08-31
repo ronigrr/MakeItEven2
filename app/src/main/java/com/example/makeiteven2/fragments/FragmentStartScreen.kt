@@ -202,7 +202,8 @@ class FragmentStartScreen : Fragment(), IFinishTimer {
                     Log.v("ad","onRewardedAdClosed")
                 }
                 override fun onUserEarnedReward(reward: RewardItem) {
-                    Log.v("ad","onUserEarnedReward")
+                    Log.v("ad","onUserEarnedReward (${reward.amount.toString()})")
+                    DatabaseHelper.addHints(context!!,reward.amount)
                     loadRewardAD()
                 }
                 override fun onRewardedAdFailedToShow(adError: AdError) {
