@@ -12,6 +12,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.intefaces.IFragmentSettingsListener
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 
 class FragmentSettings : Fragment() {

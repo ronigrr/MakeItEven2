@@ -18,12 +18,16 @@ import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 import com.example.makeiteven2.extras.*
 import com.example.makeiteven2.game.GameFactory
+import com.example.makeiteven2.intefaces.IEndDialogBtnClicked
+import com.example.makeiteven2.intefaces.IFinishTimer
+import com.example.makeiteven2.intefaces.IFragmentArcadeModeListener
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
+import kotlinx.android.synthetic.main.fragment_game_arcade.*
 import kotlinx.android.synthetic.main.fragment_game_arcade.view.*
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 
-class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer {
+class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer,IEndDialogBtnClicked {
 
 
     private lateinit var mTimerManager: TimerManager
@@ -73,6 +77,8 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
     private var selectedOperatorID = 0
     private var rewardTimeInMillis: Long = 7 * 1000
 
+    private lateinit var mEndGameDialog: DialogEndGameManager
+
 
     override fun onStop() {
         super.onStop()
@@ -94,6 +100,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
         gameSetup()
         gameInit()
         initTimer()
+        initDialog()
         startCountDownAnimation()
 
 
@@ -104,7 +111,9 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
     private fun initTimer() {
         mTimerManager = TimerManager(this, mTimerTV, Constants.ARCADE_TIMER)
     }
-
+    private fun initDialog() {
+        mEndGameDialog = DialogEndGameManager(this,context!!)
+    }
     private fun startCountDownAnimation() {
         rootView.countDownAnim.apply {
             setAnimation(R.raw.coundown321go)
@@ -117,7 +126,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
                     Log.e("Animation:", "end")
 
                     countDownAnim.visibility = View.GONE
-                    mTimerManager.startTimer(Constants.START_COUNTDOWN_ARCADE_TIMER_IN_MILLIS)
+                    mTimerManager.startTimer(Constants.TEST_COUNTDOWN_10_SECONDS_IN_MILLIS)
 
                 }
 
@@ -178,6 +187,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
 
         winLooseDialog.show()
     }
+    //TODO:REMOVE AFTER BUG FIX
 
     private fun initToasty() {
         Toasty.Config.getInstance().tintIcon(false).setTextSize(30).allowQueue(true).apply()
@@ -410,7 +420,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
             }
             if (isDivideZero || isFraction) {
                 AudioManager.startBuzzerSound()
-                showFinishDialog(Constants.LOSE_DIALOG)
+                //showFinishDialog(Constants.LOSE_DIALOG)
             }
 
             if (i == 1) {
@@ -445,7 +455,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
                 } else {
                     //you loose
                     Handler().postDelayed({
-                        showFinishDialog(Constants.LOSE_DIALOG)
+                        //showFinishDialog(Constants.LOSE_DIALOG)
                     }, 200)
                 }
             }
@@ -454,7 +464,25 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer 
     }
 
     override fun onFinishTimer() {
-        showFinishDialog(Constants.LOSE_DIALOG)
+        mEndGameDialog.shodEndDialog(Constants.ARCADE_END_DIALOG,mActualScoreTV.text.toString())
+    }
+
+    override fun onEndDialogBtnClicked(view: View) {
+        //TODO: SEE IF EVERYTHING IS IMPLEMENTET CURRECTLTY
+        when(view.id){
+            R.id.ibtnHome->{
+                listener.backButtonPressedArcade()
+                mEndGameDialog.dismissDialog()
+            }
+            R.id.ibtnRetry->{
+                //TODO:RETRY ACTIVATES 2 TIMERS BUG
+                countDownAnim.visibility = View.VISIBLE
+                //gameInit()
+                //initTimer()
+                startCountDownAnimation()
+                mEndGameDialog.dismissDialog()
+            }
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-package com.example.makeiteven2.extras
+package com.example.makeiteven2.intefaces
 
 interface IFinishTimer {
     fun onFinishTimer()

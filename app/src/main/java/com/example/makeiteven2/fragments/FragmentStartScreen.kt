@@ -1,12 +1,12 @@
 package com.example.makeiteven2.fragments
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +23,16 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.example.makeiteven2.R
 import com.example.makeiteven2.extras.*
+import com.example.makeiteven2.intefaces.IFinishTimer
+import com.example.makeiteven2.intefaces.IFragmentsStartsScreenListener
 import com.example.makeiteven2.room.DatabaseHelper
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.rewarded.RewardItem
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdCallback
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 import kotlinx.android.synthetic.main.store_dialog.*
 import java.sql.Timestamp
@@ -42,7 +51,8 @@ class FragmentStartScreen : Fragment(), IFinishTimer {
     private lateinit var mLogoIv: ImageView
     private lateinit var mStoreBtn: ImageView
 
-    private lateinit var uiHandler: Handler
+    lateinit var rewardedAd: RewardedAd
+
     private var timerManager: TimerManager? = null
 
 
@@ -51,9 +61,11 @@ class FragmentStartScreen : Fragment(), IFinishTimer {
         mListener.show3DotsToolBar()
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_start_screen, container, false)
+        loadRewardAD()
+        initView()
         mStageModeBtn = rootView.btnStageMode
         mArcadeModeBtn = rootView.btnArcadeMode
         mTutorialBtn = rootView.btnTutorial
@@ -61,24 +73,35 @@ class FragmentStartScreen : Fragment(), IFinishTimer {
         mLogoIv = rootView.ivGameLogo
         mStoreBtn = rootView.btnStore
 
+        initAnimations()
+        initBtnOnClick()
 
-        mLogoIv.startAnimation(Animations.getBounceAnimation(context!!))
-        mScoreBoardBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        mStageModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        mTutorialBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        mArcadeModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        return rootView
+    }
 
+    private fun initBtnOnClick() {
         mStageModeBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
         mScoreBoardBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it)}
         mTutorialBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
         mArcadeModeBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
 
-        uiHandler = Handler()
-
         mStoreBtn.setOnClickListener {
             openStoreDialog()
         }
-        return rootView
+
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private fun initAnimations() {
+        mLogoIv.startAnimation(Animations.getBounceAnimation(context!!))
+        mScoreBoardBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        mStageModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        mTutorialBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        mArcadeModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
+    }
+
+    private fun initView() {
+
     }
 
     private fun initTimerForDialog(tvTimer: TextView) {
@@ -99,7 +122,7 @@ class FragmentStartScreen : Fragment(), IFinishTimer {
             timerManager = TimerManager(this, tvTimer, Constants.HINTS_TIMER)
             timerManager?.startTimer(timeBetweenInMilli)
         } else {
-            tvTimer.text = ""
+            tvTimer.text = getString(R.string.claimFreeHints)
         }
 
     }
@@ -116,9 +139,10 @@ class FragmentStartScreen : Fragment(), IFinishTimer {
             storeDialog.btnGetHint.setTextColor(Color.BLACK)
             storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!, R.drawable.reset_game)
             storeDialog.btnGetHint.setTextColor(Color.GRAY)
+            storeDialog.btnGetHint.text = getString(R.string.free_hint_in)
         } else {
             storeDialog.btnGetHint.setOnTouchListener(Animations.getTouchAnimation(context!!))
-            storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!, R.drawable.game_qube_btns)
+            storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!, R.drawable.free_hints_btn)
             //onClick
             storeDialog.btnGetHint.setOnClickListener {
                 //add hint
@@ -126,6 +150,7 @@ class FragmentStartScreen : Fragment(), IFinishTimer {
                 DatabaseHelper.setGiftGiven(context!!, true)
                 //disable btn
                 storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!, R.drawable.reset_game)
+                storeDialog.btnGetHint.text = getString(R.string.free_hint_in)
                 storeDialog.btnGetHint.isEnabled = false
                 storeDialog.btnGetHint.isClickable = false
                 storeDialog.btnGetHint.setTextColor(Color.GRAY)
@@ -149,9 +174,47 @@ class FragmentStartScreen : Fragment(), IFinishTimer {
             storeDialog.cancel()
             timerManager?.cancelTimer()
         }
+        storeDialog.btnGetHintByAd.setOnClickListener {
+            loadRewardVideo()
+        }
         storeDialog.show()
     }
-
+    private fun loadRewardAD() {
+        rewardedAd= RewardedAd(context, Constants.ADD_MOB_TEST)
+        val adLoadCallback = object: RewardedAdLoadCallback() {
+            override fun onRewardedAdLoaded() {
+                Log.v("ad","onRewardedAdLoaded")
+            }
+            override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
+                Log.v("ad","onRewardedAdFailedToLoad")
+            }
+        }
+        rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
+    }
+    private fun loadRewardVideo(){
+        if (rewardedAd.isLoaded) {
+            val activityContext: Activity = this.activity!!
+            val adCallback = object: RewardedAdCallback() {
+                override fun onRewardedAdOpened() {
+                    Log.v("ad","onRewardedAdOpened")
+                }
+                override fun onRewardedAdClosed() {
+                    Log.v("ad","onRewardedAdClosed")
+                }
+                override fun onUserEarnedReward(reward: RewardItem) {
+                    Log.v("ad","onUserEarnedReward")
+                    loadRewardAD()
+                }
+                override fun onRewardedAdFailedToShow(adError: AdError) {
+                    Log.v("ad","onRewardedAdFailedToShow")
+                }
+            }
+            rewardedAd.show(activityContext, adCallback)
+        }
+        else {
+            Log.d("TAG", "The rewarded ad wasn't loaded yet.")
+        }
+    }
     override fun onAttach(context: Context) {
         if (context is IFragmentsStartsScreenListener) {
             mListener = context

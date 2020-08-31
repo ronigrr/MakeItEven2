@@ -16,10 +16,10 @@ import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.StageInfo
-import com.example.makeiteven2.extras.Animations
-import com.example.makeiteven2.extras.AudioManager
-import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.extras.*
 import com.example.makeiteven2.game.GameFactory
+import com.example.makeiteven2.intefaces.IEndDialogBtnClicked
+import com.example.makeiteven2.intefaces.IFragmentStageModeListener
 import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
@@ -29,7 +29,7 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
 
 
-class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener {
+class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener , IEndDialogBtnClicked {
 
     private lateinit var mLevelNumberTV: TextView
     private lateinit var mHintsLeftTV: TextView
@@ -50,6 +50,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private lateinit var mOperatorGroup: SingleSelectToggleGroup
     private lateinit var mNumberGroup: SingleSelectToggleGroup
+
+    private lateinit var mEndGameDialog : DialogEndGameManager
 
     private val mGameButtonsList = ArrayList<ToggleButton>()
     private val mOperatorsList = ArrayList<ToggleButton>()
@@ -92,8 +94,13 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         initToasty()
         gameSetup()
         gameInit()
+        initDialog()
         startTutorial()
         return rootView
+    }
+
+    private fun initDialog() {
+        mEndGameDialog = DialogEndGameManager(this,context!!)
     }
 
     private fun startTutorial() {
@@ -129,48 +136,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mOperatorsList.add(mGameDivTB)
         setButtonsListeners()
 
-    }
-
-    private fun showFinishDialog(mWinOrLose: String) {
-        val winLooseDialog = Dialog(context!!)
-
-        winLooseDialog.setCanceledOnTouchOutside(false)
-        winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        winLooseDialog.setCancelable(false)
-        winLooseDialog.setContentView(R.layout.win_loose_dialog)
-
-        winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(context!!))
-
-        winLooseDialog.ibtnRetry.setOnClickListener {
-            gameInit()
-            winLooseDialog.dismiss()
-        }
-        winLooseDialog.ibtnNext.setOnClickListener {
-            mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + (++mLevelNum).toString()
-            gameInit()
-            winLooseDialog.dismiss()
-        }
-        winLooseDialog.ibtnHome.setOnClickListener {
-            listener.backButtonPressedStage()
-            winLooseDialog.dismiss()
-        }
-        when (mWinOrLose) {
-            Constants.WIN_DIALOG -> {
-                winLooseDialog.tvText.text = context!!.resources.getString(R.string.correct_answer)
-                winLooseDialog.animationView.setAnimation(R.raw.win_owl_anim)
-                winLooseDialog.animationView.playAnimation()
-                //TODO:implement win fun
-            }
-            Constants.LOSE_DIALOG -> {
-                winLooseDialog.ibtnNext.visibility = View.GONE
-                winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
-                winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
-                winLooseDialog.animationView.playAnimation()
-            }
-        }
-        winLooseDialog.show()
     }
 
     private fun initToasty() {
@@ -455,7 +420,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 if (tb.isEnabled) i++
             }
             if (isDivideZero || isFraction) {
-                showFinishDialog(Constants.LOSE_DIALOG)
+                //showFinishDialog(Constants.LOSE_DIALOG)
+                mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
                 AudioManager.startWaWaSound()
                 gameInit()
             }
@@ -472,7 +438,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
 
                     Handler().postDelayed({
-                        showFinishDialog(Constants.WIN_DIALOG)
+                        //showFinishDialog(Constants.WIN_DIALOG)
+                        mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
                         AudioManager.startTaDaSound()
                         Animations.getConfetti(rootView.game_root_container)
                     }, 200)
@@ -480,13 +447,75 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 } else {
                     //you loose
                     Handler().postDelayed({
-                        showFinishDialog(Constants.LOSE_DIALOG)
+                        //showFinishDialog(Constants.LOSE_DIALOG)
+                        mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
                     }, 200)
 
                     gameInit()
                 }
             }
 
+        }
+    }
+
+    private fun showFinishDialog(mWinOrLose: String) {
+        val winLooseDialog = Dialog(context!!)
+
+        winLooseDialog.setCanceledOnTouchOutside(false)
+        winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        winLooseDialog.setCancelable(false)
+        winLooseDialog.setContentView(R.layout.win_loose_dialog)
+
+        winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(context!!))
+
+        winLooseDialog.ibtnRetry.setOnClickListener {
+            gameInit()
+            winLooseDialog.dismiss()
+        }
+        winLooseDialog.ibtnNext.setOnClickListener {
+            mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + (++mLevelNum).toString()
+            gameInit()
+            winLooseDialog.dismiss()
+        }
+        winLooseDialog.ibtnHome.setOnClickListener {
+            listener.backButtonPressedStage()
+            winLooseDialog.dismiss()
+        }
+        when (mWinOrLose) {
+            Constants.WIN_DIALOG -> {
+                winLooseDialog.tvText.text = context!!.resources.getString(R.string.correct_answer)
+                winLooseDialog.animationView.setAnimation(R.raw.win_owl_anim)
+                winLooseDialog.animationView.playAnimation()
+                //TODO:implement win fun
+            }
+            Constants.LOSE_DIALOG -> {
+                winLooseDialog.ibtnNext.visibility = View.GONE
+                winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
+                winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
+                winLooseDialog.animationView.playAnimation()
+            }
+        }
+        winLooseDialog.show()
+    }
+    //TODO: Remove after review,only here for reference
+
+    override fun onEndDialogBtnClicked(view: View) {
+        when(view.id){
+            R.id.ibtnHome->{
+                listener.backButtonPressedStage()
+                mEndGameDialog.dismissDialog()
+            }
+            R.id.ibtnRetry->{
+                gameInit()
+                mEndGameDialog.dismissDialog()
+            }
+            R.id.ibtnNext->{
+                mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + (++mLevelNum).toString()
+                gameInit()
+                mEndGameDialog.dismissDialog()
+            }
         }
     }
 }

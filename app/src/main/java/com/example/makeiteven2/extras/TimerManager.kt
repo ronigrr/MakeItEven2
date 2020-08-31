@@ -3,6 +3,7 @@ package com.example.makeiteven2.extras
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.TextView
+import com.example.makeiteven2.intefaces.IFinishTimer
 
 class TimerManager(fragment: Any, private var viewToUpdate: TextView?, val modeOfOperation: String) {
 

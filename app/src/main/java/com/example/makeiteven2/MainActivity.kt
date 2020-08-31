@@ -1,7 +1,6 @@
 package com.example.makeiteven2
 
 //import com.example.makeiteven2.extras.Constants.mAudioManager
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -9,7 +8,6 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -20,15 +18,9 @@ import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.fragments.*
+import com.example.makeiteven2.intefaces.*
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.RoomUserNote
-import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.rewarded.RewardItem
-import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdCallback
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.lang.Boolean.FALSE
@@ -49,24 +41,11 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     private lateinit var mEditor: Editor
 
     private lateinit var appToolbar: Toolbar
-    lateinit var rewardedAd: RewardedAd
 
     //private lateinit var mAudioManager : AudioManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//TODO:put inside function/////////////////////////////////////////////////////////
-        rewardedAd= RewardedAd(this, "ca-app-pub-3940256099942544/5224354917")
-        val adLoadCallback = object: RewardedAdLoadCallback() {
-            override fun onRewardedAdLoaded() {
-                Log.v("ad","onRewardedAdLoaded")
-            }
-            override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
-                Log.v("ad","onRewardedAdFailedToLoad")
-            }
-        }
-        rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
-/////////////////////////////////////////////////////////////////////////////////////
         init3DotToolBar()
 
         uiHandler = Handler()
@@ -103,29 +82,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         when (view.id) {
             btnStageMode.id -> loadStageModeLevelScreen()
             btnArcadeMode.id -> loadArcadeMode()
-            btnScoreBoard.id -> {
-                if (rewardedAd.isLoaded) {
-                    val activityContext: Activity = this@MainActivity
-                    val adCallback = object: RewardedAdCallback() {
-                        override fun onRewardedAdOpened() {
-                            Log.v("ad","onRewardedAdOpened")
-                        }
-                        override fun onRewardedAdClosed() {
-                            Log.v("ad","onRewardedAdClosed")
-                        }
-                        override fun onUserEarnedReward(reward: RewardItem) {
-                            Log.v("ad","onUserEarnedReward")
-                        }
-                        override fun onRewardedAdFailedToShow(adError: AdError) {
-                            Log.v("ad","onRewardedAdFailedToShow")
-                        }
-                    }
-                    rewardedAd.show(activityContext, adCallback)
-                }
-                else {
-                    Log.d("TAG", "The rewarded ad wasn't loaded yet.")
-                }
-            }
+            btnScoreBoard.id -> { }
             btnTutorial.id -> Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show()
         }
     }
