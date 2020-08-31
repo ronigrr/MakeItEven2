@@ -118,7 +118,7 @@ class FragmentStartScreen : Fragment(), IFinishTimer {
             Log.v("time2", Constants.User.hintTimeStampStart)
             Log.v("time1", currentTsToParse)
             timeBetweenInMilli = Constants.TIME_UNITS_FOR_HINTS_IN_MILLI - ChronoUnit.MILLIS.between(time1, time2).absoluteValue
-            //TODO: somthing to work on build < 21
+            //TODO: something to work on build < 21
             timerManager = TimerManager(this, tvTimer, Constants.HINTS_TIMER)
             timerManager?.startTimer(timeBetweenInMilli)
         } else {

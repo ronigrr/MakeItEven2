@@ -475,7 +475,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer,
                 mEndGameDialog.dismissDialog()
             }
             R.id.ibtnRetry->{
-                //TODO:RETRY ACTIVATES 2 TIMERS BUG
+                //TODO: Retry dosnt work properly,runs 2 timers for some reason
                 countDownAnim.visibility = View.VISIBLE
                 //gameInit()
                 //initTimer()

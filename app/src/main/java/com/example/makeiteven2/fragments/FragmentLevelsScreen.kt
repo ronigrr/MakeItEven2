@@ -20,22 +20,24 @@ class FragmentLevelsScreen : Fragment() {
     private lateinit var mCallBack: IFragmentLevelsScreenListener
     private lateinit var mLevelsRecyclerView: RecyclerView
     private lateinit var mLevelsAdapter: LevelsAdapter
-    private var mCurrentStage = 0
     var mLevelItemsList: ArrayList<Level> = ArrayList()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_levels, container, false)
         mLevelsRecyclerView = rootView.recyclerLevels
-        mCurrentStage = Constants.User.currentLevel
-        mLevelsAdapter = LevelsAdapter(mLevelItemsList, rootView.context, mCurrentStage)
+        mLevelsAdapter = LevelsAdapter(mLevelItemsList, rootView.context, Constants.User.currentLevel)
         rootView.ibBack.setOnClickListener {
             mCallBack.onLevelsFragmentBackPressed()
         }
+        initLevelsAdapter()
         initLevels()
         initRecyclerView()
 
         return rootView
+    }
+
+    private fun initLevelsAdapter() {
     }
 
     private fun initLevels() {

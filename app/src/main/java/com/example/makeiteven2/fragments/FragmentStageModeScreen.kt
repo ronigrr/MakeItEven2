@@ -464,6 +464,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         }
     }
 
+    //TODO: Remove showFinishDialog after review,only here for reference
     private fun showFinishDialog(mWinOrLose: String) {
         val winLooseDialog = Dialog(context!!)
 
@@ -494,7 +495,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 winLooseDialog.tvText.text = context!!.resources.getString(R.string.correct_answer)
                 winLooseDialog.animationView.setAnimation(R.raw.win_owl_anim)
                 winLooseDialog.animationView.playAnimation()
-                //TODO:implement win fun
             }
             Constants.LOSE_DIALOG -> {
                 winLooseDialog.ibtnNext.visibility = View.GONE
@@ -505,7 +505,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         }
         winLooseDialog.show()
     }
-    //TODO: Remove after review,only here for reference
+
 
     override fun onEndDialogBtnClicked(view: View) {
         when(view.id){

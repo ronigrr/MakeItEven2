@@ -128,7 +128,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
             }
             R.id.action_settings -> {
                 //settings
-                //TODO: Change and finish setting fragment
                 fragmentManager.beginTransaction().replace(
                     R.id.fragmentContainer,
                     FragmentSettings(),
@@ -160,7 +159,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         if (fragmentManager.findFragmentByTag(Constants.START_SCREEN_FRAGMENT_TAG)?.isVisible == true) {
             show3DotsToolBar()
         }
-        //TODO: Bug that reloads the recyclerview in levelsScreenFragment when you backpress and press stagemode again
     }
 
     override fun show3DotsToolBar() {
@@ -176,7 +174,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     }
 
     override fun onResetGame() {
-        //TODO: may not work properly,need to check it after the game i ready (check the code inside positive btn)
+        //TODO: may not work properly,need to check it after the game is ready (check the code inside positive btn)
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
         alertDialogBuilder.setIcon(R.drawable.warning_icon)
