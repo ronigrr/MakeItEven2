@@ -64,7 +64,7 @@ class AudioManager {
         fun startGameMusic() {
             mMainSoundVolume = Constants.User.mainSoundLevel.toFloat()
             mGameMediaPlayer = MediaPlayer.create(mContext, R.raw.super_duper_by_ian_post)
-            mGameMediaPlayer.setVolume(mMainSoundVolume, mMainSoundVolume)
+            mGameMediaPlayer.setVolume(mMainSoundVolume/100, mMainSoundVolume/100)
             mGameMediaPlayer.isLooping = true
             mGameMediaPlayer.start()
         }

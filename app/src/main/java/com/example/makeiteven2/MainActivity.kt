@@ -14,7 +14,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import com.example.makeiteven2.adapters.LevelsAdapter
+import com.example.makeiteven2.data_models.StageInfo
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.fragments.*
@@ -83,8 +85,19 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
             btnStageMode.id -> loadStageModeLevelScreen()
             btnArcadeMode.id -> loadArcadeMode()
             btnScoreBoard.id -> { }
-            btnTutorial.id -> Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show()
+            btnTutorial.id -> {loadStageModeWithTutorial()}
         }
+    }
+
+    private fun loadStageModeWithTutorial() {
+        hide3DotsToolBar()
+        val arguments = bundleOf(Constants.IS_TUTORIAL to Constants.IS_TUTORIAL)
+        fragmentManager.beginTransaction().replace(
+            R.id.fragmentContainer,
+            FragmentStageModeScreen(1).apply { this.arguments = arguments },
+            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG
+        )
+            .addToBackStack(null).commit()
     }
 
 
@@ -206,9 +219,10 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
-            UUID.randomUUID().toString(), nickname, 1, 50, 50, 3, ArrayList(),
+            UUID.randomUUID().toString(), nickname, 1, 20, 50, 3, ArrayList(),
             "", "", false
         )
+        newUserNote.stageList.add(StageInfo(1,1,1,1,4,"1+1+1+1"))
         Constants.User = newUserNote
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
     }
@@ -245,4 +259,4 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
 }
 
-//TODO: need to licence arcade_win , super_duper,tada,wa wa and also for the owl image
+//TODO: need to licence , super_duper,tada,wa wa

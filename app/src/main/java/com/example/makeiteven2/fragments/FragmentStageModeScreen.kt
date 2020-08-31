@@ -1,5 +1,6 @@
 package com.example.makeiteven2.fragments
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -13,10 +14,18 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import co.mobiwise.materialintro.shape.Focus
+import co.mobiwise.materialintro.shape.FocusGravity
+import co.mobiwise.materialintro.shape.ShapeType
+import co.mobiwise.materialintro.view.MaterialIntroView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.StageInfo
-import com.example.makeiteven2.extras.*
+import com.example.makeiteven2.extras.Animations
+import com.example.makeiteven2.extras.AudioManager
+import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.extras.DialogEndGameManager
 import com.example.makeiteven2.game.GameFactory
 import com.example.makeiteven2.intefaces.IEndDialogBtnClicked
 import com.example.makeiteven2.intefaces.IFragmentStageModeListener
@@ -27,6 +36,8 @@ import kotlinx.android.synthetic.main.fragment_game_stage.view.*
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener , IEndDialogBtnClicked {
@@ -78,7 +89,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private var selectedOperatorID = 0
 
     private lateinit var mCountDownTimer: CountDownTimer
-
+    private var showCaseId = Constants.SHOWCASE_ID
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -100,27 +111,22 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     private fun initDialog() {
-        mEndGameDialog = DialogEndGameManager(this,context!!)
+        mEndGameDialog = DialogEndGameManager(this, context!!)
     }
 
     private fun startTutorial() {
+        if (arguments?.getBoolean(Constants.IS_TUTORIAL)!=null){
+            showCaseId = UUID.randomUUID().toString()
+        }
         val config = ShowcaseConfig()
         config.delay = 500
-        val sequence = MaterialShowcaseSequence(activity, Constants.SHOWCASE_ID)
+        val sequence = MaterialShowcaseSequence(activity, showCaseId)
         sequence.setConfig(config)
-        sequence.addSequenceItem(rootView.theTargetNumberTV, "This is the target number you need to reach", "GOT IT")
-        sequence.addSequenceItem(rootView.btn_layout, "you need to use all four numbers to do it", "GOT IT")
-        sequence.addSequenceItem(
-            rootView.operatorsLayout,
-            "You have thous operators to reach you goal,you can use them as much as you want",
-            "GOR IT"
-        )
-        sequence.addSequenceItem(
-            rootView.hintButtonIB,
-            "Need a hint? click here for one, notice you get only one for each stage you complete",
-            "GOT IT"
-        )
-        sequence.addSequenceItem(rootView.restartLevelIB, "If you want to start over,you can always to so with this button", "GOT IT")
+        sequence.addSequenceItem(rootView.theTargetNumberTV, "This is the target number you need to reach", "OK")
+        sequence.addSequenceItem(rootView.btn_layout, "you need to use all four numbers to do it", "OK")
+        sequence.addSequenceItem(rootView.operatorsLayout, "You have thous operators to reach you goal,you can use them as much as you want", "OK")
+        sequence.addSequenceItem(rootView.hintButtonIB, "Need a hint? click here for one, notice you get only one for each stage you complete", "OK")
+        sequence.addSequenceItem(rootView.restartLevelIB, "If you want to start over,you can always to so with this button", "OK")
         sequence.start()
     }
 
@@ -503,15 +509,15 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onEndDialogBtnClicked(view: View) {
         when(view.id){
-            R.id.ibtnHome->{
+            R.id.ibtnHome -> {
                 listener.backButtonPressedStage()
                 mEndGameDialog.dismissDialog()
             }
-            R.id.ibtnRetry->{
+            R.id.ibtnRetry -> {
                 gameInit()
                 mEndGameDialog.dismissDialog()
             }
-            R.id.ibtnNext->{
+            R.id.ibtnNext -> {
                 mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + (++mLevelNum).toString()
                 gameInit()
                 mEndGameDialog.dismissDialog()

@@ -4,6 +4,7 @@ import com.example.makeiteven2.room.RoomUserNote
 
 object Constants {
 
+    const val IS_TUTORIAL: String = "is_tutorial"
     const val TEST_COUNTDOWN_10_SECONDS_IN_MILLIS: Long = (0.1 * 1000 * 60).toLong()
     const val START_COUNTDOWN_ARCADE_TIMER_IN_MILLIS: Long = (1.5 * 1000 * 60).toLong()
     const val ARCADE_TIMER = "arcade_timer"
