@@ -18,8 +18,8 @@ import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 import com.example.makeiteven2.extras.*
 import com.example.makeiteven2.game.GameFactory
-import com.example.makeiteven2.intefaces.IEndDialogBtnClicked
-import com.example.makeiteven2.intefaces.IFinishTimer
+import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
+import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentArcadeModeListener
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_game_arcade.*
 import kotlinx.android.synthetic.main.fragment_game_arcade.view.*
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 
-class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer,IEndDialogBtnClicked {
+class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerListener,IEndDialogBtnClickedListener {
 
 
     private lateinit var mTimerManager: TimerManager
@@ -420,7 +420,6 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimer,
             }
             if (isDivideZero || isFraction) {
                 AudioManager.startBuzzerSound()
-                //showFinishDialog(Constants.LOSE_DIALOG)
             }
 
             if (i == 1) {

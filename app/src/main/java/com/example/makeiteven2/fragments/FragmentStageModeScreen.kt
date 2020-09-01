@@ -1,6 +1,5 @@
 package com.example.makeiteven2.fragments
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -14,12 +13,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import android.widget.ToggleButton
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import co.mobiwise.materialintro.shape.Focus
-import co.mobiwise.materialintro.shape.FocusGravity
-import co.mobiwise.materialintro.shape.ShapeType
-import co.mobiwise.materialintro.view.MaterialIntroView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.StageInfo
 import com.example.makeiteven2.extras.Animations
@@ -27,7 +21,7 @@ import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.extras.DialogEndGameManager
 import com.example.makeiteven2.game.GameFactory
-import com.example.makeiteven2.intefaces.IEndDialogBtnClicked
+import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import com.example.makeiteven2.intefaces.IFragmentStageModeListener
 import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
@@ -40,7 +34,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener , IEndDialogBtnClicked {
+class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener , IEndDialogBtnClickedListener {
 
     private lateinit var mLevelNumberTV: TextView
     private lateinit var mHintsLeftTV: TextView

@@ -60,12 +60,12 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         if (mSharedPref.getBoolean(Constants.SHARED_KEY_IS_USER_EXISTS, FALSE) == FALSE) {
             Handler().postDelayed(Runnable {
                 firstTimeInApp()
-            },4000)
+            },5000)
         } else {
             loadUser()
             Handler().postDelayed(Runnable {
                 loadStartScreen()
-            },4000)
+            },5000)
 
         }
     }

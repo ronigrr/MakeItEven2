@@ -3,13 +3,13 @@ package com.example.makeiteven2.extras
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.TextView
-import com.example.makeiteven2.intefaces.IFinishTimer
+import com.example.makeiteven2.intefaces.IFinishTimerListener
 
 class TimerManager(fragment: Any, private var viewToUpdate: TextView?, val modeOfOperation: String) {
 
     private var currentTimeToFinish: Long = 0
     private var timeText: String = ""
-    private val listener: IFinishTimer
+    private val listener: IFinishTimerListener
     private var mTimer: CountDownTimer? = null
 
     fun startTimer(millisToCount: Long) {
@@ -36,7 +36,7 @@ class TimerManager(fragment: Any, private var viewToUpdate: TextView?, val modeO
     }
 
     init {
-        if (fragment is IFinishTimer) {
+        if (fragment is IFinishTimerListener) {
             listener = fragment
         } else {
             throw ClassCastException(fragment.toString() + "must implement IFinishTimer")

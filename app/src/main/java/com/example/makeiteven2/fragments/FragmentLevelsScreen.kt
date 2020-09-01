@@ -30,16 +30,11 @@ class FragmentLevelsScreen : Fragment() {
         rootView.ibBack.setOnClickListener {
             mCallBack.onLevelsFragmentBackPressed()
         }
-        initLevelsAdapter()
         initLevels()
         initRecyclerView()
 
         return rootView
     }
-
-    private fun initLevelsAdapter() {
-    }
-
     private fun initLevels() {
         for (i in 1..100)
             mLevelItemsList.add(Level(i))

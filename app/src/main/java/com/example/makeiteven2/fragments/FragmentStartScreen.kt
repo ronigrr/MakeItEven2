@@ -23,7 +23,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.example.makeiteven2.R
 import com.example.makeiteven2.extras.*
-import com.example.makeiteven2.intefaces.IFinishTimer
+import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentsStartsScreenListener
 import com.example.makeiteven2.room.DatabaseHelper
 import com.google.android.gms.ads.AdError
@@ -41,7 +41,7 @@ import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import kotlin.math.absoluteValue
 
-class FragmentStartScreen : Fragment(), IFinishTimer {
+class FragmentStartScreen : Fragment(), IFinishTimerListener {
 
     private lateinit var mListener: IFragmentsStartsScreenListener
     private lateinit var mStageModeBtn: Button

@@ -5,15 +5,15 @@ import android.content.Context
 import android.view.View
 import android.view.Window
 import com.example.makeiteven2.R
-import com.example.makeiteven2.intefaces.IEndDialogBtnClicked
+import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 
 class DialogEndGameManager(fragment: Any,private val mContext: Context) {
 
-    private val listener: IEndDialogBtnClicked
+    private val listener: IEndDialogBtnClickedListener
     private lateinit var winLooseDialog: Dialog
     init {
-        if (fragment is IEndDialogBtnClicked) {
+        if (fragment is IEndDialogBtnClickedListener) {
             listener = fragment
         } else {
             throw ClassCastException(fragment.toString() + "must implement IEndDialogBtnClicked")
