@@ -83,5 +83,8 @@
     <string name="enter_your_name_or_nickname">Enter your name or nickname</string>
     <string name="example">example</string>
     <string name="done">Done</string>
+    <string name="claimFreeHints">You can claim free hints every 6h</string>
+    <string name="free_hint_in">free hint in</string>
+    <string name="you_score_is">Your score is :</string>
 
 </resources>

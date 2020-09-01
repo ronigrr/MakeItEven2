@@ -63,18 +63,6 @@ class LevelsAdapter(private var mLevelsList: List<Level> = ArrayList(), private 
 
         }
     }
-
-    //TODO: need to think if setLevels and setCurrentStage is relevant
-    fun setLevels(levelList: List<Level>) {
-        this.mLevelsList = levelList
-        notifyDataSetChanged()
-    }
-
-    fun setCurrentStage(currentStage: Int) {
-        mCurrentStage = currentStage
-        notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.level_cell, parent, false)
         return ViewHolder(view, context)

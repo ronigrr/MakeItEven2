@@ -1,4 +1,4 @@
-package com.example.makeiteven2.fragments
+package com.example.makeiteven2.intefaces
 
 interface IFragmentLevelsScreenListener {
     fun onLevelsFragmentBackPressed()

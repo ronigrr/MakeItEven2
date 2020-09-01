@@ -12,7 +12,7 @@ class AudioManager {
         private var mEffectsMediaPlayer = MediaPlayer()
         private lateinit var mContext: Context
         private var mSoundEffectsVolume = 0f
-        private var mCurrentMainVolume = 0f
+        private var mMainSoundVolume = 0f
 
         @Synchronized
         fun getInstance(context: Context): Companion {
@@ -48,23 +48,23 @@ class AudioManager {
         }
 
         fun startWaWaSound() {
-
+            mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
             mEffectsMediaPlayer = MediaPlayer.create(mContext, R.raw.waa_waa_waaaa)
             mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
             mEffectsMediaPlayer.start()
         }
 
         fun startTaDaSound() {
-            mSoundEffectsVolume = (Constants.User.soundEffectsLevel / 100).toFloat()
+            mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
             mEffectsMediaPlayer = MediaPlayer.create(mContext, R.raw.ta_da)
             mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
             mEffectsMediaPlayer.start()
         }
 
         fun startGameMusic() {
-            mCurrentMainVolume = Constants.User.mainSoundLevel.toFloat()
+            mMainSoundVolume = Constants.User.mainSoundLevel.toFloat()
             mGameMediaPlayer = MediaPlayer.create(mContext, R.raw.super_duper_by_ian_post)
-            mGameMediaPlayer.setVolume(mCurrentMainVolume / 100, mCurrentMainVolume / 100)
+            mGameMediaPlayer.setVolume(mMainSoundVolume/100, mMainSoundVolume/100)
             mGameMediaPlayer.isLooping = true
             mGameMediaPlayer.start()
         }

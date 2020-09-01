@@ -21,5 +21,5 @@ class HintsWorker(private val appContext: Context, workerParams: WorkerParameter
         }
         return Result.success()
     }
-    //TODO:maybe dont need it,we only need a countdown yo enable free hint btn
+
 }

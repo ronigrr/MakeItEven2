@@ -1,36 +1,36 @@
 package com.example.makeiteven2
 
 //import com.example.makeiteven2.extras.Constants.mAudioManager
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.MediaController
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import com.example.makeiteven2.adapters.LevelsAdapter
+import com.example.makeiteven2.data_models.StageInfo
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.fragments.*
+import com.example.makeiteven2.intefaces.*
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.RoomUserNote
-import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.rewarded.RewardItem
-import com.google.android.gms.ads.rewarded.RewardedAd
-import com.google.android.gms.ads.rewarded.RewardedAdCallback
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
+import pl.droidsonroids.gif.GifDrawable
+import pl.droidsonroids.gif.GifImageButton
+import pl.droidsonroids.gif.GifImageView
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
 import java.util.*
@@ -43,44 +43,36 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
     private val fragmentManager = supportFragmentManager
 
-    private lateinit var uiHandler: Handler
-
     private lateinit var mSharedPref: SharedPreferences
     private lateinit var mEditor: Editor
 
     private lateinit var appToolbar: Toolbar
-    lateinit var rewardedAd: RewardedAd
 
-    //private lateinit var mAudioManager : AudioManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-//TODO:put inside function/////////////////////////////////////////////////////////
-        rewardedAd= RewardedAd(this, "ca-app-pub-3940256099942544/5224354917")
-        val adLoadCallback = object: RewardedAdLoadCallback() {
-            override fun onRewardedAdLoaded() {
-                Log.v("ad","onRewardedAdLoaded")
-            }
-            override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
-                Log.v("ad","onRewardedAdFailedToLoad")
-            }
-        }
-        rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
-/////////////////////////////////////////////////////////////////////////////////////
         init3DotToolBar()
-
-        uiHandler = Handler()
 
         mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
         mEditor = mSharedPref.edit()
         AudioManager.getInstance(this)
 
         if (mSharedPref.getBoolean(Constants.SHARED_KEY_IS_USER_EXISTS, FALSE) == FALSE) {
-            firstTimeInApp()
+            Handler().postDelayed(Runnable {
+                firstTimeInApp()
+            },5000)
         } else {
             loadUser()
-            loadStartScreen()
+            Handler().postDelayed(Runnable {
+                loadStartScreen()
+            },5000)
+
         }
+    }
+
+    private fun setMainActivityVisible() {
+        fragmentContainer.visibility = View.VISIBLE
+        show3DotsToolBar()
     }
 
     private fun init3DotToolBar() {
@@ -94,6 +86,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     }
 
     private fun loadStartScreen() {
+        setMainActivityVisible()
         fragmentManager.beginTransaction()
             .add(R.id.fragmentContainer, FragmentStartScreen(), Constants.START_SCREEN_FRAGMENT_TAG)
             .commit()
@@ -104,32 +97,23 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
             btnStageMode.id -> loadStageModeLevelScreen()
             btnArcadeMode.id -> loadArcadeMode()
             btnScoreBoard.id -> {
-                if (rewardedAd.isLoaded) {
-                    val activityContext: Activity = this@MainActivity
-                    val adCallback = object: RewardedAdCallback() {
-                        override fun onRewardedAdOpened() {
-                            Log.v("ad","onRewardedAdOpened")
-                        }
-                        override fun onRewardedAdClosed() {
-                            Log.v("ad","onRewardedAdClosed")
-                        }
-                        override fun onUserEarnedReward(reward: RewardItem) {
-                            Log.v("ad","onUserEarnedReward")
-                        }
-                        override fun onRewardedAdFailedToShow(adError: AdError) {
-                            Log.v("ad","onRewardedAdFailedToShow")
-                        }
-                    }
-                    rewardedAd.show(activityContext, adCallback)
-                }
-                else {
-                    Log.d("TAG", "The rewarded ad wasn't loaded yet.")
-                }
             }
-            btnTutorial.id -> Toast.makeText(this, "Tutorial", Toast.LENGTH_SHORT).show()
+            btnTutorial.id -> {
+                loadStageModeWithTutorial()
+            }
         }
     }
 
+    private fun loadStageModeWithTutorial() {
+        hide3DotsToolBar()
+        val arguments = bundleOf(Constants.IS_TUTORIAL to Constants.IS_TUTORIAL)
+        fragmentManager.beginTransaction().replace(
+            R.id.fragmentContainer,
+            FragmentStageModeScreen(1).apply { this.arguments = arguments },
+            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG
+        )
+            .addToBackStack(null).commit()
+    }
 
     private fun loadArcadeMode() {
         fragmentManager.beginTransaction().replace(
@@ -158,7 +142,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
             }
             R.id.action_settings -> {
                 //settings
-                //TODO: Change and finish setting fragment
                 fragmentManager.beginTransaction().replace(
                     R.id.fragmentContainer,
                     FragmentSettings(),
@@ -190,7 +173,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         if (fragmentManager.findFragmentByTag(Constants.START_SCREEN_FRAGMENT_TAG)?.isVisible == true) {
             show3DotsToolBar()
         }
-        //TODO: Bug that reloads the recyclerview in levelsScreenFragment when you backpress and press stagemode again
     }
 
     override fun show3DotsToolBar() {
@@ -206,7 +188,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     }
 
     override fun onResetGame() {
-        //TODO: may not work properly,need to check it after the game i ready (check the code inside positive btn)
+        //TODO: may not work properly,need to check it after the game is ready (check the code inside positive btn)
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
         alertDialogBuilder.setIcon(R.drawable.warning_icon)
@@ -249,9 +231,10 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
-            UUID.randomUUID().toString(), nickname, 1, 50, 50, 3, ArrayList(),
+            UUID.randomUUID().toString(), nickname, 1, 20, 50, 3, ArrayList(),
             "", "", false
         )
+        newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))
         Constants.User = newUserNote
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
     }
@@ -288,4 +271,4 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
 }
 
-//TODO: need to licence arcade_win , super_duper,tada,wa wa and also for the owl image
+//TODO: need to licence , super_duper,tada,wa wa

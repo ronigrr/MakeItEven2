@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/color_change"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -12,12 +11,23 @@
         layout="@layout/app_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"></include>
+        android:layout_gravity="end"
+        android:visibility="gone"/>
 
     <LinearLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical"
+        android:visibility="gone">
+
+    </LinearLayout>
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gifView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/intro_gif"
+        android:background="@drawable/intro_gif"
+        />
 </LinearLayout>
