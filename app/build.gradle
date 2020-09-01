@@ -119,5 +119,7 @@ allprojects {
         //adMod
         implementation 'com.google.android.gms:play-services-ads:19.3.0'
 
+        //gifview
+        implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     }
 }
