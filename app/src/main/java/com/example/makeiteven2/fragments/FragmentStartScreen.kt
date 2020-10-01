@@ -122,7 +122,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
             timerManager = TimerManager(this, tvTimer, Constants.HINTS_TIMER)
             timerManager?.startTimer(timeBetweenInMilli)
         } else {
-            tvTimer.text = getString(R.string.claimFreeHints)
+            tvTimer.text = getString(R.string.claimFreeCoins)
         }
 
     }
@@ -139,7 +139,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
             storeDialog.btnGetHint.setTextColor(Color.BLACK)
             storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!, R.drawable.reset_game)
             storeDialog.btnGetHint.setTextColor(Color.GRAY)
-            storeDialog.btnGetHint.text = getString(R.string.free_hint_in)
+            storeDialog.btnGetHint.text = getString(R.string.free_coins_in)
         } else {
             storeDialog.btnGetHint.setOnTouchListener(Animations.getTouchAnimation(context!!))
             storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!, R.drawable.free_hints_btn)
@@ -150,7 +150,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
                 DatabaseHelper.setGiftGiven(context!!, true)
                 //disable btn
                 storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!, R.drawable.reset_game)
-                storeDialog.btnGetHint.text = getString(R.string.free_hint_in)
+                storeDialog.btnGetHint.text = getString(R.string.free_coins_in)
                 storeDialog.btnGetHint.isEnabled = false
                 storeDialog.btnGetHint.isClickable = false
                 storeDialog.btnGetHint.setTextColor(Color.GRAY)

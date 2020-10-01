@@ -110,6 +110,13 @@
             android:textColor="@android:color/black"
             android:textSize="16sp"></TextView>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Animation by @Issey /LottieFiles"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"></TextView>
+
     </LinearLayout>
 
     <LinearLayout
