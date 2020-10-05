@@ -28,18 +28,21 @@ data class RoomUserNote(
     @ColumnInfo(name = "sound_effects_level")
     var soundEffectsLevel: Int,
 
-    @ColumnInfo(name = "hints_left")
-    var hintsLeft: Int,
+    @ColumnInfo(name = "coins_left")
+    var coinsLeft: Int,
 
     @ColumnInfo(name = "stages")
     var stageList: ArrayList<StageInfo>,
 
-    @ColumnInfo(name = "hint_time_stamp")
-    var hintTimeStampStart: String,
+    @ColumnInfo(name = "coins_time_stamp")
+    var coinsGivenTimeStampStart: String,
 
     @ColumnInfo(name = "time_work_done")
     var timeWorkDone: String,
 
     @ColumnInfo(name = "isHint_given")
-    var isHintGiftGiven: Boolean
+    var isCoinsGiftGiven: Boolean,
+
+    @ColumnInfo(name = "arcade_highScore")
+    var arcadeHighScore : String="0"
 )

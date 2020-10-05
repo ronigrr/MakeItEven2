@@ -84,7 +84,6 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
         mScoreBoardBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it)}
         mTutorialBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
         mArcadeModeBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
-
         mStoreBtn.setOnClickListener {
             openStoreDialog()
         }
@@ -114,15 +113,15 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
             .replaceAfter(".", "").replace(".", "")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             time1 = LocalDateTime.parse(currentTsToParse)
-            time2 = LocalDateTime.parse(Constants.User.hintTimeStampStart)
-            Log.v("time2", Constants.User.hintTimeStampStart)
+            time2 = LocalDateTime.parse(Constants.User.coinsGivenTimeStampStart)
+            Log.v("time2", Constants.User.coinsGivenTimeStampStart)
             Log.v("time1", currentTsToParse)
             timeBetweenInMilli = Constants.TIME_UNITS_FOR_HINTS_IN_MILLI - ChronoUnit.MILLIS.between(time1, time2).absoluteValue
             //TODO: something to work on build < 21
-            timerManager = TimerManager(this, tvTimer, Constants.HINTS_TIMER)
+            timerManager = TimerManager(this, tvTimer, Constants.COINS_TIMER)
             timerManager?.startTimer(timeBetweenInMilli)
         } else {
-            tvTimer.text = getString(R.string.claimFreeHints)
+            tvTimer.text = getString(R.string.claimFreeCoins)
         }
 
     }
@@ -132,25 +131,25 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
         storeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         storeDialog.setContentView(R.layout.store_dialog)
         storeDialog.setCancelable(true)
-        if (Constants.User.isHintGiftGiven) {//disable btn and set timer
+        if (Constants.User.isCoinsGiftGiven) {//disable btn and set timer
             initTimerForDialog(storeDialog.tvTimer)
             storeDialog.btnGetHint.isEnabled = false
             storeDialog.btnGetHint.isClickable = false
             storeDialog.btnGetHint.setTextColor(Color.BLACK)
             storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!, R.drawable.reset_game)
             storeDialog.btnGetHint.setTextColor(Color.GRAY)
-            storeDialog.btnGetHint.text = getString(R.string.free_hint_in)
+            storeDialog.btnGetHint.text = getString(R.string.free_coins_in)
         } else {
             storeDialog.btnGetHint.setOnTouchListener(Animations.getTouchAnimation(context!!))
             storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!, R.drawable.free_hints_btn)
             //onClick
             storeDialog.btnGetHint.setOnClickListener {
                 //add hint
-                DatabaseHelper.addHints(context!!, Constants.GIFT_HINTS_TO_GIVE)
+                DatabaseHelper.addCoins(context!!, Constants.GIFT_HINTS_TO_GIVE)
                 DatabaseHelper.setGiftGiven(context!!, true)
                 //disable btn
                 storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!, R.drawable.reset_game)
-                storeDialog.btnGetHint.text = getString(R.string.free_hint_in)
+                storeDialog.btnGetHint.text = getString(R.string.free_coins_in)
                 storeDialog.btnGetHint.isEnabled = false
                 storeDialog.btnGetHint.isClickable = false
                 storeDialog.btnGetHint.setTextColor(Color.GRAY)
@@ -162,7 +161,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
                 DatabaseHelper.setGiftStartTimeStamp(context!!, currentTsToSave)
                 Log.v("time stamp", currentTsToSave)
                 //start timer with the time needed
-                timerManager = TimerManager(this, storeDialog.tvTimer, Constants.HINTS_TIMER)
+                timerManager = TimerManager(this, storeDialog.tvTimer, Constants.COINS_TIMER)
                 timerManager?.startTimer(Constants.TIME_UNITS_FOR_HINTS_IN_MILLI)
                 //start a work
                 val addHintWorkRequest: WorkRequest =
@@ -204,7 +203,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
                 }
                 override fun onUserEarnedReward(reward: RewardItem) {
                     Log.v("ad","onUserEarnedReward (${reward.amount.toString()})")
-                    DatabaseHelper.addHints(context!!,reward.amount)
+                    DatabaseHelper.addCoins(context!!,reward.amount)
                 }
                 override fun onRewardedAdFailedToShow(adError: AdError) {
                     Log.v("ad","onRewardedAdFailedToShow")

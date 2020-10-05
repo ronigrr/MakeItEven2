@@ -1,36 +1,33 @@
 package com.example.makeiteven2
 
-//import com.example.makeiteven2.extras.Constants.mAudioManager
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.MediaController
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import com.example.makeiteven2.adapters.LevelsAdapter
+import com.example.makeiteven2.data_models.NameAndScoreInfo
 import com.example.makeiteven2.data_models.StageInfo
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.intefaces.*
 import com.example.makeiteven2.room.DatabaseHelper
+import com.example.makeiteven2.room.FireBaseHelper
 import com.example.makeiteven2.room.RoomUserNote
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
-import pl.droidsonroids.gif.GifDrawable
-import pl.droidsonroids.gif.GifImageButton
-import pl.droidsonroids.gif.GifImageView
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
 import java.util.*
@@ -39,7 +36,7 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     , IFragmentSettingsListener, LevelsAdapter.ILevelsAdapter,
-    FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener {
+    FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener,IFragmentScoreBoardScreenListener {
 
     private val fragmentManager = supportFragmentManager
 
@@ -57,19 +54,18 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         mEditor = mSharedPref.edit()
         AudioManager.getInstance(this)
 
-        if (mSharedPref.getBoolean(Constants.SHARED_KEY_IS_USER_EXISTS, FALSE) == FALSE) {
+        if (mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_APP, FALSE) == FALSE) {
             Handler().postDelayed(Runnable {
+                setMainActivityVisible()
                 firstTimeInApp()
-            },5000)
+            }, 5000)
         } else {
             loadUser()
             Handler().postDelayed(Runnable {
                 loadStartScreen()
-            },5000)
-
+            }, 5000)
         }
     }
-
     private fun setMainActivityVisible() {
         fragmentContainer.visibility = View.VISIBLE
         show3DotsToolBar()
@@ -96,12 +92,21 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         when (view.id) {
             btnStageMode.id -> loadStageModeLevelScreen()
             btnArcadeMode.id -> loadArcadeMode()
-            btnScoreBoard.id -> {
-            }
+            btnScoreBoard.id -> loadScoreBoard()
             btnTutorial.id -> {
                 loadStageModeWithTutorial()
             }
         }
+    }
+
+    private fun loadScoreBoard() {
+        fragmentManager.beginTransaction().replace(
+            R.id.fragmentContainer,
+            FragmentScoreBoard(),
+            Constants.SCOREBOARD_SCREEN_FRAGMENT_TAG
+        )
+            .addToBackStack(null).commit()
+        hide3DotsToolBar()
     }
 
     private fun loadStageModeWithTutorial() {
@@ -225,8 +230,9 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     override fun onFinishEditDialog(inputText: String) {
         Toast.makeText(this, "welcome $inputText", Toast.LENGTH_SHORT).show()
         createNewUser(inputText)
-        mEditor.putBoolean(Constants.SHARED_KEY_IS_USER_EXISTS, TRUE).commit()
+        mEditor.putBoolean(Constants.IS_FIRST_TIME_IN_APP, TRUE).commit()
         loadStartScreen()
+        AudioManager.startGameMusic()
     }
 
     private fun createNewUser(nickname: String) {
@@ -265,6 +271,10 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     }
 
     override fun onLevelsFragmentBackPressed() {
+        fragmentManager.popBackStack()
+    }
+
+    override fun onScoreBoardFragmentBackPressed() {
         fragmentManager.popBackStack()
     }
 

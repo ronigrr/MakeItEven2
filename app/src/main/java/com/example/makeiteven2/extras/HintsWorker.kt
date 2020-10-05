@@ -14,10 +14,10 @@ class HintsWorker(private val appContext: Context, workerParams: WorkerParameter
         val mNoteDao = mNoteDatabase.roomNoteDao()
         GlobalScope.launch {
             Constants.User = mNoteDao.getNotes()[0]
-            Constants.User.isHintGiftGiven = false
-            Constants.User.hintTimeStampStart = ""
+            Constants.User.isCoinsGiftGiven = false
+            Constants.User.coinsGivenTimeStampStart = ""
             mNoteDao.insertOrUpdateNote(Constants.User)
-            Log.v("test", "GiftsGiven = True from hints worker")
+            Log.v("gifts", "GiftsGiven = True from hints worker")
         }
         return Result.success()
     }

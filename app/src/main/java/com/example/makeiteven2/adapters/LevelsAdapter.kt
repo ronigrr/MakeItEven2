@@ -58,7 +58,6 @@ class LevelsAdapter(private var mLevelsList: List<Level> = ArrayList(), private 
                 } else {
                     callback.onLevelsAdapterItemClicked(level.levelNum)
                 }
-                //TODO: Implement onClick listener with callback to start the game level
             }
 
         }

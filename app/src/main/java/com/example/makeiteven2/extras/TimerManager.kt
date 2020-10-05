@@ -24,7 +24,7 @@ class TimerManager(fragment: Any, private var viewToUpdate: TextView?, val modeO
                 val m = (millisUntilFinished / 1000 / 60) % 60
                 val s = (millisUntilFinished / 1000) % 60
                 when (modeOfOperation) {
-                    Constants.HINTS_TIMER -> timeText = "${if (h >= 10) h else "0$h"}:${if (m >= 10) m else "0$m"}:${if (s >= 10) s else "0$s"}"
+                    Constants.COINS_TIMER -> timeText = "${if (h >= 10) h else "0$h"}:${if (m >= 10) m else "0$m"}:${if (s >= 10) s else "0$s"}"
                     Constants.ARCADE_TIMER -> timeText = "${if (m >= 10) m else "0$m"}:${if (s >= 10) s else "0$s"}"
                 }
                 Log.v("test", timeText)

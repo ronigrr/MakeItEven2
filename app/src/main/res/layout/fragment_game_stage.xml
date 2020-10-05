@@ -201,7 +201,30 @@
             android:layout_margin="5dp"
             android:background="@color/Transparent"
             android:src="@drawable/ic_back" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            >
 
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_coins"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp">
+            </ImageView>
+
+            <TextView
+                android:id="@+id/hintsLeftTV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text=" 2 "
+                android:gravity="center"
+                android:textColor="#000"
+                android:background="@drawable/backofcoincounter"/>
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -219,6 +242,14 @@
                 android:src="@drawable/ic_restart" />
 
             <ImageButton
+                android:id="@+id/sosButtonIB"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="7dp"
+                android:background="@color/Transparent"
+                android:src="@drawable/ic_sos" />
+
+            <ImageButton
                 android:id="@+id/hintButtonIB"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
@@ -226,16 +257,6 @@
                 android:background="@color/Transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_help" />
-
-            <TextView
-                android:id="@+id/hintsLeftTV"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center|start"
-                android:text="@string/hints_left"
-                android:textColor="#000" />
-
-
         </LinearLayout>
 
     </LinearLayout>
