@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.Level
 import com.example.makeiteven2.extras.Animations
+import com.example.makeiteven2.intefaces.ILevelsAdapter
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.level_cell.view.*
 
@@ -23,10 +24,6 @@ class LevelsAdapter(private var mLevelsList: List<Level> = ArrayList(), private 
         } else {
             throw ClassCastException(context.toString() + "must implement ILevelAdapter")
         }
-    }
-
-    interface ILevelsAdapter {
-        fun onLevelsAdapterItemClicked(levelNumber: Int)
     }
 
     class ViewHolder(private val view: View, private val context: Context) : RecyclerView.ViewHolder(view) {

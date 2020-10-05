@@ -41,5 +41,11 @@ data class RoomUserNote(
     var timeWorkDone: String,
 
     @ColumnInfo(name = "isHint_given")
-    var isHintGiftGiven: Boolean
-)
+    var isHintGiftGiven: Boolean,
+
+    @ColumnInfo(name = "highest_score")
+    var highestScore: String
+
+
+    )
+
