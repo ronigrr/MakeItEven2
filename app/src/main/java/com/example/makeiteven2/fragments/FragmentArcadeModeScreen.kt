@@ -15,12 +15,15 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
+import com.airbnb.lottie.parser.IntegerParser
 import com.example.makeiteven2.R
 import com.example.makeiteven2.extras.*
 import com.example.makeiteven2.game.GameFactory
 import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentArcadeModeListener
+import com.example.makeiteven2.room.DatabaseHelper
+import com.example.makeiteven2.room.FireBaseHelper.saveScoreToDatabaseScoreBoard
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_arcade.*
@@ -158,35 +161,35 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
     }
 
-    private fun showFinishDialog(mWinOrLose: String) {
-        val winLooseDialog = Dialog(context!!)
-
-        winLooseDialog.setCanceledOnTouchOutside(false)
-        winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        winLooseDialog.setCancelable(false)
-        winLooseDialog.setContentView(R.layout.win_loose_dialog)
-
-        winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(context!!))
-
-        winLooseDialog.ibtnRetry.setOnClickListener {
-            gameInit()
-            winLooseDialog.dismiss()
-        }
-        winLooseDialog.ibtnHome.setOnClickListener {
-            listener.backButtonPressedArcade()
-            winLooseDialog.dismiss()
-        }
-
-        winLooseDialog.ibtnNext.visibility = View.GONE
-        winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
-        winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
-        winLooseDialog.animationView.playAnimation()
-
-
-        winLooseDialog.show()
-    }
+//    private fun showFinishDialog(mWinOrLose: String) {
+//        val winLooseDialog = Dialog(context!!)
+//
+//        winLooseDialog.setCanceledOnTouchOutside(false)
+//        winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+//        winLooseDialog.setCancelable(false)
+//        winLooseDialog.setContentView(R.layout.win_loose_dialog)
+//
+//        winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(context!!))
+//        winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(context!!))
+//        winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(context!!))
+//
+//        winLooseDialog.ibtnRetry.setOnClickListener {
+//            gameInit()
+//            winLooseDialog.dismiss()
+//        }
+//        winLooseDialog.ibtnHome.setOnClickListener {
+//            listener.backButtonPressedArcade()
+//            winLooseDialog.dismiss()
+//        }
+//
+//        winLooseDialog.ibtnNext.visibility = View.GONE
+//        winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
+//        winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
+//        winLooseDialog.animationView.playAnimation()
+//
+//
+//        winLooseDialog.show()
+//    }
     //TODO:REMOVE AFTER BUG FIX
 
     private fun initToasty() {
@@ -463,6 +466,11 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
     }
 
     override fun onFinishTimer() {
+        if (mScoreCounter > Constants.User.arcadeHighScore.toInt())
+        {
+            DatabaseHelper.setPlayerArcadeMaxScore(context!!,mScoreCounter.toString())
+            saveScoreToDatabaseScoreBoard(context!!,mActualScoreTV.text.toString())
+        }
         mEndGameDialog.shodEndDialog(Constants.ARCADE_END_DIALOG,mActualScoreTV.text.toString())
     }
 

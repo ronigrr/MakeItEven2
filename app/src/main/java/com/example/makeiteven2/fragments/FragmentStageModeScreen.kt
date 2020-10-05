@@ -37,7 +37,7 @@ import kotlin.collections.ArrayList
 class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener , IEndDialogBtnClickedListener {
 
     private lateinit var mLevelNumberTV: TextView
-    private lateinit var mHintsLeftTV: TextView
+    private lateinit var mCoinsLeftTV: TextView
     private lateinit var mTargetNumberTV: TextView
     private lateinit var mBackButtonIB: ImageButton
     private lateinit var mRetryButtonIB: ImageButton
@@ -66,7 +66,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private var mFullHintString: String = ""
     private var mHalfHintString: String = ""
-    private var mNumberHintsLeft = Constants.User.hintsLeft
+    private var mNumberOfCoinsLeft = Constants.User.coinsLeft
     private var mLevelNum = levelNumber
     private var mTargetNumber = 0
     private val mGame = GameFactory.getGame(Constants.STAGE_GAME_TYPE, 12)
@@ -124,8 +124,10 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         sequence.addSequenceItem(rootView.btn_layout, "you need to use all four numbers to do it", "OK")
         sequence.addSequenceItem(rootView.operatorsLayout, "You have thous operators to reach you goal,you can use them as much as you want", "OK")
         sequence.addSequenceItem(rootView.hintButtonIB, "Need a hint? click here for one, notice you get only one for each stage you complete", "OK")
+        sequence.addSequenceItem(rootView.sosButtonIB,"Give up and need the full answer? click here but be careful it's expensive","OK")
         sequence.addSequenceItem(rootView.restartLevelIB, "If you want to start over,you can always to so with this button", "OK")
         sequence.start()
+
     }
 
     private fun gameSetup() {
@@ -152,15 +154,15 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 //val texttoshow = mFullHintString.substringBefore(")")
                 Toasty.info(letContext, mHalfHintString, Toast.LENGTH_SHORT, true).show()
             }
-            mNumberHintsLeft--
-            DatabaseHelper.saveHintsToDataBase(context!!.applicationContext, mNumberHintsLeft)
-            val textToShow = "${resources.getText(R.string.coins_left)}" + "$mNumberHintsLeft"
-            mHintsLeftTV.text = textToShow
-            if (mNumberHintsLeft == 0) {
+            mNumberOfCoinsLeft--
+            DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
+            val textToShow = "${resources.getText(R.string.coins_left)}" + "$mNumberOfCoinsLeft"
+            mCoinsLeftTV.text = textToShow
+            if (mNumberOfCoinsLeft == 0) {
                 (view as ImageButton).setImageResource(R.drawable.ic_help_off)
                 view.isEnabled = false
             }
-            if (mNumberHintsLeft <=1){
+            if (mNumberOfCoinsLeft <=1){
                 mSosHintIB.setImageResource(R.drawable.ic_sosoff)
                 mSosHintIB.isEnabled = false
             }
@@ -170,15 +172,15 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             context?.let { letContext->
                 Toasty.info(letContext,mFullHintString,Toast.LENGTH_LONG,true).show()
             }
-            mNumberHintsLeft-=2
-            DatabaseHelper.saveHintsToDataBase(context!!.applicationContext, mNumberHintsLeft)
-            val textToShow = "${resources.getText(R.string.coins_left)}" + " $mNumberHintsLeft "
-            mHintsLeftTV.text = textToShow
-            if (mNumberHintsLeft == 0) {
+            mNumberOfCoinsLeft-=2
+            DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
+            val textToShow = "${resources.getText(R.string.coins_left)}" + " $mNumberOfCoinsLeft "
+            mCoinsLeftTV.text = textToShow
+            if (mNumberOfCoinsLeft == 0) {
                 mHintIB.setImageResource(R.drawable.ic_help_off)
                 mHintIB.isEnabled = false
             }
-            if (mNumberHintsLeft <= 1) {
+            if (mNumberOfCoinsLeft <= 1) {
                 (view as ImageButton).isEnabled = false
                 view.setImageResource(R.drawable.ic_sosoff)
             }
@@ -347,7 +349,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private fun initFragmentMembersFromView() {
         mLevelNumberTV = rootView.levelTV // "Level: X"
-        mHintsLeftTV = rootView.hintsLeftTV //"Hints: X"
+        mCoinsLeftTV = rootView.hintsLeftTV //"Hints: X"
         mTargetNumberTV = rootView.theTargetNumberTV
         mBackButtonIB = rootView.backButtonIB
         mRetryButtonIB = rootView.restartLevelIB
@@ -366,20 +368,20 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mNumberGroup = rootView.group_choices_of_numbers
 
 
-        mNumberHintsLeft = Constants.User.hintsLeft
-        if (mNumberHintsLeft == 0) {
+        mNumberOfCoinsLeft = Constants.User.coinsLeft
+        if (mNumberOfCoinsLeft == 0) {
             mHintIB.isEnabled = false
             mHintIB.setImageResource(R.drawable.ic_help_off)
         }
-        if (mNumberHintsLeft == 1) {
+        if (mNumberOfCoinsLeft == 1) {
             mSosHintIB.isEnabled = false
             mSosHintIB.setImageResource(R.drawable.ic_sosoff)
         }
 //        mLevelNum = Constants.User.currentLevel!!
         var textToShow = resources.getText(R.string.level_number).toString() + mLevelNum.toString()
         mLevelNumberTV.text = textToShow
-        textToShow = resources.getString(R.string.coins_left) + " $mNumberHintsLeft "
-        mHintsLeftTV.text = textToShow
+        textToShow = resources.getString(R.string.coins_left) + " $mNumberOfCoinsLeft "
+        mCoinsLeftTV.text = textToShow
 
     }
 

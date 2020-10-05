@@ -18,9 +18,9 @@ object DatabaseHelper {
         mNoteDao = mNoteDatabase.roomNoteDao()
     }
 
-    fun saveHintsToDataBase(context: Context, numberHintsLeft: Int) {
+    fun saveCoinsToDataBase(context: Context, numberCoinsLeft: Int) {
         getDataBase(context)
-        Constants.User.hintsLeft = numberHintsLeft
+        Constants.User.coinsLeft = numberCoinsLeft
         GlobalScope.launch { mNoteDao.insertOrUpdateNote(Constants.User) }
     }
 
@@ -50,9 +50,9 @@ object DatabaseHelper {
         GlobalScope.launch { mNoteDao.insertOrUpdateNote(Constants.User) }
     }
 
-    fun addHints(context: Context, hintsToAdd: Int) {
+    fun addCoins(context: Context, coinsToAdd: Int) {
         getDataBase(context)
-        Constants.User.hintsLeft += hintsToAdd
+        Constants.User.coinsLeft += coinsToAdd
         GlobalScope.launch {
             mNoteDao.insertOrUpdateNote(Constants.User)
         }
@@ -60,7 +60,7 @@ object DatabaseHelper {
 
     fun setGiftGiven(context: Context, isGiftGiven: Boolean) {
         getDataBase(context)
-        Constants.User.isHintGiftGiven = isGiftGiven
+        Constants.User.isCoinsGiftGiven = isGiftGiven
         GlobalScope.launch {
             mNoteDao.insertOrUpdateNote(Constants.User)
         }
@@ -68,7 +68,15 @@ object DatabaseHelper {
 
     fun setGiftStartTimeStamp(context: Context, timestamp: String) {
         getDataBase(context)
-        Constants.User.hintTimeStampStart = timestamp
+        Constants.User.coinsGivenTimeStampStart = timestamp
+        GlobalScope.launch {
+            mNoteDao.insertOrUpdateNote(Constants.User)
+        }
+    }
+
+    fun setPlayerArcadeMaxScore(context: Context,highScore: String){
+        getDataBase(context)
+        Constants.User.arcadeHighScore = highScore
         GlobalScope.launch {
             mNoteDao.insertOrUpdateNote(Constants.User)
         }
