@@ -95,6 +95,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_game_arcade, container, false)
+        listener.arcadeModeHide3dotToolBar()
         initToasty()
         gameSetup()
         gameInit()
@@ -123,10 +124,8 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
                 override fun onAnimationEnd(animation: Animator) {
                     Log.e("Animation:", "end")
-
                     countDownAnim.visibility = View.GONE
                     mTimerManager.startTimer(Constants.TEST_COUNTDOWN_10_SECONDS_IN_MILLIS)
-
                 }
 
                 override fun onAnimationCancel(animation: Animator) {
@@ -156,37 +155,6 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         setButtonsListeners()
 
     }
-
-//    private fun showFinishDialog(mWinOrLose: String) {
-//        val winLooseDialog = Dialog(context!!)
-//
-//        winLooseDialog.setCanceledOnTouchOutside(false)
-//        winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        winLooseDialog.setCancelable(false)
-//        winLooseDialog.setContentView(R.layout.win_loose_dialog)
-//
-//        winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(context!!))
-//        winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(context!!))
-//        winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(context!!))
-//
-//        winLooseDialog.ibtnRetry.setOnClickListener {
-//            gameInit()
-//            winLooseDialog.dismiss()
-//        }
-//        winLooseDialog.ibtnHome.setOnClickListener {
-//            listener.backButtonPressedArcade()
-//            winLooseDialog.dismiss()
-//        }
-//
-//        winLooseDialog.ibtnNext.visibility = View.GONE
-//        winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
-//        winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
-//        winLooseDialog.animationView.playAnimation()
-//
-//
-//        winLooseDialog.show()
-//    }
-    //TODO:REMOVE AFTER BUG FIX
 
     private fun initToasty() {
         Toasty.Config.getInstance().tintIcon(false).setTextSize(30).allowQueue(true).apply()
@@ -478,9 +446,9 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 mEndGameDialog.dismissDialog()
             }
             R.id.ibtnRetry->{
-                //TODO: Retry dosnt work properly,runs 2 timers for some reason
-                countDownAnim.visibility = View.VISIBLE
-                startCountDownAnimation()
+                //countDownAnim.visibility = View.VISIBLE
+                //startCountDownAnimation()
+                listener.restartArcadeGame()
                 mEndGameDialog.dismissDialog()
             }
             R.id.ibtnScoreBoard->{
