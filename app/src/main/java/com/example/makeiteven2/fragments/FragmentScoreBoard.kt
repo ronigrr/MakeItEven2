@@ -38,7 +38,7 @@ class FragmentScoreBoard : Fragment() {
         }
         initRecyclerView()
         getDataFromWebAndUpdateRecyclerViewAdapter()
-
+        mCallBack.hide3dotToolBar()
         return rootView
     }
 

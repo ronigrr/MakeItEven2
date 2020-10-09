@@ -37,22 +37,25 @@ class DialogEndGameManager(fragment: Any,private val mContext: Context) {
         winLooseDialog.ibtnHome.setOnClickListener { listener.onEndDialogBtnClicked(it) }
         winLooseDialog.ibtnNext.setOnClickListener {   listener.onEndDialogBtnClicked(it)}
         winLooseDialog.ibtnRetry.setOnClickListener {  listener.onEndDialogBtnClicked(it) }
+        winLooseDialog.ibtnScoreBoard.setOnClickListener { listener.onEndDialogBtnClicked(it) }
 
         when (whichDialog) {
             Constants.WIN_DIALOG -> {
                 winLooseDialog.tvText.text = mContext.resources.getString(R.string.correct_answer)
                 winLooseDialog.animationView.setAnimation(R.raw.win_owl_anim)
                 winLooseDialog.animationView.playAnimation()
+                winLooseDialog.ibtnScoreBoard.visibility = View.GONE
             }
             Constants.LOSE_DIALOG -> {
                 winLooseDialog.ibtnNext.visibility = View.GONE
+                winLooseDialog.ibtnScoreBoard.visibility = View.GONE
                 winLooseDialog.tvText.text = mContext.resources.getString(R.string.wrong_answer)
                 winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
                 winLooseDialog.animationView.playAnimation()
             }
             Constants.ARCADE_END_DIALOG->{
                 winLooseDialog.ibtnNext.visibility = View.GONE
-                winLooseDialog.tvText.text = "${mContext.getString(R.string.you_score_is)} + $score"
+                winLooseDialog.tvText.text = "${mContext.getString(R.string.you_score_is)} $score"
                 winLooseDialog.animationView.setAnimation(R.raw.times_up)
                 winLooseDialog.animationView.playAnimation()
             }

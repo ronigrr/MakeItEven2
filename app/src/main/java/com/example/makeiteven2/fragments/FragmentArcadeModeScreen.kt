@@ -1,7 +1,6 @@
 package com.example.makeiteven2.fragments
 
 import android.animation.Animator
-import android.app.Dialog
 import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -10,12 +9,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
-import com.airbnb.lottie.parser.IntegerParser
 import com.example.makeiteven2.R
 import com.example.makeiteven2.extras.*
 import com.example.makeiteven2.game.GameFactory
@@ -28,7 +25,6 @@ import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_arcade.*
 import kotlinx.android.synthetic.main.fragment_game_arcade.view.*
-import kotlinx.android.synthetic.main.win_loose_dialog.*
 
 class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerListener,IEndDialogBtnClickedListener {
 
@@ -469,7 +465,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         if (mScoreCounter > Constants.User.arcadeHighScore.toInt())
         {
             DatabaseHelper.setPlayerArcadeMaxScore(context!!,mScoreCounter.toString())
-            saveScoreToDatabaseScoreBoard(context!!,mActualScoreTV.text.toString())
+            saveScoreToDatabaseScoreBoard(context!!,mScoreCounter)
         }
         mEndGameDialog.shodEndDialog(Constants.ARCADE_END_DIALOG,mActualScoreTV.text.toString())
     }
@@ -484,10 +480,12 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
             R.id.ibtnRetry->{
                 //TODO: Retry dosnt work properly,runs 2 timers for some reason
                 countDownAnim.visibility = View.VISIBLE
-                //gameInit()
-                //initTimer()
                 startCountDownAnimation()
                 mEndGameDialog.dismissDialog()
+            }
+            R.id.ibtnScoreBoard->{
+                mEndGameDialog.dismissDialog()
+                listener.loadScoreBoardFromArcade()
             }
         }
     }

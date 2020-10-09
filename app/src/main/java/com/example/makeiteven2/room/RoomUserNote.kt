@@ -44,5 +44,5 @@ data class RoomUserNote(
     var isCoinsGiftGiven: Boolean,
 
     @ColumnInfo(name = "arcade_highScore")
-    var arcadeHighScore : String="0"
+    var arcadeHighScore : String
 )

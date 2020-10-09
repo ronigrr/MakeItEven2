@@ -18,7 +18,7 @@ class ScoreBoardCellAdapter(private var mScoresList:List<NameAndScoreInfo>,priva
         fun bind(list: NameAndScoreInfo, position: Int)
         {
             view.tvName.text = list.playerName
-            view.tvScore.text = list.playerScore
+            view.tvScore.text = list.playerScore.toString()
             view.tvPlace.text = "${position+1}."
         }
     }

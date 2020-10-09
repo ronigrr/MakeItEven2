@@ -6,7 +6,6 @@ import com.example.makeiteven2.adapters.ScoreBoardCellAdapter
 import com.example.makeiteven2.data_models.NameAndScoreInfo
 import com.example.makeiteven2.extras.Constants
 import com.google.firebase.database.*
-import java.util.jar.Attributes
 
 
 object FireBaseHelper {
@@ -19,18 +18,18 @@ object FireBaseHelper {
         mDatabase = FirebaseDatabase.getInstance()
     }
 
-    fun saveScoreToDatabaseScoreBoard(context: Context,highScore : String){
+    fun saveScoreToDatabaseScoreBoard(context: Context,highScore : Int){
         getFireBaseDataBase(context)
         mFirebaseReference = mDatabase.getReference(Constants.SCOREBOARD_FIREBASE_REFERENCE)
         mFirebaseReference.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (child in snapshot.children)
                 {
-                    if (child.key.toString()==Constants.User.playerTokenId){
-                    val tempNameAndScoreInfo
-                            = child.getValue(NameAndScoreInfo::class.java) as NameAndScoreInfo
+                    if (child.key.toString()==Constants.User.playerTokenId)
+                    {
+                    val tempNameAndScoreInfo = child.getValue(NameAndScoreInfo::class.java) as NameAndScoreInfo
                         tempNameAndScoreInfo.playerScore=highScore
-                    Log.v("database",child.toString())
+                        Log.v("database",child.toString())
                         mFirebaseReference.child(Constants.User.playerTokenId).setValue(tempNameAndScoreInfo)
                         return
                     }
@@ -44,18 +43,22 @@ object FireBaseHelper {
 
         })
     }
+
     fun getScoreBoardListFromDataBase(context: Context,adapter : ScoreBoardCellAdapter){
         getFireBaseDataBase(context)
-        val scoreBoardList : ArrayList<NameAndScoreInfo> = ArrayList()
-        mFirebaseReference = mDatabase.getReference(Constants.SCOREBOARD_FIREBASE_REFERENCE)
-        mFirebaseReference.addListenerForSingleValueEvent(object : ValueEventListener{
+        val tempScoreBoardListForAdapter : ArrayList<NameAndScoreInfo> = ArrayList()
+        val mFirebaseReferenceOrderByQuery = mDatabase.getReference(Constants.SCOREBOARD_FIREBASE_REFERENCE)
+            .orderByChild("playerScore")
+        mFirebaseReferenceOrderByQuery.addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (item in snapshot.children)
                 {
+                    Log.d("database",item.toString())
                     val tempNameAndScoreInfo = item.getValue(NameAndScoreInfo::class.java) as NameAndScoreInfo
-                    scoreBoardList.add(tempNameAndScoreInfo)
+                    tempScoreBoardListForAdapter.add(tempNameAndScoreInfo)
                 }
-                adapter.updateScoreBoardList(scoreBoardList)
+                tempScoreBoardListForAdapter.reverse()
+                adapter.updateScoreBoardList(tempScoreBoardListForAdapter)
             }
 
             override fun onCancelled(error: DatabaseError) {

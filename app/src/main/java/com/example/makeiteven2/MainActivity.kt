@@ -1,5 +1,6 @@
 package com.example.makeiteven2
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -25,7 +26,16 @@ import com.example.makeiteven2.intefaces.*
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.FireBaseHelper
 import com.example.makeiteven2.room.RoomUserNote
+import com.google.android.play.core.appupdate.AppUpdateInfo
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
+import com.google.android.play.core.tasks.Task
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.lang.Boolean.FALSE
@@ -36,7 +46,7 @@ import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     , IFragmentSettingsListener, LevelsAdapter.ILevelsAdapter,
-    FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener,IFragmentScoreBoardScreenListener {
+    FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener,IFragmentScoreBoardScreenListener{
 
     private val fragmentManager = supportFragmentManager
 
@@ -45,15 +55,33 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
     private lateinit var appToolbar: Toolbar
 
+    private lateinit var appUpdateManager : AppUpdateManager
+    private lateinit var appUpdateInfoTask : Task<AppUpdateInfo>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init3DotToolBar()
+        initUpdateManager()
 
         mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
         mEditor = mSharedPref.edit()
         AudioManager.getInstance(this)
 
+//        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+//                // For a flexible update, use AppUpdateType.FLEXIBLE
+//                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)){
+//                // Request the update.
+//            }
+//            else if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_NOT_AVAILABLE) {
+//                //continue
+//                 }
+//        }
+        startLoadingApp()
+    }
+
+    private fun startLoadingApp() {
         if (mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_APP, FALSE) == FALSE) {
             Handler().postDelayed(Runnable {
                 setMainActivityVisible()
@@ -66,6 +94,12 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
             }, 5000)
         }
     }
+
+    private fun initUpdateManager() {
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+        appUpdateInfoTask = appUpdateManager.appUpdateInfo
+    }
+
     private fun setMainActivityVisible() {
         fragmentContainer.visibility = View.VISIBLE
         show3DotsToolBar()
@@ -106,7 +140,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
             Constants.SCOREBOARD_SCREEN_FRAGMENT_TAG
         )
             .addToBackStack(null).commit()
-        hide3DotsToolBar()
     }
 
     private fun loadStageModeWithTutorial() {
@@ -135,6 +168,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         return true
     }
 
+    @SuppressLint("InflateParams")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_about -> {
@@ -238,7 +272,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
             UUID.randomUUID().toString(), nickname, 1, 20, 50, 3, ArrayList(),
-            "", "", false
+            "", "", false,"0"
         )
         newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))
         Constants.User = newUserNote
@@ -266,6 +300,12 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         fragmentManager.popBackStack()
     }
 
+    override fun loadScoreBoardFromArcade() {
+        fragmentManager.popBackStack()
+        loadScoreBoard()
+
+    }
+
     override fun backButtonPressedStage() {
         fragmentManager.popBackStack()
     }
@@ -278,7 +318,9 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         fragmentManager.popBackStack()
     }
 
-
+    override fun hide3dotToolBar() {
+        hide3DotsToolBar()
+    }
 }
 
 //TODO: need to licence , super_duper,tada,wa wa
