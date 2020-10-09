@@ -69,6 +69,16 @@
                 android:src="@drawable/ic_restart" />
 
             <ImageButton
+                android:id="@+id/ibtnScoreBoard"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter"
+                android:layout_margin="5dp"
+                android:background="@color/Transparent"
+                android:src="@drawable/ic_trophy" />
+            <ImageButton
+
                 android:id="@+id/ibtnNext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
