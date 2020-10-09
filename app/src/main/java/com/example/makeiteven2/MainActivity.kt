@@ -160,7 +160,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
             Constants.ARCADE_MODE_SCREEN_FRAGMENT_TAG
         )
             .addToBackStack(null).commit()
-        hide3DotsToolBar()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -306,6 +305,15 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
     }
 
+    override fun restartArcadeGame() {
+        fragmentManager.popBackStack()
+        loadArcadeMode()
+    }
+
+    override fun arcadeModeHide3dotToolBar() {
+        hide3DotsToolBar()
+    }
+
     override fun backButtonPressedStage() {
         fragmentManager.popBackStack()
     }
@@ -318,7 +326,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         fragmentManager.popBackStack()
     }
 
-    override fun hide3dotToolBar() {
+    override fun scoreBoardHide3dotToolBar() {
         hide3DotsToolBar()
     }
 }

@@ -2,7 +2,6 @@ package com.example.makeiteven2.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,6 @@ import com.example.makeiteven2.adapters.ScoreBoardCellAdapter
 import com.example.makeiteven2.data_models.NameAndScoreInfo
 import com.example.makeiteven2.intefaces.IFragmentScoreBoardScreenListener
 import com.example.makeiteven2.room.FireBaseHelper
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.fragment_score_board.view.*
 
 
@@ -38,7 +33,7 @@ class FragmentScoreBoard : Fragment() {
         }
         initRecyclerView()
         getDataFromWebAndUpdateRecyclerViewAdapter()
-        mCallBack.hide3dotToolBar()
+        mCallBack.scoreBoardHide3dotToolBar()
         return rootView
     }
 
