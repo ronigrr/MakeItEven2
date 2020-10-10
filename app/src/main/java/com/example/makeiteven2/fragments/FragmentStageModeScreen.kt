@@ -1,14 +1,11 @@
 package com.example.makeiteven2.fragments
 
-import android.app.Dialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -27,14 +24,15 @@ import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_stage.view.*
-import kotlinx.android.synthetic.main.win_loose_dialog.*
-import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence
-import uk.co.deanwild.materialshowcaseview.ShowcaseConfig
-import java.util.*
+import me.toptas.fancyshowcase.FancyShowCaseQueue
+import me.toptas.fancyshowcase.FancyShowCaseView
 import kotlin.collections.ArrayList
 
 
 class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener , IEndDialogBtnClickedListener {
+
+    private lateinit var mSharedPref: SharedPreferences
+    private lateinit var mEditor: SharedPreferences.Editor
 
     private lateinit var mLevelNumberTV: TextView
     private lateinit var mCoinsLeftTV: TextView
@@ -84,6 +82,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private var operator = ""
     private var selectedOperatorID = 0
 
+    private lateinit var fancyShowCaseQueue : FancyShowCaseQueue
+
     private lateinit var mCountDownTimer: CountDownTimer
     private var showCaseId = Constants.SHOWCASE_ID
 
@@ -98,38 +98,70 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_game_stage, container, false)
+        initSharedPref()
         initToasty()
         gameSetup()
         gameInit()
         initDialog()
-        startTutorial()
+        Handler().postDelayed(Runnable {
+            startTutorial()
+        }, 200)
+
         return rootView
     }
 
-
+    private fun initSharedPref() {
+        mSharedPref = context!!.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
+        mEditor = mSharedPref.edit()
+    }
 
     private fun initDialog() {
         mEndGameDialog = DialogEndGameManager(this, context!!)
     }
 
-    private fun startTutorial() {
-        if (arguments?.getBoolean(Constants.IS_TUTORIAL)!=null){
-            showCaseId = UUID.randomUUID().toString()
+    private fun startTutorial(){
+        fancyShowCaseQueue = FancyShowCaseQueue()
+
+        if (arguments?.getBoolean(Constants.IS_TUTORIAL)!=null || mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_STAGEMODE,true)) {
+
+            if (mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_STAGEMODE,true))
+                {
+                    mEditor.putBoolean(Constants.IS_FIRST_TIME_IN_STAGEMODE,false).commit()
+                }
+            val one = FancyShowCaseView.Builder(activity!!)
+                .focusOn(rootView.theTargetNumberTV)
+                .title("This is the target number you need to reach")
+                .build()
+            val two = FancyShowCaseView.Builder(activity!!)
+                .focusOn(rootView.btn_layout)
+                .title("You need to use ALL four numbers to do so")
+                .titleGravity(Gravity.BOTTOM)
+                .build()
+            val three = FancyShowCaseView.Builder(activity!!)
+                .focusOn(rootView.operatorsLayout)
+                .title("Use all operators as much as you want")
+                .titleGravity(Gravity.TOP)
+                .build()
+            val four = FancyShowCaseView.Builder(activity!!)
+                .focusOn(rootView.hintButtonIB)
+                .title("Need a hint? click here for one, notice you get only one for each stage you complete")
+                .build()
+            val five = FancyShowCaseView.Builder(activity!!)
+                .focusOn(rootView.sosButtonIB)
+                .title("You want the full answer? click here but be careful it's expensive")
+                .titleGravity(Gravity.BOTTOM)
+                .build()
+            val six = FancyShowCaseView.Builder(activity!!)
+                .focusOn(rootView.coinsLeftTV)
+                .title("This is the numbers of coins left,hint costs one coin and sos costs 3")
+                .titleGravity(Gravity.BOTTOM)
+                .build()
+            val gl = FancyShowCaseView.Builder(activity!!)
+                .title("Good Luck!")
+                .build()
+            fancyShowCaseQueue.add(one).add(two).add(three).add(four).add(five).add(six).add(gl).show()
         }
-        val config = ShowcaseConfig()
-        config.delay = 500
-        val sequence = MaterialShowcaseSequence(activity, showCaseId)
-        sequence.setConfig(config)
-        sequence.addSequenceItem(rootView.theTargetNumberTV, "This is the target number you need to reach", "OK")
-        sequence.addSequenceItem(rootView.btn_layout, "you need to use all four numbers to do it", "OK")
-        sequence.addSequenceItem(rootView.operatorsLayout, "You have thous operators to reach you goal,you can use them as much as you want", "OK")
-        sequence.addSequenceItem(rootView.hintButtonIB, "Need a hint? click here for one, notice you get only one for each stage you complete", "OK")
-        sequence.addSequenceItem(rootView.sosButtonIB,"Give up and need the full answer? click here but be careful it's expensive","OK")
-        sequence.addSequenceItem(rootView.restartLevelIB, "If you want to start over,you can always to so with this button", "OK")
-        sequence.start()
-
     }
-
     private fun gameSetup() {
         initFragmentMembersFromView()
         mGameButtonsList.add(mGameButton1TB)
@@ -170,7 +202,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
         val sosHintListener = View.OnClickListener { view ->
             context?.let { letContext->
-                Toasty.info(letContext,mFullHintString,Toast.LENGTH_LONG,true).show()
+                Toasty.info(letContext, mFullHintString, Toast.LENGTH_LONG, true).show()
             }
             mNumberOfCoinsLeft-=2
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
@@ -192,7 +224,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         }
 
         mSosHintIB.apply {
-            setOnClickListener (sosHintListener)
+            setOnClickListener(sosHintListener)
             setOnTouchListener(Animations.getTouchAnimation(context))
         }
         mBackButtonIB.apply {
@@ -349,7 +381,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private fun initFragmentMembersFromView() {
         mLevelNumberTV = rootView.levelTV // "Level: X"
-        mCoinsLeftTV = rootView.hintsLeftTV //"Hints: X"
+        mCoinsLeftTV = rootView.coinsLeftTV //"Hints: X"
         mTargetNumberTV = rootView.theTargetNumberTV
         mBackButtonIB = rootView.backButtonIB
         mRetryButtonIB = rootView.restartLevelIB
@@ -500,49 +532,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         }
     }
 
-    //TODO: Remove showFinishDialog after review,only here for reference
-    private fun showFinishDialog(mWinOrLose: String) {
-        val winLooseDialog = Dialog(context!!)
-
-        winLooseDialog.setCanceledOnTouchOutside(false)
-        winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        winLooseDialog.setCancelable(false)
-        winLooseDialog.setContentView(R.layout.win_loose_dialog)
-
-        winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(context!!))
-
-        winLooseDialog.ibtnRetry.setOnClickListener {
-            gameInit()
-            winLooseDialog.dismiss()
-        }
-        winLooseDialog.ibtnNext.setOnClickListener {
-            mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + (++mLevelNum).toString()
-            gameInit()
-            winLooseDialog.dismiss()
-        }
-        winLooseDialog.ibtnHome.setOnClickListener {
-            listener.backButtonPressedStage()
-            winLooseDialog.dismiss()
-        }
-        when (mWinOrLose) {
-            Constants.WIN_DIALOG -> {
-                winLooseDialog.tvText.text = context!!.resources.getString(R.string.correct_answer)
-                winLooseDialog.animationView.setAnimation(R.raw.win_owl_anim)
-                winLooseDialog.animationView.playAnimation()
-            }
-            Constants.LOSE_DIALOG -> {
-                winLooseDialog.ibtnNext.visibility = View.GONE
-                winLooseDialog.tvText.text = context!!.resources.getString(R.string.wrong_answer)
-                winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
-                winLooseDialog.animationView.playAnimation()
-            }
-        }
-        winLooseDialog.show()
-    }
-
-
     override fun onEndDialogBtnClicked(view: View) {
         when(view.id){
             R.id.ibtnHome -> {
@@ -559,6 +548,11 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 mEndGameDialog.dismissDialog()
             }
         }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        fancyShowCaseQueue?.cancel(true)
     }
 }
 

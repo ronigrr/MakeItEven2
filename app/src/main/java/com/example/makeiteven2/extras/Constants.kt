@@ -4,6 +4,7 @@ import com.example.makeiteven2.room.RoomUserNote
 
 object Constants {
 
+    const val IS_FIRST_TIME_IN_STAGEMODE: String = "first_time_in_stagemode"
     const val SCOREBOARD_SCREEN_FRAGMENT_TAG: String = "scoreboard_screen_fragment"
     const val IS_TUTORIAL = "is_tutorial"
     const val TEST_COUNTDOWN_10_SECONDS_IN_MILLIS: Long = (0.2 * 1000 * 60).toLong()
@@ -27,7 +28,6 @@ object Constants {
     const val LOSE_DIALOG = "lose_dialog"
     const val ARCADE_END_DIALOG ="arcade_end_dialog"
     const val SHOWCASE_ID = "showcase_id"
-    const val ADD_HINTS = "add_hints"
     const val TIME_UNITS_FOR_HINTS_IN_MILLI: Long = 21600000
     const val GIFT_HINTS_TO_GIVE = 1
     const val ADD_MOB = "ca-app-pub-4722610653423402/4300443792"

@@ -261,24 +261,6 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/hiding_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffff"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/ivCountdown"
-            android:layout_width="350dp"
-            android:layout_height="350dp"
-            android:layout_centerInParent="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/ic_three"
-            android:focusable="true" />
-    </RelativeLayout>
-
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/countDownAnim"
         android:layout_width="match_parent"
