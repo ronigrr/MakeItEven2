@@ -8,7 +8,6 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,26 +16,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import com.example.makeiteven2.adapters.LevelsAdapter
-import com.example.makeiteven2.data_models.NameAndScoreInfo
 import com.example.makeiteven2.data_models.StageInfo
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.intefaces.*
 import com.example.makeiteven2.room.DatabaseHelper
-import com.example.makeiteven2.room.FireBaseHelper
 import com.example.makeiteven2.room.RoomUserNote
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.tasks.Task
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_game_stage.view.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
@@ -67,20 +59,8 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
         mEditor = mSharedPref.edit()
         AudioManager.getInstance(this)
-
-//        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-//            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-//                // For a flexible update, use AppUpdateType.FLEXIBLE
-//                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)){
-//                // Request the update.
-//            }
-//            else if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_NOT_AVAILABLE) {
-//                //continue
-//                 }
-//        }
         startLoadingApp()
     }
-
     private fun startLoadingApp() {
         if (mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_APP, FALSE) == FALSE) {
             Handler().postDelayed(Runnable {
@@ -271,7 +251,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
             UUID.randomUUID().toString(), nickname, 1, 20, 50, 3, ArrayList(),
-            "", "", false,"0"
+            "", "", false, "0"
         )
         newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))
         Constants.User = newUserNote

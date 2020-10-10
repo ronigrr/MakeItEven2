@@ -7,6 +7,7 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,7 +23,10 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.example.makeiteven2.R
-import com.example.makeiteven2.extras.*
+import com.example.makeiteven2.extras.Animations
+import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.extras.HintsWorker
+import com.example.makeiteven2.extras.TimerManager
 import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentsStartsScreenListener
 import com.example.makeiteven2.room.DatabaseHelper
@@ -35,6 +39,7 @@ import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 import kotlinx.android.synthetic.main.store_dialog.*
+
 import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
@@ -75,7 +80,6 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
 
         initAnimations()
         initBtnOnClick()
-
         return rootView
     }
 
@@ -182,10 +186,10 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
         rewardedAd= RewardedAd(context, Constants.ADD_MOB_TEST)
         val adLoadCallback = object: RewardedAdLoadCallback() {
             override fun onRewardedAdLoaded() {
-                Log.v("ad","onRewardedAdLoaded")
+                Log.v("ad", "onRewardedAdLoaded")
             }
             override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
-                Log.v("ad","onRewardedAdFailedToLoad")
+                Log.v("ad", "onRewardedAdFailedToLoad")
             }
         }
         rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
@@ -195,18 +199,18 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
             val activityContext: Activity = this.activity!!
             val adCallback = object: RewardedAdCallback() {
                 override fun onRewardedAdOpened() {
-                    Log.v("ad","onRewardedAdOpened")
+                    Log.v("ad", "onRewardedAdOpened")
                 }
                 override fun onRewardedAdClosed() {
-                    Log.v("ad","onRewardedAdClosed")
+                    Log.v("ad", "onRewardedAdClosed")
                     loadRewardAD()
                 }
                 override fun onUserEarnedReward(reward: RewardItem) {
-                    Log.v("ad","onUserEarnedReward (${reward.amount.toString()})")
-                    DatabaseHelper.addCoins(context!!,reward.amount)
+                    Log.v("ad", "onUserEarnedReward (${reward.amount.toString()})")
+                    DatabaseHelper.addCoins(context!!, reward.amount)
                 }
                 override fun onRewardedAdFailedToShow(adError: AdError) {
-                    Log.v("ad","onRewardedAdFailedToShow")
+                    Log.v("ad", "onRewardedAdFailedToShow")
                 }
             }
             rewardedAd.show(activityContext, adCallback)
