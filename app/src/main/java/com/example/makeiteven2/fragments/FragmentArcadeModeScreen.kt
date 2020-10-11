@@ -227,7 +227,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 visibility = View.VISIBLE
                 isEnabled = true
                 isChecked = false
-                startAnimation(Animations.getBounceAnimation(context!!))
+                startAnimation(Animations.getScaleInAnimation(context!!))
             }
         }
         for (tb in mOperatorsList) {
@@ -386,7 +386,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 if (tb.isEnabled) i++
             }
             if (isDivideZero || isFraction) {
-                AudioManager.startBuzzerSound()
+                AudioManager.startWrongAnswerSound()
             }
 
             if (i == 1) {
@@ -415,14 +415,12 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
                     }
 
-
                     mActualScoreTV.text = mScoreCounter.toString() + ""
 
                 } else {
-                    //you loose
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        //showFinishDialog(Constants.LOSE_DIALOG)
-                    }, 200)
+                    AudioManager.startWrongAnswerSound()
+                    view?.startAnimation(Animations.getShakeAnimation(context!!))
+                    gameInit()
                 }
             }
 

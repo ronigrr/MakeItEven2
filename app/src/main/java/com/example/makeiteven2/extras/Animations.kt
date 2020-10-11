@@ -52,6 +52,9 @@ object Animations {
             .oneShot()
     } // just send in the layout you want to show the Confetti
 
+    fun getShakeAnimation(context: Context): Animation =
+        AnimationUtils.loadAnimation(context,R.anim.shake)
+
     fun getScaleOutAnimation(context: Context): Animation =
         AnimationUtils.loadAnimation(context, R.anim.scale_out)
 
