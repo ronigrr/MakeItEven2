@@ -556,6 +556,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     override fun onDetach() {
         super.onDetach()
         fancyShowCaseQueue?.cancel(true)
+        
     }
 }
 
