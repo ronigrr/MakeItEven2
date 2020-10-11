@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,6 +18,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.StageInfo
+import com.example.makeiteven2.extras.Animations
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.fragments.*
@@ -28,11 +30,11 @@ import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.tasks.Task
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_game_stage.view.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
 import java.util.*
+import java.util.concurrent.Executor
 import kotlin.collections.ArrayList
 
 
@@ -63,13 +65,13 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     }
     private fun startLoadingApp() {
         if (mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_APP, FALSE) == FALSE) {
-            Handler().postDelayed(Runnable {
+            Handler(Looper.getMainLooper()).postDelayed({
                 setMainActivityVisible()
                 firstTimeInApp()
             }, 5000)
         } else {
             loadUser()
-            Handler().postDelayed(Runnable {
+            Handler(Looper.getMainLooper()).postDelayed({
                 loadStartScreen()
             }, 5000)
         }
@@ -104,7 +106,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
     override fun onStartScreenFragmentButtonClicked(view: View) {
         when (view.id) {
-            btnStageMode.id -> loadStageModeLevelScreen()
+            btnStageMode.id -> loadLevelScreen()
             btnArcadeMode.id -> loadArcadeMode()
             btnScoreBoard.id -> loadScoreBoard()
             btnTutorial.id -> {
@@ -175,15 +177,9 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         return super.onOptionsItemSelected(item)
     }
 
-    private fun loadStageModeLevelScreen() {
-
-        fragmentManager.beginTransaction().replace(
-            R.id.fragmentContainer,
-            FragmentLevelsScreen(),
-            Constants.LEVELS_SCREEN_FRAGMENT_TAG
-        )
+    private fun loadLevelScreen() {
+        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, FragmentLevelsScreen(), Constants.LEVELS_SCREEN_FRAGMENT_TAG)
             .addToBackStack(null).commit()
-        hide3DotsToolBar()
     }
 
     override fun onBackPressed() {
@@ -300,6 +296,10 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
     override fun onLevelsFragmentBackPressed() {
         fragmentManager.popBackStack()
+    }
+
+    override fun levelsFragmentClose3dotToolBar() {
+        hide3DotsToolBar()
     }
 
     override fun onScoreBoardFragmentBackPressed() {

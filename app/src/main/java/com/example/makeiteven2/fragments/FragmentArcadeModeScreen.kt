@@ -5,6 +5,7 @@ import android.content.Context
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -20,10 +21,9 @@ import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentArcadeModeListener
 import com.example.makeiteven2.room.DatabaseHelper
-import com.example.makeiteven2.room.FireBaseHelper.saveScoreToDatabaseScoreBoard
+import com.example.makeiteven2.firebase.FireBaseHelper.saveScoreToDatabaseScoreBoard
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
-import kotlinx.android.synthetic.main.fragment_game_arcade.*
 import kotlinx.android.synthetic.main.fragment_game_arcade.view.*
 
 class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerListener,IEndDialogBtnClickedListener {
@@ -181,7 +181,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         }
 
         mNumberGroup.apply {
-            setOnCheckedChangeListener { group, checkedId ->
+            setOnCheckedChangeListener { _, checkedId ->
                 val checkedTB = findViewById<ToggleButton>(checkedId)
                 if (isNumberSelected && isOperatorSelected) {
                     num2 = checkedTB.text.toString().toInt()
@@ -306,7 +306,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
     }
 
     override fun onClick(v: View?) {
-        Handler().post {
+        Handler(Looper.getMainLooper()).post {
             val btnOffPlayer: MediaPlayer = MediaPlayer.create(context, R.raw.btn_off_sound)
             val btnOnPlayer: MediaPlayer = MediaPlayer.create(context, R.raw.btn_on_sound)
             btnOnPlayer.setVolume(soundEffectsVolume, soundEffectsVolume)
@@ -420,7 +420,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
                 } else {
                     //you loose
-                    Handler().postDelayed({
+                    Handler(Looper.getMainLooper()).postDelayed({
                         //showFinishDialog(Constants.LOSE_DIALOG)
                     }, 200)
                 }

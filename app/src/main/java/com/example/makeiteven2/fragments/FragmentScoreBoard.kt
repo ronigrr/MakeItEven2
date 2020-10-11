@@ -12,7 +12,7 @@ import com.example.makeiteven2.R
 import com.example.makeiteven2.adapters.ScoreBoardCellAdapter
 import com.example.makeiteven2.data_models.NameAndScoreInfo
 import com.example.makeiteven2.intefaces.IFragmentScoreBoardScreenListener
-import com.example.makeiteven2.room.FireBaseHelper
+import com.example.makeiteven2.firebase.FireBaseHelper
 import kotlinx.android.synthetic.main.fragment_score_board.view.*
 
 
