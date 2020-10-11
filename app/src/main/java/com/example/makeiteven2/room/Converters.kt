@@ -1,6 +1,7 @@
 package com.example.makeiteven2.room
 
 import androidx.room.TypeConverter
+import com.example.makeiteven2.data_models.NameAndScoreInfo
 import com.example.makeiteven2.data_models.StageInfo
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -12,10 +13,8 @@ class Converters {
         val listType: Type = object : TypeToken<ArrayList<StageInfo?>?>() {}.type
         return value?.let { Gson().fromJson(it, listType) }
     }
-
     @TypeConverter
     fun listToString(value: ArrayList<StageInfo>?): String? {
         return Gson().toJson(value)
     }
-
 }

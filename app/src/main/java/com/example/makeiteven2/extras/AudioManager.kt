@@ -77,9 +77,9 @@ class AudioManager {
             mGameMediaPlayer.stop()
         }
 
-        fun startBuzzerSound() {
-            mSoundEffectsVolume = (Constants.User.soundEffectsLevel / 100).toFloat()
-            mEffectsMediaPlayer = MediaPlayer.create(mContext, R.raw.buzzer_sound)
+        fun startWrongAnswerSound() {
+            mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
+            mEffectsMediaPlayer = MediaPlayer.create(mContext, R.raw.wrong_answer)
             mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
             mEffectsMediaPlayer.start()
         }
