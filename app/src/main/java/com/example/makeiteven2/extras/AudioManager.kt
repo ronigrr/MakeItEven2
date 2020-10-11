@@ -53,7 +53,12 @@ class AudioManager {
             mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
             mEffectsMediaPlayer.start()
         }
-
+        fun startArcadeSuccessSound(){
+            mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
+            mEffectsMediaPlayer = MediaPlayer.create(mContext, R.raw.success_arcade)
+            mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
+            mEffectsMediaPlayer.start()
+        }
         fun startTaDaSound() {
             mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
             mEffectsMediaPlayer = MediaPlayer.create(mContext, R.raw.ta_da)
@@ -68,7 +73,6 @@ class AudioManager {
             mGameMediaPlayer.isLooping = true
             mGameMediaPlayer.start()
         }
-
         fun stopGameMusic() {
             mGameMediaPlayer.stop()
         }

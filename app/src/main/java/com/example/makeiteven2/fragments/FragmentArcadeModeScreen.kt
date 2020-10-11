@@ -394,7 +394,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
                 if (mTargetNumber == sum) {
                     //you win
-                    AudioManager.startTaDaSound()
+                    AudioManager.startArcadeSuccessSound()
                     Animations.getConfetti(rootView.game_root_container)
                     gameInit()
                     mTimerManager.addMoreTime(rewardTimeInMillis)
