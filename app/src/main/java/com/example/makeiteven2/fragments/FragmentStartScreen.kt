@@ -8,16 +8,16 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -69,20 +69,21 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_start_screen, container, false)
-        loadRewardAD()
-        initView()
+        initTransition()
         mStageModeBtn = rootView.btnStageMode
         mArcadeModeBtn = rootView.btnArcadeMode
         mTutorialBtn = rootView.btnTutorial
         mScoreBoardBtn = rootView.btnScoreBoard
         mLogoIv = rootView.ivGameLogo
         mStoreBtn = rootView.btnStore
-
         initAnimations()
         initBtnOnClick()
         return rootView
     }
-
+    private fun initTransition() {
+        val inflater = TransitionInflater.from(requireContext())
+        exitTransition = inflater.inflateTransition(R.transition.fade)
+    }
     private fun initBtnOnClick() {
         mStageModeBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
         mScoreBoardBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it)}
@@ -101,10 +102,6 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
         mStageModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
         mTutorialBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
         mArcadeModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
-    }
-
-    private fun initView() {
-
     }
 
     private fun initTimerForDialog(tvTimer: TextView) {
@@ -131,6 +128,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
     }
 
     private fun openStoreDialog() {
+        loadRewardAD() //TODO:The loadRewardAD fun jams the ui for som reason
         val storeDialog = Dialog(context!!)
         storeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         storeDialog.setContentView(R.layout.store_dialog)
@@ -182,6 +180,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
         }
         storeDialog.show()
     }
+
     private fun loadRewardAD() {
         rewardedAd= RewardedAd(context, Constants.ADD_MOB_TEST)
         val adLoadCallback = object: RewardedAdLoadCallback() {
@@ -194,6 +193,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
         }
         rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
     }
+
     private fun loadRewardVideo(){
         if (rewardedAd.isLoaded) {
             val activityContext: Activity = this.activity!!
@@ -219,6 +219,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
             Log.d("TAG", "The rewarded ad wasn't loaded yet.")
         }
     }
+
     override fun onAttach(context: Context) {
         if (context is IFragmentsStartsScreenListener) {
             mListener = context
@@ -229,6 +230,5 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
     }
 
     override fun onFinishTimer() {
-        TODO("Not yet implemented")
     }
 }

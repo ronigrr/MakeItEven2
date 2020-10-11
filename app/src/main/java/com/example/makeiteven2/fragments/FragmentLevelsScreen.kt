@@ -2,9 +2,12 @@ package com.example.makeiteven2.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +28,7 @@ class FragmentLevelsScreen : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_levels, container, false)
+        initTransition()
         mLevelsRecyclerView = rootView.recyclerLevels
         mLevelsAdapter = LevelsAdapter(mLevelItemsList, rootView.context, Constants.User.currentLevel)
         rootView.ibBack.setOnClickListener {
@@ -32,9 +36,16 @@ class FragmentLevelsScreen : Fragment() {
         }
         initLevels()
         initRecyclerView()
-
+        mCallBack.levelsFragmentClose3dotToolBar()
         return rootView
     }
+
+    private fun initTransition() {
+        val inflater = TransitionInflater.from(requireContext())
+        enterTransition = inflater.inflateTransition(R.transition.slide_right)
+        exitTransition = inflater.inflateTransition(R.transition.fade)
+    }
+
     private fun initLevels() {
         for (i in 1..100)
             mLevelItemsList.add(Level(i))

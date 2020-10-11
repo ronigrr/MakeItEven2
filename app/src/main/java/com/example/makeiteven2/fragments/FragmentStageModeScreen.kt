@@ -5,6 +5,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.os.Looper
+import android.transition.TransitionInflater
 import android.view.*
 import android.widget.ImageButton
 import android.widget.TextView
@@ -103,7 +105,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         gameSetup()
         gameInit()
         initDialog()
-        Handler().postDelayed(Runnable {
+        Handler(Looper.getMainLooper()).postDelayed({
             startTutorial()
         }, 200)
 
@@ -162,6 +164,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             fancyShowCaseQueue.add(one).add(two).add(three).add(four).add(five).add(six).add(gl).show()
         }
     }
+
     private fun gameSetup() {
         initFragmentMembersFromView()
         mGameButtonsList.add(mGameButton1TB)
@@ -418,7 +421,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     override fun onClick(v: View?) {
-        Handler().post {
+        Handler(Looper.getMainLooper()).post {
             if (!(v as ToggleButton).isChecked) {
                 AudioManager.playBtnOn()
             } else if (v.isChecked) {
@@ -511,7 +514,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     }
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
 
-                    Handler().postDelayed({
+                    Handler(Looper.getMainLooper()).postDelayed({
                         //showFinishDialog(Constants.WIN_DIALOG)
                         mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
                         AudioManager.startTaDaSound()
@@ -520,7 +523,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
                 } else {
                     //you loose
-                    Handler().postDelayed({
+                    Handler(Looper.getMainLooper()).postDelayed({
                         //showFinishDialog(Constants.LOSE_DIALOG)
                         mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
                     }, 200)
