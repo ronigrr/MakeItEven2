@@ -3,6 +3,7 @@ package com.example.makeiteven2.room
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.makeiteven2.data_models.NameAndScoreInfo
 import com.example.makeiteven2.data_models.StageInfo
 import com.example.makeiteven2.extras.Constants
 
@@ -44,5 +45,10 @@ data class RoomUserNote(
     var isCoinsGiftGiven: Boolean,
 
     @ColumnInfo(name = "arcade_highScore")
-    var arcadeHighScore : String
+    var arcadeHighScore : String,
+
+    @ColumnInfo(name = "arcade_scoreBoard")
+    var arcadeScoreBoard : ArrayList<NameAndScoreInfo>
+
+
 )
