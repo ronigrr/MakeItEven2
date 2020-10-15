@@ -9,17 +9,11 @@ import com.google.firebase.database.*
 
 object FireBaseHelper {
 
-    private lateinit var mDatabase: FirebaseDatabase
-    private lateinit var mFirebaseReference: DatabaseReference
+    private val mDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
+    private val mFirebaseReference: DatabaseReference = mDatabase.getReference(Constants.SCOREBOARD_FIREBASE_REFERENCE)
 
-    private fun getFireBaseDataBase() {
-        //MUST call this fun on each public fun!!!
-        mDatabase = FirebaseDatabase.getInstance()
-    }
 
     fun saveScoreToDatabaseScoreBoard(highScore: Int) {
-        getFireBaseDataBase()
-        mFirebaseReference = mDatabase.getReference(Constants.SCOREBOARD_FIREBASE_REFERENCE)
         mFirebaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (child in snapshot.children) {
@@ -41,33 +35,10 @@ object FireBaseHelper {
         })
     }
 
-    fun getScoreBoardListFromDataBase(/*adapter : ScoreBoardCellAdapter*/data: MutableLiveData<ArrayList<NameAndScoreInfo>>) {
-//        getFireBaseDataBase()
-//        val tempScoreBoardListForAdapter : ArrayList<NameAndScoreInfo> = ArrayList()
-//        val mFirebaseReferenceOrderByQuery = mDatabase.getReference(Constants.SCOREBOARD_FIREBASE_REFERENCE)
-//            .orderByChild("playerScore")
-//        mFirebaseReferenceOrderByQuery.addListenerForSingleValueEvent(object : ValueEventListener{
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                for (item in snapshot.children)
-//                {
-//                    Log.d("database",item.toString())
-//                    val tempNameAndScoreInfo = item.getValue(NameAndScoreInfo::class.java) as NameAndScoreInfo
-//                    tempScoreBoardListForAdapter.add(tempNameAndScoreInfo)
-//                }
-//                tempScoreBoardListForAdapter.reverse()
-//                adapter.updateScoreBoardList(tempScoreBoardListForAdapter)
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                Log.d("database", "Failed to read value.", error.toException())
-//            }
-//        })
-
-        getFireBaseDataBase()
+    fun getScoreBoardListFromDataBase(data: MutableLiveData<ArrayList<NameAndScoreInfo>>) {
         val tempScoreBoardListForAdapter: ArrayList<NameAndScoreInfo> = ArrayList()
-        val mFirebaseReferenceOrderByQuery = mDatabase.getReference(Constants.SCOREBOARD_FIREBASE_REFERENCE)
-            .orderByChild("playerScore")
-        mFirebaseReferenceOrderByQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+        val firebaseReferenceOrderByQuery = mFirebaseReference.orderByChild("playerScore")
+        firebaseReferenceOrderByQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (item in snapshot.children) {
                     Log.d("database", item.toString())

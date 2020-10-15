@@ -38,9 +38,7 @@ class FragmentScoreBoard : Fragment() {
             mCallBack.onScoreBoardFragmentBackPressed()
         }
         initRecyclerView()
-        //getDataFromWebAndUpdateRecyclerViewAdapter()
         mViewModel = activity?.let { ViewModelProvider(it).get(NameAndScoreInfoViewModel::class.java) }!!
-        mViewModel.setContext(context!!)
         mViewModel.getData()?.observe(this, Observer {
             mScoreBoardCellAdapter.updateScoreBoardList(it)
             DatabaseHelper.saveCurrentScoreBoard(context!!,it)
@@ -49,10 +47,6 @@ class FragmentScoreBoard : Fragment() {
         mCallBack.scoreBoardHide3dotToolBar()
         return rootView
     }
-
-//    private fun getDataFromWebAndUpdateRecyclerViewAdapter() {
-//        FireBaseHelper.getScoreBoardListFromDataBase(mScoreBoardCellAdapter)
-//    }
 
     private fun initRecyclerView() {
         mScoreBoardRecyclerView.setHasFixedSize(true)

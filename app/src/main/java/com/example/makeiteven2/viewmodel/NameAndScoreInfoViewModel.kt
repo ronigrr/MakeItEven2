@@ -10,12 +10,6 @@ import com.example.makeiteven2.room.DatabaseHelper
 
 class NameAndScoreInfoViewModel : ViewModel() {
     private var mData: MutableLiveData<ArrayList<NameAndScoreInfo>>? = null
-    private lateinit var mContext: Context
-
-
-    fun setContext(context: Context){
-        mContext = context
-    }
 
     fun loadList() {
         mData?.value = DatabaseHelper.getCurrentScoreBoard()

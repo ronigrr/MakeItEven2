@@ -10,6 +10,7 @@
         android:id="@+id/btnBackScoreboard"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginLeft="5dp"
         android:src="@drawable/ic_back"
         android:background="@color/Transparent"
         android:layout_centerVertical="true">
