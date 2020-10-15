@@ -431,21 +431,18 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         if (mScoreCounter > Constants.User.arcadeHighScore.toInt())
         {
             DatabaseHelper.setPlayerArcadeMaxScore(context!!,mScoreCounter.toString())
-            saveScoreToDatabaseScoreBoard(context!!,mScoreCounter)
+            saveScoreToDatabaseScoreBoard(mScoreCounter)
         }
         mEndGameDialog.shodEndDialog(Constants.ARCADE_END_DIALOG,mActualScoreTV.text.toString())
     }
 
     override fun onEndDialogBtnClicked(view: View) {
-        //TODO: SEE IF EVERYTHING IS IMPLEMENTET CURRECTLTY
         when(view.id){
             R.id.ibtnHome->{
                 listener.backButtonPressedArcade()
                 mEndGameDialog.dismissDialog()
             }
             R.id.ibtnRetry->{
-                //countDownAnim.visibility = View.VISIBLE
-                //startCountDownAnimation()
                 listener.restartArcadeGame()
                 mEndGameDialog.dismissDialog()
             }

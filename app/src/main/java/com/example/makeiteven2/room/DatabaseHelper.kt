@@ -1,8 +1,8 @@
 package com.example.makeiteven2.room
 
 import android.content.Context
+import com.example.makeiteven2.data_models.NameAndScoreInfo
 import com.example.makeiteven2.data_models.StageInfo
-import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -25,12 +25,10 @@ object DatabaseHelper {
     }
 
 
-    fun loadUserToConstants(context: Context) {
+    suspend fun loadUserToConstants(context: Context) {
         getDataBase(context)
-        GlobalScope.launch {
-            Constants.User = mNoteDao.getNotes()[0]
-            AudioManager.startGameMusic()
-        }
+        Constants.User = mNoteDao.getNotes()[0]
+
     }
 
     fun createOrUpdateUser(context: Context, newUserNote: RoomUserNote) {
@@ -80,5 +78,16 @@ object DatabaseHelper {
         GlobalScope.launch {
             mNoteDao.insertOrUpdateNote(Constants.User)
         }
+    }
+
+    fun saveCurrentScoreBoard(context: Context, scoreBoardArray: List<NameAndScoreInfo>?){
+        getDataBase(context)
+        Constants.User.arcadeScoreBoard = scoreBoardArray as ArrayList<NameAndScoreInfo>
+        GlobalScope.launch {
+            mNoteDao.insertOrUpdateNote(Constants.User)
+        }
+    }
+    fun getCurrentScoreBoard(): ArrayList<NameAndScoreInfo>{
+       return Constants.User.arcadeScoreBoard
     }
 }

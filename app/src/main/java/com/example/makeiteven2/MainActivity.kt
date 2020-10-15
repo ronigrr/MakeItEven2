@@ -31,6 +31,8 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.tasks.Task
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
 import java.util.*
@@ -94,7 +96,10 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     }
 
     private fun loadUser() {
-        DatabaseHelper.loadUserToConstants(applicationContext)
+        GlobalScope.launch {
+            DatabaseHelper.loadUserToConstants(applicationContext)
+            AudioManager.startGameMusic()
+        }
     }
 
     private fun loadStartScreen() {
@@ -248,7 +253,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         val newUserNote = RoomUserNote(
             UUID.randomUUID().toString(), nickname, 1, 20, 50, 3, ArrayList(),
             "", "", false, "0"
-        )
+        ,ArrayList())
         newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))
         Constants.User = newUserNote
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
