@@ -18,7 +18,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.StageInfo
-import com.example.makeiteven2.extras.Animations
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.fragments.*
@@ -36,7 +35,6 @@ import kotlinx.coroutines.launch
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
 import java.util.*
-import java.util.concurrent.Executor
 import kotlin.collections.ArrayList
 
 
@@ -114,9 +112,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
             btnStageMode.id -> loadLevelScreen()
             btnArcadeMode.id -> loadArcadeMode()
             btnScoreBoard.id -> loadScoreBoard()
-            btnTutorial.id -> {
-                loadStageModeWithTutorial()
-            }
+            btnTutorial.id -> loadStageModeWithTutorial()
         }
     }
 
@@ -207,14 +203,15 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     }
 
     override fun onResetGame() {
-        //TODO: may not work properly,need to check it after the game is ready (check the code inside positive btn)
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
         alertDialogBuilder.setIcon(R.drawable.warning_icon)
         alertDialogBuilder.setMessage(R.string.Progress).setCancelable(false).setPositiveButton(R.string.Yes) { dialog, _ ->
             Constants.User.currentLevel = 1
+            val newArrayList=ArrayList<StageInfo>()
+            newArrayList.add(Constants.User.stageList[0])
+            Constants.User.stageList = newArrayList
             DatabaseHelper.createOrUpdateUser(applicationContext, Constants.User)
-            //DataStore.getInstance(this@StartScreenActivity).resetLevels()
             dialog.cancel()
         }
         alertDialogBuilder.setNegativeButton(R.string.No) { dialog, _ -> dialog.cancel() }

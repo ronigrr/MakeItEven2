@@ -125,7 +125,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 override fun onAnimationEnd(animation: Animator) {
                     Log.e("Animation:", "end")
                     countDownAnim.visibility = View.GONE
-                    mTimerManager.startTimer(Constants.TEST_COUNTDOWN_10_SECONDS_IN_MILLIS)
+                    mTimerManager.startTimer(Constants.START_COUNTDOWN_ARCADE_TIMER_IN_MILLIS)
                 }
 
                 override fun onAnimationCancel(animation: Animator) {
