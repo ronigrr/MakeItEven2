@@ -20,7 +20,7 @@ class Converters {
 
     @TypeConverter
     fun fromStringToNameAndScoreInfo(value: String?): ArrayList<NameAndScoreInfo>? {
-        val listType: Type = object : TypeToken<ArrayList<StageInfo?>?>() {}.type
+        val listType: Type = object : TypeToken<ArrayList<NameAndScoreInfo?>?>() {}.type
         return value?.let { Gson().fromJson(it, listType) }
     }
     @TypeConverter
