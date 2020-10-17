@@ -222,13 +222,14 @@
             android:layout_height="50dp"
             android:layout_margin="5dp"
             android:background="@color/Transparent"
-            android:src="@drawable/ic_back" />
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/arcadeModeBackIBTN"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layoutDirection="rtl"
-            android:padding="5dp">
+            android:padding="5dp"
+            android:gravity="end">
 
             <ImageButton
                 android:id="@+id/hintButtonIB"
@@ -237,7 +238,8 @@
                 android:layout_marginEnd="7dp"
                 android:background="@color/Transparent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_help" />
+                android:src="@drawable/ic_help"
+                android:contentDescription="@string/arcadeModeHintIBTN1"/>
 
             <ImageButton
                 android:id="@+id/hintButton2IB"
@@ -246,16 +248,19 @@
                 android:layout_marginEnd="7dp"
                 android:background="@color/Transparent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_help" />
+                android:src="@drawable/ic_help"
+                android:contentDescription="@string/arcadeModeHintIBTN2"/>
+
 
             <ImageButton
-                android:id="@+id/hintButton1IB"
+                android:id="@+id/hintButton3IB"
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="7dp"
                 android:background="@color/Transparent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_help" />
+                android:src="@drawable/ic_help"
+                android:contentDescription="@string/arcadeModeHintIBTN3"/>
 
         </LinearLayout>
 
