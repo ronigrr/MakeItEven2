@@ -59,7 +59,6 @@ class FragmentSettings : Fragment() {
     private lateinit var mListener: IFragmentSettingsListener
     private lateinit var mMainVolumeBar: SeekBar
     private lateinit var mSoundEffectsBar: SeekBar
-    private lateinit var mResetGameBtn: Button
     private lateinit var mExitBtn: ImageButton
 
     override fun onAttach(context: Context) {

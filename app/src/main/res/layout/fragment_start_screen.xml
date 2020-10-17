@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/ivGameLogo"
-        android:layout_width="360dp"
-        android:layout_height="300dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:contentDescription="logo"
         android:src="@drawable/makeiteven_v2" />

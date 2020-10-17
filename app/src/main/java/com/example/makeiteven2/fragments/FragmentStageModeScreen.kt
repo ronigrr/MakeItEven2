@@ -404,20 +404,18 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
 
         mNumberOfCoinsLeft = Constants.User.coinsLeft
-        if (mNumberOfCoinsLeft == 0) {
+        if (mNumberOfCoinsLeft <= 0) {
             mHintIB.isEnabled = false
             mHintIB.setImageResource(R.drawable.ic_help_off)
         }
-        if (mNumberOfCoinsLeft == 1) {
+        if (mNumberOfCoinsLeft <= 1) {
             mSosHintIB.isEnabled = false
             mSosHintIB.setImageResource(R.drawable.ic_sosoff)
         }
-//        mLevelNum = Constants.User.currentLevel!!
         var textToShow = resources.getText(R.string.level_number).toString() + mLevelNum.toString()
         mLevelNumberTV.text = textToShow
         textToShow = resources.getString(R.string.coins_left) + " $mNumberOfCoinsLeft "
         mCoinsLeftTV.text = textToShow
-
     }
 
     override fun onClick(v: View?) {
