@@ -285,7 +285,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         mActualScoreTV = rootView.actualScoreTV //"Hints: X"
         mTargetNumberTV = rootView.theTargetNumberTV
         mBackButtonIB = rootView.backButtonIB
-        mHintIB1 = rootView.hintButton1IB
+        mHintIB1 = rootView.hintButton3IB
         mHintIB2 = rootView.hintButton2IB
         mHintIB3 = rootView.hintButtonIB
         mGameButton1TB = rootView.btn1TB
