@@ -228,18 +228,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layoutDirection="rtl"
-            android:padding="5dp">
+            android:padding="5dp"
+            android:gravity="end">
 
             <ImageButton
-                android:id="@+id/restartLevelIB"
-                android:layout_width="60dp"
+                android:id="@+id/hintButtonIB"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginEnd="5dp"
+                android:layout_marginEnd="7dp"
                 android:background="@color/Transparent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_restart" />
+                android:src="@drawable/ic_help" />
 
             <ImageButton
                 android:id="@+id/sosButtonIB"
@@ -250,13 +249,14 @@
                 android:src="@drawable/ic_sos" />
 
             <ImageButton
-                android:id="@+id/hintButtonIB"
-                android:layout_width="50dp"
+                android:id="@+id/restartLevelIB"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="7dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
                 android:background="@color/Transparent"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_help" />
+                android:src="@drawable/ic_restart" />
         </LinearLayout>
 
     </LinearLayout>

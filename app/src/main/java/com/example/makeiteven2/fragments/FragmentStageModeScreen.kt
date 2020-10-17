@@ -404,7 +404,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
 
         mNumberOfCoinsLeft = Constants.User.coinsLeft
-        if (mNumberOfCoinsLeft == 0) {
+        if (mNumberOfCoinsLeft <= 0) {
             mHintIB.isEnabled = false
             mHintIB.setImageResource(R.drawable.ic_help_off)
         }
