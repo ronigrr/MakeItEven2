@@ -428,7 +428,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             mSosHintIB.isEnabled = false
             mSosHintIB.setImageResource(R.drawable.ic_sosoff)
         }
-        var textToShow = resources.getText(R.string.level_number).toString() + mLevelNum.toString()
+        var textToShow = resources.getText(R.string.level_number).toString() + " " + mLevelNum.toString()
         mLevelNumberTV.text = textToShow
         textToShow = " $mNumberOfCoinsLeft "
         mCoinsLeftTV.text = textToShow
@@ -515,6 +515,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
                 AudioManager.startWaWaSound(context!!)
                 gameInit()
+                return
             }
 
             if (i == 1) {
