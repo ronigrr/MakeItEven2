@@ -196,7 +196,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
             }
         }
         mOperatorGroup.apply {
-            setOnCheckedChangeListener { group, checkedId ->
+            setOnCheckedChangeListener { _, checkedId ->
                 val checkedTB = findViewById<ToggleButton>(checkedId)
                 operator = checkedTB.tag.toString()
                 isOperatorSelected = true

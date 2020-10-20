@@ -32,5 +32,4 @@
         <item name="android:textSize">15sp</item>
         <item name="android:dropDownVerticalOffset">-4dp</item>
     </style>
-
 </resources>

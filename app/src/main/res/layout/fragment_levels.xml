@@ -17,14 +17,16 @@
             android:layout_centerVertical="true"
             android:layout_margin="5dp"
             android:background="@color/lightGray"
-            android:src="@drawable/ic_back"></ImageButton>
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/levels_screen_back_ibtn"/>
 
         <ImageView
             android:id="@+id/ivGameLogo"
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:src="@drawable/makeiteven_v2" />
-
+            android:src="@drawable/makeiteven_v2"
+            android:contentDescription="@string/level_scree_logo"
+           />
     </RelativeLayout>
 
 
