@@ -90,6 +90,7 @@ object DatabaseHelper {
 
     fun getCurrentScoreBoard(): ArrayList<NameAndScoreInfo>{
        return Constants.User.arcadeScoreBoard
+        }
 
     fun changePlayerNickname(context: Context,nickName : String){
         getDataBase(context)
@@ -102,4 +103,5 @@ object DatabaseHelper {
     fun getStageInfoList(): ArrayList<StageInfo> {
         return Constants.User.stageList
     }
-}
+    }
+
