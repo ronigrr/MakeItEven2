@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_game_arcade.view.*
 class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerListener, IEndDialogBtnClickedListener {
 
 
+    private lateinit var mScoreTV: TextView
     private lateinit var mTimerManager: TimerManager
     private lateinit var mTimerTV: TextView
     private lateinit var mActualScoreTV: TextView
@@ -128,6 +129,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                     Log.e("Animation:", "end")
                     countDownAnim.visibility = View.GONE
                     mTimerManager.startTimer(Constants.START_COUNTDOWN_ARCADE_TIMER_IN_MILLIS)
+                    setButtonAnimation()
                 }
 
                 override fun onAnimationCancel(animation: Animator) {
@@ -142,6 +144,24 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         }
 
 
+    }
+
+    private fun setButtonAnimation() {
+        mBackButtonIB.startAnimation(Animations.getScaleInAnimation(context!!))
+        mHintIB1.startAnimation(Animations.getScaleInAnimation(context!!))
+        mHintIB2.startAnimation(Animations.getScaleInAnimation(context!!))
+        mHintIB3.startAnimation(Animations.getScaleInAnimation(context!!))
+        for (i in 0..3) {
+            mGameButtonsList[i].startAnimation(Animations.getScaleInAnimation(context!!))
+            mOperatorsList[i].startAnimation(Animations.getScaleInAnimation(context!!))
+        }
+        mActualScoreTV.startAnimation(Animations.getScaleInAnimation(context!!))
+        mTargetNumberTV.startAnimation(Animations.getScaleInAnimation(context!!))
+        mTimerTV.startAnimation(Animations.getScaleInAnimation(context!!))
+        mActualScoreTV.startAnimation(Animations.getScaleInAnimation(context!!))
+        mActualScoreTV.startAnimation(Animations.getScaleInAnimation(context!!))
+        mScoreTV.startAnimation(Animations.getScaleInAnimation(context!!))
+        mTargetNumberTV.startAnimation(Animations.getScaleInAnimation(context!!))
     }
 
     private fun gameSetup() {
@@ -285,6 +305,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
     private fun initFragmentMembersFromView() {
         mTimerTV = rootView.timerTV // "Level: X"
         mActualScoreTV = rootView.actualScoreTV //"Hints: X"
+        mScoreTV = rootView.scoreTV
         mTargetNumberTV = rootView.theTargetNumberTV
         mBackButtonIB = rootView.backButtonIB
         mHintIB1 = rootView.hintButton3IB

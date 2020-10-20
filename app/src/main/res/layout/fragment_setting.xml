@@ -14,8 +14,8 @@
         android:id="@+id/seekBarMainSoundRelativeLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_below="@+id/btnCloseSettings">
+        android:layout_below="@+id/btnCloseSettings"
+        android:layout_marginTop="5dp">
 
         <TextView
             android:id="@+id/tvSettingHeadLine"
@@ -34,8 +34,7 @@
             android:layout_below="@id/tvSettingHeadLine"
             android:layout_marginTop="40dp"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -47,9 +46,9 @@
                 android:id="@+id/seekBarMainSound"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:max="100"
-                android:thumb="@drawable/ic_seekbar_bar"
-                android:layout_margin="5dp"/>
+                android:thumb="@drawable/ic_seekbar_bar" />
         </LinearLayout>
 
     </RelativeLayout>
@@ -73,9 +72,9 @@
             android:id="@+id/seekBarSoundEffects"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="5dp"
             android:max="100"
-            android:thumb="@drawable/ic_seekbar_bar"
-            android:layout_margin="5dp"/>
+            android:thumb="@drawable/ic_seekbar_bar" />
 
     </LinearLayout>
 
@@ -90,34 +89,36 @@
             android:id="@+id/tvNickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:text="@string/nickname"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_centerVertical="true" />
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/etNickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/test_string"
-            android:enabled="false"
-            android:textSize="22sp"
             android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/tvNickname"
             android:layout_toLeftOf="@+id/IBtnEditNickname"
+            android:layout_toEndOf="@+id/tvNickname"
+            android:enabled="false"
+            android:inputType="text"
             android:maxLength="24"
-            android:inputType="text"/>
+            android:text="@string/test_string"
+            android:textSize="22sp" />
+
         <ImageButton
             android:id="@+id/IBtnEditNickname"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/round_button"
-            android:textColor="#fff"
-            android:src="@drawable/ic_baseline_edit_24"
             android:layout_alignParentEnd="true"
-            android:contentDescription="@string/edit_nickname_ibtn"/>
+            android:background="@drawable/round_button"
+            android:contentDescription="@string/edit_nickname_ibtn"
+            android:src="@drawable/ic_baseline_edit_24"
+            android:textColor="#fff" />
 
     </RelativeLayout>
+
     <Button
         android:id="@+id/btnGameReset"
         android:layout_width="wrap_content"
@@ -136,7 +137,7 @@
         android:layout_alignParentEnd="true"
         android:background="@color/Transparent"
         android:clickable="true"
+        android:contentDescription="@string/exit_setting_btn"
         android:focusable="true"
-        android:src="@drawable/close_icon"
-        android:contentDescription="@string/exit_setting_btn"/>
+        android:src="@drawable/close_icon" />
 </RelativeLayout>

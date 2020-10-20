@@ -70,8 +70,6 @@
                     android:background="@drawable/game_qube_btns"
                     android:fontFamily="@font/robotoslab_bold"
                     android:padding="5dp"
-                    android:soundEffectsEnabled="false"
-                    android:stateListAnimator="@null"
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
@@ -86,8 +84,6 @@
                     android:background="@drawable/game_qube_btns"
                     android:fontFamily="@font/robotoslab_bold"
                     android:padding="5dp"
-                    android:soundEffectsEnabled="false"
-                    android:stateListAnimator="@null"
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
@@ -102,8 +98,6 @@
                     android:background="@drawable/game_qube_btns"
                     android:fontFamily="@font/robotoslab_bold"
                     android:padding="5dp"
-                    android:soundEffectsEnabled="false"
-                    android:stateListAnimator="@null"
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
@@ -118,8 +112,6 @@
                     android:background="@drawable/game_qube_btns"
                     android:fontFamily="@font/robotoslab_bold"
                     android:padding="5dp"
-                    android:soundEffectsEnabled="false"
-                    android:stateListAnimator="@null"
                     android:textColor="#fff"
                     android:textOff=""
                     android:textOn=""
@@ -209,6 +201,7 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/coinsIV"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="10dp"

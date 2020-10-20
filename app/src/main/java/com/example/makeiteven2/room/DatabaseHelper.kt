@@ -88,11 +88,11 @@ object DatabaseHelper {
         }
     }
 
-    fun getCurrentScoreBoard(): ArrayList<NameAndScoreInfo>{
-       return Constants.User.arcadeScoreBoard
-        }
+    fun getCurrentScoreBoard(): ArrayList<NameAndScoreInfo> {
+        return Constants.User.arcadeScoreBoard
+    }
 
-    fun changePlayerNickname(context: Context,nickName : String){
+    fun changePlayerNickname(context: Context, nickName: String) {
         getDataBase(context)
         Constants.User.playerName = nickName
         GlobalScope.launch {
@@ -103,5 +103,5 @@ object DatabaseHelper {
     fun getStageInfoList(): ArrayList<StageInfo> {
         return Constants.User.stageList
     }
-    }
+}
 

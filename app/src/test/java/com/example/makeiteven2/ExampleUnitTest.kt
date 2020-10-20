@@ -16,20 +16,21 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
     }
+
     @Test
-    fun printOperators(){
+    fun printOperators() {
         print(EOperators.DIVIDE.operator)
         print(EOperators.PLUS.operator)
         print(EOperators.MINUS.operator)
         print(EOperators.MULTIPLY.operator)
     }
+
     @Test
-    fun testGameGenerator()
-    {
+    fun testGameGenerator() {
         val mGameButtonsList = ArrayList<ToggleButton>()
         val game = Game(10)
         for (i in 0..100)
-        game.gameGenerator(mGameButtonsList,1,10)
+            game.gameGenerator(mGameButtonsList, 1, 10)
 
     }
 }
