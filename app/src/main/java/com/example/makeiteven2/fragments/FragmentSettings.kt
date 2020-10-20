@@ -40,19 +40,22 @@ class FragmentSettings : Fragment() {
         }
 
         rootView.IBtnEditNickname.setOnClickListener {
-            when(isEditMode){
-                false->{
+            when (isEditMode) {
+                false -> {
                     isEditMode = true
                     (it as ImageButton).setImageResource(R.drawable.ic_baseline_done_24)
                     rootView.etNickname.isEnabled = true
                 }
-                true->{
+                true -> {
                     isEditMode = false
-                    when(rootView.etNickname.text.toString()){
-                        ""->{rootView.etNickname.setText(Constants.User.playerName)}
-                        Constants.User.playerName->{}
-                        else->{
-                            changePlayerNickname(context!!,rootView.etNickname.text.toString())
+                    when (rootView.etNickname.text.toString()) {
+                        "" -> {
+                            rootView.etNickname.setText(Constants.User.playerName)
+                        }
+                        Constants.User.playerName -> {
+                        }
+                        else -> {
+                            changePlayerNickname(context!!, rootView.etNickname.text.toString())
                         }
 
                     }

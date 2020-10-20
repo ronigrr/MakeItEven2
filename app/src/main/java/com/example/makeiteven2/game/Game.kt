@@ -3,8 +3,6 @@ package com.example.makeiteven2.game
 import android.util.Log
 import android.widget.ToggleButton
 import com.example.makeiteven2.extras.EOperators
-import org.jetbrains.annotations.TestOnly
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
@@ -160,35 +158,33 @@ open class Game(private var mDifficulty: Int) {
 
         try {
             var testSum = 0
-            for (i in 0..2){
-                if (i == 0){
-                    when(operatorList[i].operator){
-                        "+"->testSum = btnList[i]+btnList[i+1]
-                        "-"->testSum = btnList[i]-btnList[i+1]
-                        "*"->testSum = btnList[i]*btnList[i+1]
-                        "/"->testSum = btnList[i]/btnList[i+1]
+            for (i in 0..2) {
+                if (i == 0) {
+                    when (operatorList[i].operator) {
+                        "+" -> testSum = btnList[i] + btnList[i + 1]
+                        "-" -> testSum = btnList[i] - btnList[i + 1]
+                        "*" -> testSum = btnList[i] * btnList[i + 1]
+                        "/" -> testSum = btnList[i] / btnList[i + 1]
+                    }
+                } else {
+                    when (operatorList[i].operator) {
+                        "+" -> testSum += btnList[i + 1]
+                        "-" -> testSum -= btnList[i + 1]
+                        "*" -> testSum *= btnList[i + 1]
+                        "/" -> testSum /= btnList[i + 1]
                     }
                 }
-                else{
-                when(operatorList[i].operator){
-                    "+"-> testSum += btnList[i + 1]
-                    "-"-> testSum -= btnList[i + 1]
-                    "*"-> testSum *= btnList[i + 1]
-                    "/"-> testSum /= btnList[i + 1]
-                }}
             }
             //Test prints
             //print("$mHint \n")
             //print("$testSum $sum \n")
 
-            if (testSum!=sum)
-            {
+            if (testSum != sum) {
                 throw Exception("unsolvable equation")
             }
-        }
-        catch (ex:Exception){
-            Log.e("calculation","unsolvable equation")
-            gameGenerator(playButtons,minSum,maxSum)
+        } catch (ex: Exception) {
+            Log.e("calculation", "unsolvable equation")
+            gameGenerator(playButtons, minSum, maxSum)
         }
 
         return sum

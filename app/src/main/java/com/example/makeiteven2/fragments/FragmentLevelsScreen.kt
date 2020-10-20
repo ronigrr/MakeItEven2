@@ -6,12 +6,14 @@ import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.LayoutAnimationController
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.Level
+import com.example.makeiteven2.extras.Animations
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.intefaces.IFragmentLevelsScreenListener
 import com.example.makeiteven2.room.DatabaseHelper
@@ -30,8 +32,11 @@ class FragmentLevelsScreen : Fragment() {
         initTransition()
         mLevelsRecyclerView = rootView.recyclerLevels
         mLevelsAdapter = LevelsAdapter(mLevelItemsList, rootView.context, Constants.User.currentLevel)
-        rootView.ibBack.setOnClickListener {
-            mCallBack.onLevelsFragmentBackPressed()
+        rootView.ibBack.apply {
+            startAnimation(Animations.getScaleInAnimation(context!!))
+            setOnClickListener {
+                mCallBack.onLevelsFragmentBackPressed()
+            }
         }
         initLevels()
         initRecyclerView()
@@ -56,7 +61,7 @@ class FragmentLevelsScreen : Fragment() {
         mLevelsRecyclerView.layoutManager = GridLayoutManager(context, 4)
         mLevelsRecyclerView.adapter = mLevelsAdapter
         mLevelsRecyclerView.scrollToPosition(DatabaseHelper.getStageInfoList().lastIndex)
-
+        mLevelsRecyclerView.layoutAnimation = LayoutAnimationController(Animations.getScaleInAnimation(context!!))
     }
 
     override fun onAttach(context: Context) {

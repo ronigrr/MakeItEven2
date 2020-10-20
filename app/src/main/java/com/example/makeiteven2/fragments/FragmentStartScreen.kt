@@ -47,6 +47,9 @@ import kotlin.math.absoluteValue
 
 class FragmentStartScreen : Fragment(), IFinishTimerListener {
 
+    private lateinit var mStageModeShine: Button
+    private lateinit var mArcadeModeShine: Button
+    private lateinit var mTutorialShine: Button
     private lateinit var mListener: IFragmentsStartsScreenListener
     private lateinit var mStageModeBtn: Button
     private lateinit var mArcadeModeBtn: Button
@@ -69,15 +72,22 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_start_screen, container, false)
         initTransition()
+        initViews(rootView)
+        initAnimations()
+        initBtnOnClick()
+        return rootView
+    }
+
+    private fun initViews(rootView: View) {
         mStageModeBtn = rootView.btnStageMode
         mArcadeModeBtn = rootView.btnArcadeMode
         mTutorialBtn = rootView.btnTutorial
         mScoreBoardBtn = rootView.btnScoreBoard
         mLogoIv = rootView.ivGameLogo
         mStoreBtn = rootView.btnStore
-        initAnimations()
-        initBtnOnClick()
-        return rootView
+        mStageModeShine = rootView.btnStageModeShine
+        mArcadeModeShine = rootView.btnArcadeModeShine
+        mTutorialShine = rootView.btnTutorialShine
     }
 
     private fun initTransition() {
@@ -98,11 +108,28 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun initAnimations() {
+        mArcadeModeBtn.apply {
+            startAnimation(Animations.getScaleInAnimation(context!!))
+            setOnTouchListener(Animations.getTouchAnimation(context!!))
+        }
+        mStageModeBtn.apply {
+            startAnimation(Animations.getScaleInAnimation(context!!))
+            setOnTouchListener(Animations.getTouchAnimation(context!!))
+        }
+        mTutorialBtn.apply {
+            startAnimation(Animations.getScaleInAnimation(context!!))
+            setOnTouchListener(Animations.getTouchAnimation(context!!))
+        }
+        mScoreBoardBtn.apply {
+            startAnimation(Animations.getScaleInAnimation(context!!))
+            setOnTouchListener(Animations.getTouchAnimation(context!!))
+        }
+
+        mStoreBtn.startAnimation(Animations.getScaleInAnimation(context!!))
         mLogoIv.startAnimation(Animations.getBounceAnimation(context!!))
-        mScoreBoardBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        mStageModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        mTutorialBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        mArcadeModeBtn.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        Animations.setFadeInOutAnimation(mStageModeShine)
+        Animations.setFadeInOutAnimation(mArcadeModeShine)
+        Animations.setFadeInOutAnimation(mTutorialShine)
     }
 
     private fun initTimerForDialog(tvTimer: TextView) {

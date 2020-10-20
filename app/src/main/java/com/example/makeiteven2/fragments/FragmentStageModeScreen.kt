@@ -10,10 +10,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
-import android.widget.ToggleButton
+import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.StageInfo
@@ -34,6 +31,7 @@ import me.toptas.fancyshowcase.FancyShowCaseView
 
 class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener, IEndDialogBtnClickedListener {
 
+    private lateinit var mCoinsIV: ImageView
     private lateinit var mSharedPref: SharedPreferences
     private lateinit var mEditor: SharedPreferences.Editor
 
@@ -176,7 +174,24 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mOperatorsList.add(mGameMulTB)
         mOperatorsList.add(mGameDivTB)
         setButtonsListeners()
+        setButtonsAnimation()
 
+    }
+
+    private fun setButtonsAnimation() {
+        mBackButtonIB.startAnimation(Animations.getScaleInAnimation(context!!))
+        mCoinsLeftTV.startAnimation(Animations.getScaleInAnimation(context!!))
+        for (i in 0..3) {
+            mGameButtonsList[i].startAnimation(Animations.getScaleInAnimation(context!!))
+            mOperatorsList[i].startAnimation(Animations.getScaleInAnimation(context!!))
+        }
+        mCoinsIV.startAnimation(Animations.getScaleInAnimation(context!!))
+        mCoinsLeftTV.startAnimation(Animations.getScaleInAnimation(context!!))
+        mHintIB.startAnimation(Animations.getScaleInAnimation(context!!))
+        mSosHintIB.startAnimation(Animations.getScaleInAnimation(context!!))
+        mRetryButtonIB.startAnimation(Animations.getScaleInAnimation(context!!))
+        mLevelNumberTV.startAnimation(Animations.getScaleInAnimation(context!!))
+        mTargetNumberTV.startAnimation(Animations.getScaleInAnimation(context!!))
     }
 
     private fun initToasty() {
@@ -385,6 +400,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private fun initFragmentMembersFromView() {
         mLevelNumberTV = rootView.levelTV // "Level: X"
         mCoinsLeftTV = rootView.coinsLeftTV //"Hints: X"
+        mCoinsIV = rootView.coinsIV
         mTargetNumberTV = rootView.theTargetNumberTV
         mBackButtonIB = rootView.backButtonIB
         mRetryButtonIB = rootView.restartLevelIB

@@ -1,6 +1,7 @@
 package com.example.makeiteven2.extras
 
-import android.annotation.SuppressLint
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Color
 import android.view.MotionEvent
@@ -8,11 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.core.animation.doOnEnd
 import com.example.makeiteven2.R
 import com.github.jinatonic.confetti.CommonConfetti
 
 object Animations {
-    @SuppressLint("ClickableViewAccessibility")
     fun getTouchAnimation(context: Context): View.OnTouchListener {
         AnimationUtils.loadAnimation(context, R.anim.btn_pressed)
         val btPressAnimation = AnimationUtils.loadAnimation(context, R.anim.btn_pressed)
@@ -60,4 +61,19 @@ object Animations {
 
     fun getScaleInAnimation(context: Context): Animation =
         AnimationUtils.loadAnimation(context, R.anim.scale_in)
+
+    fun setFadeInOutAnimation(view: View) {
+        val animationSet = AnimatorSet()
+        animationSet.apply {
+            play(ObjectAnimator.ofFloat(view, "alpha", 0.1f, 0.5f).setDuration(500))
+                .after(ObjectAnimator.ofFloat(view, "alpha", 0.5f, 0.1f).setDuration(500))
+            start()
+            doOnEnd { animator -> animator.start() }
+        }
+
+
+    }
+
 }
+
+

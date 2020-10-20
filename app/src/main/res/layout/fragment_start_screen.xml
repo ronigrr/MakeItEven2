@@ -16,6 +16,14 @@
         android:src="@drawable/makeiteven_v2" />
 
     <Button
+        android:id="@+id/btnStageModeShine"
+        android:layout_width="255dp"
+        android:layout_height="65dp"
+        android:layout_centerInParent="true"
+        android:alpha="0.1"
+        android:background="@drawable/stage_btn" />
+
+    <Button
         android:id="@+id/btnStageMode"
         android:layout_width="250dp"
         android:layout_height="60dp"
@@ -25,6 +33,16 @@
         android:textAllCaps="false"
         android:textSize="20sp"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnArcadeModeShine"
+        android:layout_width="255dp"
+        android:layout_height="65dp"
+        android:layout_below="@id/btnStageMode"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="25dp"
+        android:alpha="0.1"
+        android:background="@drawable/arcade_btn" />
 
     <Button
         android:id="@+id/btnArcadeMode"
@@ -38,6 +56,16 @@
         android:textAllCaps="false"
         android:textSize="20sp"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnTutorialShine"
+        android:layout_width="255dp"
+        android:layout_height="65dp"
+        android:layout_below="@id/btnArcadeMode"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="25dp"
+        android:alpha="0.1"
+        android:background="@drawable/tutorial_btn_background" />
 
     <Button
         android:id="@+id/btnTutorial"
