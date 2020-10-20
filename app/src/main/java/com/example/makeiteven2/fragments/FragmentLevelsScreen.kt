@@ -6,8 +6,6 @@ import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +14,7 @@ import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.Level
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.intefaces.IFragmentLevelsScreenListener
+import com.example.makeiteven2.room.DatabaseHelper
 import kotlinx.android.synthetic.main.fragment_levels.view.*
 
 class FragmentLevelsScreen : Fragment() {
@@ -47,14 +46,16 @@ class FragmentLevelsScreen : Fragment() {
     }
 
     private fun initLevels() {
-        for (i in 1..100)
+        for (i in 1..500) {
             mLevelItemsList.add(Level(i))
+        }
     }
 
     private fun initRecyclerView() {
         mLevelsRecyclerView.setHasFixedSize(true)
         mLevelsRecyclerView.layoutManager = GridLayoutManager(context, 4)
         mLevelsRecyclerView.adapter = mLevelsAdapter
+        mLevelsRecyclerView.scrollToPosition(DatabaseHelper.getStageInfoList().lastIndex)
 
     }
 

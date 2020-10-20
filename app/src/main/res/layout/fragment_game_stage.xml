@@ -201,35 +201,35 @@
             android:layout_margin="5dp"
             android:background="@color/Transparent"
             android:src="@drawable/ic_back" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="50dp"
-            android:orientation="horizontal"
             android:layout_gravity="center"
-            >
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_coins"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="5dp">
-            </ImageView>
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/ic_coins"></ImageView>
 
             <TextView
                 android:id="@+id/coinsLeftTV"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text=" 2 "
+                android:background="@drawable/backofcoincounter"
                 android:gravity="center"
-                android:textColor="#000"
-                android:background="@drawable/backofcoincounter"/>
+                android:text=" 2 "
+                android:textColor="#000" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="5dp"
-            android:gravity="end">
+            android:gravity="end"
+            android:padding="5dp">
 
             <ImageButton
                 android:id="@+id/hintButtonIB"

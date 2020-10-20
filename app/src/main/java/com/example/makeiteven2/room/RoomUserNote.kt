@@ -45,10 +45,10 @@ data class RoomUserNote(
     var isCoinsGiftGiven: Boolean,
 
     @ColumnInfo(name = "arcade_highScore")
-    var arcadeHighScore : String,
+    var arcadeHighScore: String,
 
     @ColumnInfo(name = "arcade_scoreBoard")
-    var arcadeScoreBoard : ArrayList<NameAndScoreInfo>
+    var arcadeScoreBoard: ArrayList<NameAndScoreInfo>
 
 
 )

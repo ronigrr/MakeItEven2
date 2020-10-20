@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import android.transition.TransitionInflater
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -28,10 +30,9 @@ import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_stage.view.*
 import me.toptas.fancyshowcase.FancyShowCaseQueue
 import me.toptas.fancyshowcase.FancyShowCaseView
-import kotlin.collections.ArrayList
 
 
-class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener , IEndDialogBtnClickedListener {
+class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener, IEndDialogBtnClickedListener {
 
     private lateinit var mSharedPref: SharedPreferences
     private lateinit var mEditor: SharedPreferences.Editor
@@ -42,7 +43,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private lateinit var mBackButtonIB: ImageButton
     private lateinit var mRetryButtonIB: ImageButton
     private lateinit var mHintIB: ImageButton
-    private lateinit var mSosHintIB : ImageButton
+    private lateinit var mSosHintIB: ImageButton
 
     private lateinit var mGameButton1TB: ToggleButton
     private lateinit var mGameButton2TB: ToggleButton
@@ -57,7 +58,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private lateinit var mOperatorGroup: SingleSelectToggleGroup
     private lateinit var mNumberGroup: SingleSelectToggleGroup
 
-    private lateinit var mEndGameDialog : DialogEndGameManager
+    private lateinit var mEndGameDialog: DialogEndGameManager
 
     private val mGameButtonsList = ArrayList<ToggleButton>()
     private val mOperatorsList = ArrayList<ToggleButton>()
@@ -84,7 +85,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private var operator = ""
     private var selectedOperatorID = 0
 
-    private lateinit var fancyShowCaseQueue : FancyShowCaseQueue
+    private lateinit var fancyShowCaseQueue: FancyShowCaseQueue
 
     private lateinit var mCountDownTimer: CountDownTimer
     private var showCaseId = Constants.SHOWCASE_ID
@@ -121,15 +122,14 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mEndGameDialog = DialogEndGameManager(this, context!!)
     }
 
-    private fun startTutorial(){
+    private fun startTutorial() {
         fancyShowCaseQueue = FancyShowCaseQueue()
 
-        if (arguments?.getBoolean(Constants.IS_TUTORIAL)!=null || mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_STAGEMODE,true)) {
+        if (arguments?.getBoolean(Constants.IS_TUTORIAL) != null || mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_STAGEMODE, true)) {
 
-            if (mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_STAGEMODE,true))
-                {
-                    mEditor.putBoolean(Constants.IS_FIRST_TIME_IN_STAGEMODE,false).commit()
-                }
+            if (mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_STAGEMODE, true)) {
+                mEditor.putBoolean(Constants.IS_FIRST_TIME_IN_STAGEMODE, false).commit()
+            }
             val one = FancyShowCaseView.Builder(activity!!)
                 .focusOn(rootView.theTargetNumberTV)
                 .title("This is the target number you need to reach")
@@ -197,17 +197,17 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 (view as ImageButton).setImageResource(R.drawable.ic_help_off)
                 view.isEnabled = false
             }
-            if (mNumberOfCoinsLeft <=1){
+            if (mNumberOfCoinsLeft <= 1) {
                 mSosHintIB.setImageResource(R.drawable.ic_sosoff)
                 mSosHintIB.isEnabled = false
             }
         }
 
         val sosHintListener = View.OnClickListener { view ->
-            context?.let { letContext->
+            context?.let { letContext ->
                 Toasty.info(letContext, mFullHintString, Toast.LENGTH_LONG, true).show()
             }
-            mNumberOfCoinsLeft-=2
+            mNumberOfCoinsLeft -= 2
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
             val textToShow = "${resources.getText(R.string.coins_left)}" + " $mNumberOfCoinsLeft "
             mCoinsLeftTV.text = textToShow
@@ -335,7 +335,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 if (mGame != null) {
                     mTargetNumber = mGame.gameGenerator(mGameButtonsList, min, max)
                     mFullHintString = mGame.getHint()
-                    mHalfHintString = mFullHintString.substringBefore(")")+")"
+                    mHalfHintString = mFullHintString.substringBefore(")") + ")"
                 }
             } while (mTargetNumber > max || mTargetNumber < min)
 
@@ -379,7 +379,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mTargetNumber = mStageInfoArray[mLevelNum - 1].target
         mTargetNumberTV.text = mTargetNumber.toString()
         mFullHintString = mStageInfoArray[mLevelNum - 1].hint
-        mHalfHintString = mFullHintString.substringBefore(")")+")"
+        mHalfHintString = mFullHintString.substringBefore(")") + ")"
     }
 
     private fun initFragmentMembersFromView() {
@@ -421,9 +421,9 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     override fun onClick(v: View?) {
         Handler(Looper.getMainLooper()).post {
             if (!(v as ToggleButton).isChecked) {
-                AudioManager.playBtnOn()
+                AudioManager.playBtnOn(context!!)
             } else if (v.isChecked) {
-                AudioManager.playBtnOff()
+                AudioManager.playBtnOff(context!!)
             }
         }
         /// checks that nobody checked
@@ -497,7 +497,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             if (isDivideZero || isFraction) {
                 //showFinishDialog(Constants.LOSE_DIALOG)
                 mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
-                AudioManager.startWaWaSound()
+                AudioManager.startWaWaSound(context!!)
                 gameInit()
             }
 
@@ -513,16 +513,14 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
 
                     Handler(Looper.getMainLooper()).postDelayed({
-                        //showFinishDialog(Constants.WIN_DIALOG)
                         mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
-                        AudioManager.startTaDaSound()
+                        AudioManager.startTaDaSound(context!!)
                         Animations.getConfetti(rootView.game_root_container)
                     }, 200)
 
                 } else {
                     //you loose
                     Handler(Looper.getMainLooper()).postDelayed({
-                        //showFinishDialog(Constants.LOSE_DIALOG)
                         mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
                     }, 200)
 
@@ -534,7 +532,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     override fun onEndDialogBtnClicked(view: View) {
-        when(view.id){
+        when (view.id) {
             R.id.ibtnHome -> {
                 listener.backButtonPressedStage()
                 mEndGameDialog.dismissDialog()
@@ -553,7 +551,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onDetach() {
         super.onDetach()
-        fancyShowCaseQueue?.cancel(true)
+        fancyShowCaseQueue.cancel(true)
 
     }
 }
