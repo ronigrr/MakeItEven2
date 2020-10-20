@@ -208,14 +208,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
             val textToShow = "$mNumberOfCoinsLeft"
             mCoinsLeftTV.text = textToShow
-            if (mNumberOfCoinsLeft == 0) {
-                (view as ImageButton).setImageResource(R.drawable.ic_help_off)
-                view.isEnabled = false
-            }
-            if (mNumberOfCoinsLeft <= 1) {
-                mSosHintIB.setImageResource(R.drawable.ic_sosoff)
-                mSosHintIB.isEnabled = false
-            }
+            checkIfNeedToShowSosHint()
         }
 
         val sosHintListener = View.OnClickListener { view ->
@@ -226,14 +219,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
             val textToShow = " $mNumberOfCoinsLeft "
             mCoinsLeftTV.text = textToShow
-            if (mNumberOfCoinsLeft == 0) {
-                mHintIB.setImageResource(R.drawable.ic_help_off)
-                mHintIB.isEnabled = false
-            }
-            if (mNumberOfCoinsLeft <= 1) {
-                (view as ImageButton).isEnabled = false
-                view.setImageResource(R.drawable.ic_sosoff)
-            }
+            checkIfNeedToShowSosHint()
         }
 
         mHintIB.apply {
@@ -420,14 +406,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
 
         mNumberOfCoinsLeft = Constants.User.coinsLeft
-        if (mNumberOfCoinsLeft <= 0) {
-            mHintIB.isEnabled = false
-            mHintIB.setImageResource(R.drawable.ic_help_off)
-        }
-        if (mNumberOfCoinsLeft <= 1) {
-            mSosHintIB.isEnabled = false
-            mSosHintIB.setImageResource(R.drawable.ic_sosoff)
-        }
+        checkIfNeedToShowSosHint()
+        
         var textToShow = resources.getText(R.string.level_number).toString() + " " + mLevelNum.toString()
         mLevelNumberTV.text = textToShow
         textToShow = " $mNumberOfCoinsLeft "
@@ -526,9 +506,13 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     var currentStage = Constants.User.currentLevel
                     if (mLevelNum == currentStage) {
                         currentStage++
+                        //add coins
+                        DatabaseHelper.addCoins(context!!, 1)
+                        mNumberOfCoinsLeft++
+                        mCoinsLeftTV.text = mNumberOfCoinsLeft.toString()
+                        checkIfNeedToShowSosHint()
                     }
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
-
                     Handler(Looper.getMainLooper()).postDelayed({
                         mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
                         AudioManager.startTaDaSound(context!!)
@@ -545,6 +529,23 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 }
             }
 
+        }
+    }
+
+    private fun checkIfNeedToShowSosHint() {
+        if (mNumberOfCoinsLeft >= 1) {
+            mHintIB.isEnabled = true
+            mHintIB.setImageResource(R.drawable.ic_help)
+        } else {
+            mHintIB.isEnabled = false
+            mHintIB.setImageResource(R.drawable.ic_help_off)
+        }
+        if (mNumberOfCoinsLeft >= 2) {
+            mSosHintIB.isEnabled = true
+            mSosHintIB.setImageResource(R.drawable.ic_sos)
+        } else {
+            mSosHintIB.isEnabled = false
+            mSosHintIB.setImageResource(R.drawable.ic_sosoff)
         }
     }
 
