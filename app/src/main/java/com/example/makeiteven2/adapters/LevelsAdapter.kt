@@ -51,6 +51,9 @@ class LevelsAdapter(private var mLevelsList: List<Level> = ArrayList(), private 
                     view.layoutStageNumber.visibility = View.INVISIBLE
                 }
             }
+            if (level.levelNum == currentStage){
+                Animations.setFadeInOutAnimationToLevel(view)
+            }
 
             view.btnLevel.setOnClickListener {
                 if (view.ivLock.visibility == View.VISIBLE) {

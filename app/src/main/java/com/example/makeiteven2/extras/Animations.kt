@@ -70,8 +70,15 @@ object Animations {
             start()
             doOnEnd { animator -> animator.start() }
         }
-
-
+    }
+    fun setFadeInOutAnimationToLevel(view: View) {
+        val animationSet = AnimatorSet()
+        animationSet.apply {
+            play(ObjectAnimator.ofFloat(view, "alpha", 0.6f, 1.0f).setDuration(500))
+                .after(ObjectAnimator.ofFloat(view, "alpha", 1.0f, 0.6f).setDuration(500))
+            start()
+            doOnEnd { animator -> animator.start() }
+        }
     }
 
 }
