@@ -5,14 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
+import com.example.makeiteven2.extras.Animations
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.intefaces.IFragmentSettingsListener
+import com.example.makeiteven2.room.DatabaseHelper.changePlayerNickname
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 
 class FragmentSettings : Fragment() {
@@ -23,6 +24,10 @@ class FragmentSettings : Fragment() {
         mSoundEffectsBar = rootView.seekBarSoundEffects
         mExitBtn = rootView.btnCloseSettings
 
+        rootView.IBtnEditNickname.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        rootView.btnGameReset.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        rootView.etNickname.setText(Constants.User.playerName)
+
         rootView.seekBarMainSound.progress = Constants.User.mainSoundLevel
         rootView.seekBarSoundEffects.progress = Constants.User.soundEffectsLevel
 
@@ -32,6 +37,29 @@ class FragmentSettings : Fragment() {
 
         mExitBtn.setOnClickListener {
             mListener.onExitFromSettingsFragment()
+        }
+
+        rootView.IBtnEditNickname.setOnClickListener {
+            when(isEditMode){
+                false->{
+                    isEditMode = true
+                    (it as ImageButton).setImageResource(R.drawable.ic_baseline_done_24)
+                    rootView.etNickname.isEnabled = true
+                }
+                true->{
+                    isEditMode = false
+                    when(rootView.etNickname.text.toString()){
+                        ""->{rootView.etNickname.setText(Constants.User.playerName)}
+                        Constants.User.playerName->{}
+                        else->{
+                            changePlayerNickname(context!!,rootView.etNickname.text.toString())
+                        }
+
+                    }
+                    (it as ImageButton).setImageResource(R.drawable.ic_baseline_edit_24)
+                    rootView.etNickname.isEnabled = false
+                }
+            }
         }
 
         val seekBarListener: OnSeekBarChangeListener = object : OnSeekBarChangeListener {
@@ -53,6 +81,7 @@ class FragmentSettings : Fragment() {
         }
         mSoundEffectsBar.setOnSeekBarChangeListener(seekBarListener)
         mMainVolumeBar.setOnSeekBarChangeListener(seekBarListener)
+
         return rootView
     }
 
@@ -60,6 +89,7 @@ class FragmentSettings : Fragment() {
     private lateinit var mMainVolumeBar: SeekBar
     private lateinit var mSoundEffectsBar: SeekBar
     private lateinit var mExitBtn: ImageButton
+    private var isEditMode = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

@@ -28,7 +28,6 @@ object DatabaseHelper {
     suspend fun loadUserToConstants(context: Context) {
         getDataBase(context)
         Constants.User = mNoteDao.getNotes()[0]
-
     }
 
     fun createOrUpdateUser(context: Context, newUserNote: RoomUserNote) {
@@ -87,7 +86,16 @@ object DatabaseHelper {
             mNoteDao.insertOrUpdateNote(Constants.User)
         }
     }
+
     fun getCurrentScoreBoard(): ArrayList<NameAndScoreInfo>{
        return Constants.User.arcadeScoreBoard
+    }
+
+    fun changePlayerNickname(context: Context,nickName : String){
+        getDataBase(context)
+        Constants.User.playerName = nickName
+        GlobalScope.launch {
+            mNoteDao.insertOrUpdateNote(Constants.User)
+        }
     }
 }

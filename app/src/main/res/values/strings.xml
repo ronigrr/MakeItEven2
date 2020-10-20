@@ -79,7 +79,6 @@
     <string name="tutorial_level">Tutorial level</string>
     <string name="Tap_me_to_continue">Tap me to continue</string>
     <string name="stage">stage</string>
-    <string name="coins_left"></string>
     <string name="enter_your_name_or_nickname">Enter your name or nickname</string>
     <string name="example">example</string>
     <string name="done">Done</string>
@@ -90,5 +89,11 @@
     <string name="arcadeModeHintIBTN2">arcadeModeHintIBtn2</string>
     <string name="arcadeModeHintIBTN1">arcadeModeHintIBtn1</string>
     <string name="arcadeModeBackIBTN">arcadeModeBackIB</string>
+    <string name="nickname">Nickname:</string>
+    <string name="test_string">test string</string>
+    <string name="edit_nickname_ibtn">edit nickname ibtn</string>
+    <string name="exit_setting_btn">exit setting btn</string>
+    <string name="levels_screen_back_ibtn">levels screen back iBtn</string>
+    <string name="level_scree_logo">level scree logo</string>
 
 </resources>

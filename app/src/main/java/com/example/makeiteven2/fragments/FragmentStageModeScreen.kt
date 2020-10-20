@@ -191,7 +191,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             }
             mNumberOfCoinsLeft--
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
-            val textToShow = "${resources.getText(R.string.coins_left)}" + "$mNumberOfCoinsLeft"
+            val textToShow = "$mNumberOfCoinsLeft"
             mCoinsLeftTV.text = textToShow
             if (mNumberOfCoinsLeft == 0) {
                 (view as ImageButton).setImageResource(R.drawable.ic_help_off)
@@ -209,7 +209,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             }
             mNumberOfCoinsLeft-=2
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
-            val textToShow = "${resources.getText(R.string.coins_left)}" + " $mNumberOfCoinsLeft "
+            val textToShow = " $mNumberOfCoinsLeft "
             mCoinsLeftTV.text = textToShow
             if (mNumberOfCoinsLeft == 0) {
                 mHintIB.setImageResource(R.drawable.ic_help_off)
@@ -258,7 +258,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             }
         }
         mOperatorGroup.apply {
-            setOnCheckedChangeListener { group, checkedId ->
+            setOnCheckedChangeListener { _, checkedId ->
                 val checkedTB = findViewById<ToggleButton>(checkedId)
                 operator = checkedTB.tag.toString()
                 isOperatorSelected = true
@@ -414,7 +414,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         }
         var textToShow = resources.getText(R.string.level_number).toString() + mLevelNum.toString()
         mLevelNumberTV.text = textToShow
-        textToShow = resources.getString(R.string.coins_left) + " $mNumberOfCoinsLeft "
+        textToShow = " $mNumberOfCoinsLeft "
         mCoinsLeftTV.text = textToShow
     }
 
