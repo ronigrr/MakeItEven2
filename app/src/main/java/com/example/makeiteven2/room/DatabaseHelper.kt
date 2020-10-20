@@ -72,7 +72,7 @@ object DatabaseHelper {
         }
     }
 
-    fun setPlayerArcadeMaxScore(context: Context,highScore: String){
+    fun setPlayerArcadeMaxScore(context: Context, highScore: String) {
         getDataBase(context)
         Constants.User.arcadeHighScore = highScore
         GlobalScope.launch {
@@ -80,14 +80,19 @@ object DatabaseHelper {
         }
     }
 
-    fun saveCurrentScoreBoard(context: Context, scoreBoardArray: List<NameAndScoreInfo>?){
+    fun saveCurrentScoreBoard(context: Context, scoreBoardArray: List<NameAndScoreInfo>?) {
         getDataBase(context)
         Constants.User.arcadeScoreBoard = scoreBoardArray as ArrayList<NameAndScoreInfo>
         GlobalScope.launch {
             mNoteDao.insertOrUpdateNote(Constants.User)
         }
     }
-    fun getCurrentScoreBoard(): ArrayList<NameAndScoreInfo>{
-       return Constants.User.arcadeScoreBoard
+
+    fun getCurrentScoreBoard(): ArrayList<NameAndScoreInfo> {
+        return Constants.User.arcadeScoreBoard
+    }
+
+    fun getStageInfoList(): ArrayList<StageInfo> {
+        return Constants.User.stageList
     }
 }

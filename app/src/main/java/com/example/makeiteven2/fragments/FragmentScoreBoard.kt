@@ -14,7 +14,6 @@ import com.example.makeiteven2.R
 import com.example.makeiteven2.adapters.ScoreBoardCellAdapter
 import com.example.makeiteven2.data_models.NameAndScoreInfo
 import com.example.makeiteven2.intefaces.IFragmentScoreBoardScreenListener
-import com.example.makeiteven2.firebase.FireBaseHelper
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.viewmodel.NameAndScoreInfoViewModel
 import kotlinx.android.synthetic.main.fragment_score_board.view.*
@@ -23,9 +22,9 @@ import kotlinx.android.synthetic.main.fragment_score_board.view.*
 class FragmentScoreBoard : Fragment() {
 
     private lateinit var mCallBack: IFragmentScoreBoardScreenListener
-    private lateinit var mScoreBoardRecyclerView : RecyclerView
+    private lateinit var mScoreBoardRecyclerView: RecyclerView
     private lateinit var mScoreBoardCellAdapter: ScoreBoardCellAdapter
-    private var mScoreItemsList : ArrayList<NameAndScoreInfo> = ArrayList()
+    private var mScoreItemsList: ArrayList<NameAndScoreInfo> = ArrayList()
     private lateinit var mViewModel: NameAndScoreInfoViewModel
 
 
@@ -41,7 +40,7 @@ class FragmentScoreBoard : Fragment() {
         mViewModel = activity?.let { ViewModelProvider(it).get(NameAndScoreInfoViewModel::class.java) }!!
         mViewModel.getData()?.observe(this, Observer {
             mScoreBoardCellAdapter.updateScoreBoardList(it)
-            DatabaseHelper.saveCurrentScoreBoard(context!!,it)
+            DatabaseHelper.saveCurrentScoreBoard(context!!, it)
         })
         mViewModel.loadList()
         mCallBack.scoreBoardHide3dotToolBar()

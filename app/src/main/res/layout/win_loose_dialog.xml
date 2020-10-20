@@ -73,10 +73,11 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center"
-                android:scaleType="fitCenter"
                 android:layout_margin="5dp"
                 android:background="@color/Transparent"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_trophy" />
+
             <ImageButton
 
                 android:id="@+id/ibtnNext"

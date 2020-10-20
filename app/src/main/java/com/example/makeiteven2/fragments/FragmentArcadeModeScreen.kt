@@ -16,17 +16,17 @@ import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 import com.example.makeiteven2.extras.*
+import com.example.makeiteven2.firebase.FireBaseHelper.saveScoreToDatabaseScoreBoard
 import com.example.makeiteven2.game.GameFactory
 import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentArcadeModeListener
 import com.example.makeiteven2.room.DatabaseHelper
-import com.example.makeiteven2.firebase.FireBaseHelper.saveScoreToDatabaseScoreBoard
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_arcade.view.*
 
-class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerListener,IEndDialogBtnClickedListener {
+class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerListener, IEndDialogBtnClickedListener {
 
 
     private lateinit var mTimerManager: TimerManager
@@ -111,9 +111,11 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
     private fun initTimer() {
         mTimerManager = TimerManager(this, mTimerTV, Constants.ARCADE_TIMER)
     }
+
     private fun initDialog() {
-        mEndGameDialog = DialogEndGameManager(this,context!!)
+        mEndGameDialog = DialogEndGameManager(this, context!!)
     }
+
     private fun startCountDownAnimation() {
         rootView.countDownAnim.apply {
             setAnimation(R.raw.coundown321go)
@@ -386,7 +388,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 if (tb.isEnabled) i++
             }
             if (isDivideZero || isFraction) {
-                AudioManager.startWrongAnswerSound()
+                AudioManager.startWrongAnswerSound(context!!)
             }
 
             if (i == 1) {
@@ -394,7 +396,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
                 if (mTargetNumber == sum) {
                     //you win
-                    AudioManager.startArcadeSuccessSound()
+                    AudioManager.startArcadeSuccessSound(context!!)
                     Animations.getConfetti(rootView.game_root_container)
                     gameInit()
                     mTimerManager.addMoreTime(rewardTimeInMillis)
@@ -418,7 +420,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                     mActualScoreTV.text = mScoreCounter.toString() + ""
 
                 } else {
-                    AudioManager.startWrongAnswerSound()
+                    AudioManager.startWrongAnswerSound(context!!)
                     view?.startAnimation(Animations.getShakeAnimation(context!!))
                     gameInit()
                 }
@@ -428,25 +430,24 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
     }
 
     override fun onFinishTimer() {
-        if (mScoreCounter > Constants.User.arcadeHighScore.toInt())
-        {
-            DatabaseHelper.setPlayerArcadeMaxScore(context!!,mScoreCounter.toString())
+        if (mScoreCounter > Constants.User.arcadeHighScore.toInt()) {
+            DatabaseHelper.setPlayerArcadeMaxScore(context!!, mScoreCounter.toString())
             saveScoreToDatabaseScoreBoard(mScoreCounter)
         }
-        mEndGameDialog.shodEndDialog(Constants.ARCADE_END_DIALOG,mActualScoreTV.text.toString())
+        mEndGameDialog.shodEndDialog(Constants.ARCADE_END_DIALOG, mActualScoreTV.text.toString())
     }
 
     override fun onEndDialogBtnClicked(view: View) {
-        when(view.id){
-            R.id.ibtnHome->{
+        when (view.id) {
+            R.id.ibtnHome -> {
                 listener.backButtonPressedArcade()
                 mEndGameDialog.dismissDialog()
             }
-            R.id.ibtnRetry->{
+            R.id.ibtnRetry -> {
                 listener.restartArcadeGame()
                 mEndGameDialog.dismissDialog()
             }
-            R.id.ibtnScoreBoard->{
+            R.id.ibtnScoreBoard -> {
                 mEndGameDialog.dismissDialog()
                 listener.loadScoreBoardFromArcade()
             }
