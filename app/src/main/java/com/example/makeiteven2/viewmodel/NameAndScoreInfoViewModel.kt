@@ -16,8 +16,8 @@ class NameAndScoreInfoViewModel : ViewModel() {
     }
 
 
-    fun getData():LiveData<ArrayList<NameAndScoreInfo>>?{
-        if (mData == null){
+    fun getData(): LiveData<ArrayList<NameAndScoreInfo>>? {
+        if (mData == null) {
             mData = MutableLiveData()
         }
         return mData

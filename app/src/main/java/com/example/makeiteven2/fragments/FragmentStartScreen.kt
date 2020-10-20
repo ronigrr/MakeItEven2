@@ -7,17 +7,17 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
@@ -39,7 +39,6 @@ import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 import kotlinx.android.synthetic.main.store_dialog.*
-
 import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
@@ -80,13 +79,15 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
         initBtnOnClick()
         return rootView
     }
+
     private fun initTransition() {
         val inflater = TransitionInflater.from(requireContext())
         exitTransition = inflater.inflateTransition(R.transition.fade)
     }
+
     private fun initBtnOnClick() {
         mStageModeBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
-        mScoreBoardBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it)}
+        mScoreBoardBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
         mTutorialBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
         mArcadeModeBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
         mStoreBtn.setOnClickListener {
@@ -182,11 +183,12 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
     }
 
     private fun loadRewardAD() {
-        rewardedAd= RewardedAd(context, Constants.ADD_MOB_TEST)
-        val adLoadCallback = object: RewardedAdLoadCallback() {
+        rewardedAd = RewardedAd(context, Constants.ADD_MOB_TEST)
+        val adLoadCallback = object : RewardedAdLoadCallback() {
             override fun onRewardedAdLoaded() {
                 Log.v("ad", "onRewardedAdLoaded")
             }
+
             override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
                 Log.v("ad", "onRewardedAdFailedToLoad")
             }
@@ -194,28 +196,30 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener {
         rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
     }
 
-    private fun loadRewardVideo(){
+    private fun loadRewardVideo() {
         if (rewardedAd.isLoaded) {
             val activityContext: Activity = this.activity!!
-            val adCallback = object: RewardedAdCallback() {
+            val adCallback = object : RewardedAdCallback() {
                 override fun onRewardedAdOpened() {
                     Log.v("ad", "onRewardedAdOpened")
                 }
+
                 override fun onRewardedAdClosed() {
                     Log.v("ad", "onRewardedAdClosed")
                     loadRewardAD()
                 }
+
                 override fun onUserEarnedReward(reward: RewardItem) {
                     Log.v("ad", "onUserEarnedReward (${reward.amount.toString()})")
                     DatabaseHelper.addCoins(context!!, reward.amount)
                 }
+
                 override fun onRewardedAdFailedToShow(adError: AdError) {
                     Log.v("ad", "onRewardedAdFailedToShow")
                 }
             }
             rewardedAd.show(activityContext, adCallback)
-        }
-        else {
+        } else {
             Log.d("TAG", "The rewarded ad wasn't loaded yet.")
         }
     }

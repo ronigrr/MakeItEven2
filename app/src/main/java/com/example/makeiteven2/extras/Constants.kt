@@ -26,13 +26,13 @@ object Constants {
     const val IS_FIRST_TIME_IN_APP = "is_first_time_in_app"
     const val WIN_DIALOG = "win_dialog"
     const val LOSE_DIALOG = "lose_dialog"
-    const val ARCADE_END_DIALOG ="arcade_end_dialog"
+    const val ARCADE_END_DIALOG = "arcade_end_dialog"
     const val SHOWCASE_ID = "showcase_id"
     const val TIME_UNITS_FOR_HINTS_IN_MILLI: Long = 21600000
     const val GIFT_HINTS_TO_GIVE = 1
     const val ADD_MOB = "ca-app-pub-4722610653423402/4300443792"
-    const val ADD_MOB_TEST ="ca-app-pub-3940256099942544/5224354917"
-    const val SCOREBOARD_FIREBASE_REFERENCE ="scoreBoard"
+    const val ADD_MOB_TEST = "ca-app-pub-3940256099942544/5224354917"
+    const val SCOREBOARD_FIREBASE_REFERENCE = "scoreBoard"
 
     lateinit var User: RoomUserNote
 

@@ -8,10 +8,11 @@ import com.example.makeiteven2.R
 import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 
-class DialogEndGameManager(fragment: Any,private val mContext: Context) {
+class DialogEndGameManager(fragment: Any, private val mContext: Context) {
 
     private val listener: IEndDialogBtnClickedListener
     private lateinit var winLooseDialog: Dialog
+
     init {
         if (fragment is IEndDialogBtnClickedListener) {
             listener = fragment
@@ -20,10 +21,11 @@ class DialogEndGameManager(fragment: Any,private val mContext: Context) {
         }
     }
 
-    fun dismissDialog(){
+    fun dismissDialog() {
         winLooseDialog.dismiss()
     }
-    fun shodEndDialog(whichDialog : String,score : String = ""){
+
+    fun shodEndDialog(whichDialog: String, score: String = "") {
         winLooseDialog = Dialog(mContext)
 
         winLooseDialog.setCanceledOnTouchOutside(false)
@@ -35,8 +37,8 @@ class DialogEndGameManager(fragment: Any,private val mContext: Context) {
         winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(mContext))
 
         winLooseDialog.ibtnHome.setOnClickListener { listener.onEndDialogBtnClicked(it) }
-        winLooseDialog.ibtnNext.setOnClickListener {   listener.onEndDialogBtnClicked(it)}
-        winLooseDialog.ibtnRetry.setOnClickListener {  listener.onEndDialogBtnClicked(it) }
+        winLooseDialog.ibtnNext.setOnClickListener { listener.onEndDialogBtnClicked(it) }
+        winLooseDialog.ibtnRetry.setOnClickListener { listener.onEndDialogBtnClicked(it) }
         winLooseDialog.ibtnScoreBoard.setOnClickListener { listener.onEndDialogBtnClicked(it) }
 
         when (whichDialog) {
@@ -53,7 +55,7 @@ class DialogEndGameManager(fragment: Any,private val mContext: Context) {
                 winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
                 winLooseDialog.animationView.playAnimation()
             }
-            Constants.ARCADE_END_DIALOG->{
+            Constants.ARCADE_END_DIALOG -> {
                 winLooseDialog.ibtnNext.visibility = View.GONE
                 winLooseDialog.tvText.text = "${mContext.getString(R.string.you_score_is)} $score"
                 winLooseDialog.animationView.setAnimation(R.raw.times_up)
@@ -61,5 +63,5 @@ class DialogEndGameManager(fragment: Any,private val mContext: Context) {
             }
         }
         winLooseDialog.show()
-        }
     }
+}

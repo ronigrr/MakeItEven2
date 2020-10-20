@@ -121,16 +121,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sound effect by unadamlar and grunz from freesound.org"
-            android:textSize="16sp"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="https://creativecommons.org/licenses/by/3.0/legalcode"
-            android:textSize="16sp"
-            android:textColor="@android:color/black">
-        </TextView>
+            android:textColor="@android:color/black"
+            android:textSize="16sp"></TextView>
 
 
     </LinearLayout>

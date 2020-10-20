@@ -27,7 +27,6 @@
             android:src="@drawable/makeiteven_v2"
             android:contentDescription="@string/level_scree_logo"
            />
-
     </RelativeLayout>
 
 

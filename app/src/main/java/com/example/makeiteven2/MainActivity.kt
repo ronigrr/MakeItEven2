@@ -38,9 +38,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
-    , IFragmentSettingsListener, LevelsAdapter.ILevelsAdapter,
-    FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener,IFragmentScoreBoardScreenListener{
+class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragmentSettingsListener, LevelsAdapter.ILevelsAdapter,
+    FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener,
+    IFragmentScoreBoardScreenListener {
 
     private val fragmentManager = supportFragmentManager
 
@@ -49,8 +49,8 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
     private lateinit var appToolbar: Toolbar
 
-    private lateinit var appUpdateManager : AppUpdateManager
-    private lateinit var appUpdateInfoTask : Task<AppUpdateInfo>
+    private lateinit var appUpdateManager: AppUpdateManager
+    private lateinit var appUpdateInfoTask: Task<AppUpdateInfo>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,9 +60,9 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
         mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
         mEditor = mSharedPref.edit()
-        AudioManager.getInstance(this)
         startLoadingApp()
     }
+
     private fun startLoadingApp() {
         if (mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_APP, FALSE) == FALSE) {
             Handler(Looper.getMainLooper()).postDelayed({
@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
     private fun loadUser() {
         GlobalScope.launch {
             DatabaseHelper.loadUserToConstants(applicationContext)
-            AudioManager.startGameMusic()
+            AudioManager.startGameMusic(this@MainActivity)
         }
     }
 
@@ -208,7 +208,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         alertDialogBuilder.setIcon(R.drawable.warning_icon)
         alertDialogBuilder.setMessage(R.string.Progress).setCancelable(false).setPositiveButton(R.string.Yes) { dialog, _ ->
             Constants.User.currentLevel = 1
-            val newArrayList=ArrayList<StageInfo>()
+            val newArrayList = ArrayList<StageInfo>()
             newArrayList.add(Constants.User.stageList[0])
             Constants.User.stageList = newArrayList
             DatabaseHelper.createOrUpdateUser(applicationContext, Constants.User)
@@ -243,14 +243,14 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
         createNewUser(inputText)
         mEditor.putBoolean(Constants.IS_FIRST_TIME_IN_APP, TRUE).commit()
         loadStartScreen()
-        AudioManager.startGameMusic()
+        AudioManager.startGameMusic(this)
     }
 
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
             UUID.randomUUID().toString(), nickname, 1, 20, 50, 3, ArrayList(),
-            "", "", false, "0"
-        ,ArrayList())
+            "", "", false, "0", ArrayList()
+        )
         newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))
         Constants.User = newUserNote
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
@@ -270,7 +270,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener
 
     override fun onRestart() {
         super.onRestart()
-        AudioManager.startGameMusic()
+        AudioManager.startGameMusic(this)
     }
 
     override fun backButtonPressedArcade() {
