@@ -1,6 +1,10 @@
 package com.example.makeiteven2.extras
 
+import android.content.Context
+import android.util.DisplayMetrics
+import android.view.View
 import com.example.makeiteven2.room.RoomUserNote
+
 
 object Constants {
 
@@ -33,6 +37,12 @@ object Constants {
     const val ADD_MOB = "ca-app-pub-4722610653423402/4300443792"
     const val ADD_MOB_TEST = "ca-app-pub-3940256099942544/5224354917"
     const val SCOREBOARD_FIREBASE_REFERENCE = "scoreBoard"
+
+    fun calculateNoOfColumns(context: Context, columnWidthDp: Int): Int {
+        val displayMetrics: DisplayMetrics = context.resources.displayMetrics
+        val screenWidthDp = displayMetrics.widthPixels / displayMetrics.density
+        return (screenWidthDp / columnWidthDp + 0.5).toInt()
+    }
 
     lateinit var User: RoomUserNote
 

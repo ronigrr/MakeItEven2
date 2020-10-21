@@ -407,7 +407,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
         mNumberOfCoinsLeft = Constants.User.coinsLeft
         checkIfNeedToShowSosHint()
-        
+
         var textToShow = resources.getText(R.string.level_number).toString() + " " + mLevelNum.toString()
         mLevelNumberTV.text = textToShow
         textToShow = " $mNumberOfCoinsLeft "

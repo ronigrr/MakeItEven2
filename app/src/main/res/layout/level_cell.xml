@@ -3,19 +3,11 @@
     android:id="@+id/root_layout_level_cell"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
-<!--    <Button-->
-<!--        android:id="@+id/btnLevelShine"-->
-<!--        android:layout_width="85dp"-->
-<!--        android:layout_height="85dp"-->
-<!--        android:layout_margin="5dp"-->
-<!--        android:background="@drawable/levels_color"-->
-<!--        android:alpha="0.1"-->
-<!--        />-->
 
     <Button
         android:id="@+id/btnLevel"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="82dp"
+        android:layout_height="82dp"
         android:layout_margin="5dp"
         android:background="@drawable/levels_color"
         android:stateListAnimator="@null" />
