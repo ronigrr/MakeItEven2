@@ -10,7 +10,7 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
-import com.example.makeiteven2.extras.Animations
+import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.intefaces.IFragmentSettingsListener
 import com.example.makeiteven2.room.DatabaseHelper.changePlayerNickname
@@ -24,8 +24,8 @@ class FragmentSettings : Fragment() {
         mSoundEffectsBar = rootView.seekBarSoundEffects
         mExitBtn = rootView.btnCloseSettings
 
-        rootView.IBtnEditNickname.setOnTouchListener(Animations.getTouchAnimation(context!!))
-        rootView.btnGameReset.setOnTouchListener(Animations.getTouchAnimation(context!!))
+        rootView.IBtnEditNickname.setOnTouchListener(AnimationsManager.getTouchAnimation(context!!))
+        rootView.btnGameReset.setOnTouchListener(AnimationsManager.getTouchAnimation(context!!))
         rootView.etNickname.setText(Constants.User.playerName)
 
         rootView.seekBarMainSound.progress = Constants.User.mainSoundLevel

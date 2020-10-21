@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.Level
-import com.example.makeiteven2.extras.Animations
+import com.example.makeiteven2.managers.AnimationsManager
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.level_cell.view.*
 
@@ -34,7 +34,7 @@ class LevelsAdapter(private var mLevelsList: List<Level> = ArrayList(), private 
         @SuppressLint("ClickableViewAccessibility")
         fun bind(level: Level, currentStage: Int, callback: ILevelsAdapter) {
             view.tvStageNumber.text = level.levelNum.toString()
-            view.btnLevel.setOnTouchListener(Animations.getTouchAnimation(context))
+            view.btnLevel.setOnTouchListener(AnimationsManager.getTouchAnimation(context))
 
             when {
                 level.levelNum == 0 -> {

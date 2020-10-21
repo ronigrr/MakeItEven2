@@ -6,8 +6,6 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.transition.TransitionInflater
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,10 +22,14 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.example.makeiteven2.R
+import com.example.makeiteven2.dialogs.DialogStore
 import com.example.makeiteven2.extras.*
 import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentsStartsScreenListener
 import com.example.makeiteven2.intefaces.IStoreDialogBtnClickedListener
+import com.example.makeiteven2.managers.AnimationsManager
+import com.example.makeiteven2.managers.GoogleAddManager
+import com.example.makeiteven2.managers.TimerManager
 import com.example.makeiteven2.room.DatabaseHelper
 import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 import kotlinx.android.synthetic.main.store_dialog.*
@@ -103,28 +105,28 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener ,IStoreDialogBtnCli
     @SuppressLint("ClickableViewAccessibility")
     private fun initAnimations() {
         mArcadeModeBtn.apply {
-            startAnimation(Animations.getScaleInAnimation(context!!))
-            setOnTouchListener(Animations.getTouchAnimation(context!!))
+            startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+            setOnTouchListener(AnimationsManager.getTouchAnimation(context!!))
         }
         mStageModeBtn.apply {
-            startAnimation(Animations.getScaleInAnimation(context!!))
-            setOnTouchListener(Animations.getTouchAnimation(context!!))
+            startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+            setOnTouchListener(AnimationsManager.getTouchAnimation(context!!))
         }
         mTutorialBtn.apply {
-            startAnimation(Animations.getScaleInAnimation(context!!))
-            setOnTouchListener(Animations.getTouchAnimation(context!!))
+            startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+            setOnTouchListener(AnimationsManager.getTouchAnimation(context!!))
         }
         mScoreBoardBtn.apply {
-            startAnimation(Animations.getScaleInAnimation(context!!))
-            setOnTouchListener(Animations.getTouchAnimation(context!!))
+            startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+            setOnTouchListener(AnimationsManager.getTouchAnimation(context!!))
         }
 
-        mStoreBtn.startAnimation(Animations.getScaleInAnimation(context!!))
-        mLogoIv.startAnimation(Animations.getBounceAnimation(context!!))
+        mStoreBtn.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mLogoIv.startAnimation(AnimationsManager.getBounceAnimation(context!!))
 
-        Animations.setFadeInOutAnimation(mStageModeShine)
-        Animations.setFadeInOutAnimation(mArcadeModeShine)
-        Animations.setFadeInOutAnimation(mTutorialShine)
+        AnimationsManager.setFadeInOutAnimation(mStageModeShine)
+        AnimationsManager.setFadeInOutAnimation(mArcadeModeShine)
+        AnimationsManager.setFadeInOutAnimation(mTutorialShine)
     }
 
     private fun initTimerForDialog(tvTimer: TextView) {
@@ -165,7 +167,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener ,IStoreDialogBtnCli
             storeDialog.btnGetHint.setTextColor(Color.GRAY)
             storeDialog.btnGetHint.text = getString(R.string.free_coins_in)
         } else {
-            storeDialog.btnGetHint.setOnTouchListener(Animations.getTouchAnimation(context!!))
+            storeDialog.btnGetHint.setOnTouchListener(AnimationsManager.getTouchAnimation(context!!))
             storeDialog.btnGetHint.background = ContextCompat.getDrawable(context!!, R.drawable.free_hints_btn)
             //onClick
             storeDialog.btnGetHint.setOnClickListener {

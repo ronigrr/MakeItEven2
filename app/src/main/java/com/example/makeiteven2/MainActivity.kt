@@ -3,7 +3,6 @@ package com.example.makeiteven2
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 import android.os.Bundle
@@ -18,9 +17,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.StageInfo
-import com.example.makeiteven2.extras.AudioManager
+import com.example.makeiteven2.managers.AudioManager
 import com.example.makeiteven2.extras.Constants
-import com.example.makeiteven2.extras.GoogleAddManager
+import com.example.makeiteven2.managers.GoogleAddManager
+import com.example.makeiteven2.managers.ShearedPrefManager
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.intefaces.*
 import com.example.makeiteven2.room.DatabaseHelper
@@ -59,13 +59,13 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         init3DotToolBar()
         initUpdateManager()
         Thread { GoogleAddManager.loadRewardAD(this) }.run()
-        mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
-        mEditor = mSharedPref.edit()
+        //mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
+        //mEditor = mSharedPref.edit()
         startLoadingApp()
     }
 
     private fun startLoadingApp() {
-        if (mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_APP, FALSE) == FALSE) {
+        if (ShearedPrefManager.getIsFirstTimeInApp(this) == FALSE) {
             Handler(Looper.getMainLooper()).postDelayed({
                 setMainActivityVisible()
                 firstTimeInApp()
@@ -150,7 +150,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         menuInflater.inflate(R.menu.action_menu, menu)
         return true
     }
-
     @SuppressLint("InflateParams")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -242,7 +241,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     override fun onFinishEditDialog(inputText: String) {
         Toast.makeText(this, "welcome $inputText", Toast.LENGTH_SHORT).show()
         createNewUser(inputText)
-        mEditor.putBoolean(Constants.IS_FIRST_TIME_IN_APP, TRUE).commit()
+        ShearedPrefManager.setIsFirstTimeInApp(this, TRUE)
         loadStartScreen()
         AudioManager.startGameMusic(this)
     }

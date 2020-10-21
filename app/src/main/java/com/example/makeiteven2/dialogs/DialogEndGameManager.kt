@@ -1,11 +1,13 @@
-package com.example.makeiteven2.extras
+package com.example.makeiteven2.dialogs
 
 import android.app.Dialog
 import android.content.Context
 import android.view.View
 import android.view.Window
 import com.example.makeiteven2.R
+import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
+import com.example.makeiteven2.managers.AnimationsManager
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 
 class DialogEndGameManager(fragment: Any, private val mContext: Context) {
@@ -32,9 +34,9 @@ class DialogEndGameManager(fragment: Any, private val mContext: Context) {
         winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         winLooseDialog.setCancelable(false)
         winLooseDialog.setContentView(R.layout.win_loose_dialog)
-        winLooseDialog.ibtnHome.setOnTouchListener(Animations.getTouchAnimation(mContext))
-        winLooseDialog.ibtnNext.setOnTouchListener(Animations.getTouchAnimation(mContext))
-        winLooseDialog.ibtnRetry.setOnTouchListener(Animations.getTouchAnimation(mContext))
+        winLooseDialog.ibtnHome.setOnTouchListener(AnimationsManager.getTouchAnimation(mContext))
+        winLooseDialog.ibtnNext.setOnTouchListener(AnimationsManager.getTouchAnimation(mContext))
+        winLooseDialog.ibtnRetry.setOnTouchListener(AnimationsManager.getTouchAnimation(mContext))
 
         winLooseDialog.ibtnHome.setOnClickListener { listener.onEndDialogBtnClicked(it) }
         winLooseDialog.ibtnNext.setOnClickListener { listener.onEndDialogBtnClicked(it) }

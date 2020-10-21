@@ -1,4 +1,4 @@
-package com.example.makeiteven2.extras
+package com.example.makeiteven2.dialogs
 
 import android.app.Dialog
 import android.content.Context
@@ -13,8 +13,13 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.example.makeiteven2.R
+import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.extras.HintsWorker
 import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IStoreDialogBtnClickedListener
+import com.example.makeiteven2.managers.AnimationsManager
+import com.example.makeiteven2.managers.GoogleAddManager
+import com.example.makeiteven2.managers.TimerManager
 import com.example.makeiteven2.room.DatabaseHelper
 import kotlinx.android.synthetic.main.store_dialog.*
 import java.sql.Timestamp
@@ -54,7 +59,7 @@ class DialogStore(fragment: Any, private val mContext: Context,private val activ
 
             mStoreDialog.btnGetHint.text = activityContext.getString(R.string.free_coins_in)
         } else {
-            mStoreDialog.btnGetHint.setOnTouchListener(Animations.getTouchAnimation(mContext))
+            mStoreDialog.btnGetHint.setOnTouchListener(AnimationsManager.getTouchAnimation(mContext))
             mStoreDialog.btnGetHint.background = ContextCompat.getDrawable(mContext, R.drawable.free_hints_btn)
             //onClick
             mStoreDialog.btnGetHint.setOnClickListener {
@@ -88,6 +93,7 @@ class DialogStore(fragment: Any, private val mContext: Context,private val activ
             timerManager?.cancelTimer()
         }
         mStoreDialog.btnGetHintByAd.setOnClickListener {
+            //TODO:: the number of hints is not updating after you get your hints (only in the view)
             GoogleAddManager.loadRewardVideo(mContext,activityContext)
         }
 

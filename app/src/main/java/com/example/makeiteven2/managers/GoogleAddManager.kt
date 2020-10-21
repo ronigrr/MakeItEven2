@@ -1,8 +1,9 @@
-package com.example.makeiteven2.extras
+package com.example.makeiteven2.managers
 
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.room.DatabaseHelper
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
