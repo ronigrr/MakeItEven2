@@ -2,7 +2,6 @@ package com.example.makeiteven2.extras
 
 import android.content.Context
 import android.util.DisplayMetrics
-import android.view.View
 import com.example.makeiteven2.room.RoomUserNote
 import com.google.android.gms.ads.rewarded.RewardedAd
 
