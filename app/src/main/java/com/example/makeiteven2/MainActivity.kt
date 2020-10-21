@@ -20,6 +20,7 @@ import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.StageInfo
 import com.example.makeiteven2.extras.AudioManager
 import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.extras.GoogleAddManager
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.intefaces.*
 import com.example.makeiteven2.room.DatabaseHelper
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         setContentView(R.layout.activity_main)
         init3DotToolBar()
         initUpdateManager()
-
+        Thread { GoogleAddManager.loadRewardAD(this) }.run()
         mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
         mEditor = mSharedPref.edit()
         startLoadingApp()
@@ -313,4 +314,3 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 }
 
-//TODO: need to licence , super_duper,tada,wa wa

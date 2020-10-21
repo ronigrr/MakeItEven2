@@ -68,8 +68,8 @@ object Animations {
     fun setFadeInOutAnimation(view: View) {
         val animationSet = AnimatorSet()
         animationSet.apply {
-            play(ObjectAnimator.ofFloat(view, "alpha", 0.1f, 0.5f).setDuration(500))
-                .after(ObjectAnimator.ofFloat(view, "alpha", 0.5f, 0.1f).setDuration(500))
+            play(ObjectAnimator.ofFloat(view, "alpha", 0.1f, 0.5f).setDuration(1500))
+                .after(ObjectAnimator.ofFloat(view, "alpha", 0.5f, 0.1f).setDuration(1500))
             start()
             doOnEnd { animator -> animator.start() }
         }

@@ -14,13 +14,11 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.StageInfo
-import com.example.makeiteven2.extras.Animations
-import com.example.makeiteven2.extras.AudioManager
-import com.example.makeiteven2.extras.Constants
-import com.example.makeiteven2.extras.DialogEndGameManager
+import com.example.makeiteven2.extras.*
 import com.example.makeiteven2.game.GameFactory
 import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import com.example.makeiteven2.intefaces.IFragmentStageModeListener
+import com.example.makeiteven2.intefaces.IStoreDialogBtnClickedListener
 import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
@@ -29,8 +27,9 @@ import me.toptas.fancyshowcase.FancyShowCaseQueue
 import me.toptas.fancyshowcase.FancyShowCaseView
 
 
-class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener, IEndDialogBtnClickedListener {
+class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener, IEndDialogBtnClickedListener,IStoreDialogBtnClickedListener {
 
+    private lateinit var mStoreIBTN : ImageButton
     private lateinit var mCoinsIV: ImageView
     private lateinit var mSharedPref: SharedPreferences
     private lateinit var mEditor: SharedPreferences.Editor
@@ -57,6 +56,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private lateinit var mNumberGroup: SingleSelectToggleGroup
 
     private lateinit var mEndGameDialog: DialogEndGameManager
+    private lateinit var mStoreDialog: DialogStore
 
     private val mGameButtonsList = ArrayList<ToggleButton>()
     private val mOperatorsList = ArrayList<ToggleButton>()
@@ -85,8 +85,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private lateinit var fancyShowCaseQueue: FancyShowCaseQueue
 
-    private lateinit var mCountDownTimer: CountDownTimer
-    private var showCaseId = Constants.SHOWCASE_ID
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -103,7 +101,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         initToasty()
         gameSetup()
         gameInit()
-        initDialog()
+        initDialogs()
         Handler(Looper.getMainLooper()).postDelayed({
             startTutorial()
         }, 200)
@@ -116,8 +114,9 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mEditor = mSharedPref.edit()
     }
 
-    private fun initDialog() {
+    private fun initDialogs() {
         mEndGameDialog = DialogEndGameManager(this, context!!)
+        mStoreDialog = DialogStore(this,context!!,this.activity!!)
     }
 
     private fun startTutorial() {
@@ -185,6 +184,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             mGameButtonsList[i].startAnimation(Animations.getScaleInAnimation(context!!))
             mOperatorsList[i].startAnimation(Animations.getScaleInAnimation(context!!))
         }
+        mStoreIBTN.startAnimation(Animations.getScaleInAnimation(context!!))
         mCoinsIV.startAnimation(Animations.getScaleInAnimation(context!!))
         mCoinsLeftTV.startAnimation(Animations.getScaleInAnimation(context!!))
         mHintIB.startAnimation(Animations.getScaleInAnimation(context!!))
@@ -199,9 +199,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     private fun setButtonsListeners() {
-        val hintListener = View.OnClickListener { view ->
+        val hintListener = View.OnClickListener { _ ->
             context?.let { letContext ->
-                //val texttoshow = mFullHintString.substringBefore(")")
                 Toasty.info(letContext, mHalfHintString, Toast.LENGTH_SHORT, true).show()
             }
             mNumberOfCoinsLeft--
@@ -221,7 +220,10 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             mCoinsLeftTV.text = textToShow
             checkIfNeedToShowSosHint()
         }
-
+        mStoreIBTN.apply { setOnTouchListener(Animations.getTouchAnimation(context))
+        setOnClickListener {
+            mStoreDialog.showStoreDialog()
+        }}
         mHintIB.apply {
             setOnClickListener(hintListener)
             setOnTouchListener(Animations.getTouchAnimation(context))
@@ -412,6 +414,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mLevelNumberTV.text = textToShow
         textToShow = " $mNumberOfCoinsLeft "
         mCoinsLeftTV.text = textToShow
+
+        mStoreIBTN = rootView.btnStoreStageMode
     }
 
     override fun onClick(v: View?) {
@@ -571,6 +575,9 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         super.onDetach()
         fancyShowCaseQueue.cancel(true)
 
+    }
+
+    override fun onStoreDialogBtnClicked(view: View) {
     }
 }
 

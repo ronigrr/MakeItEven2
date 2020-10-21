@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.DisplayMetrics
 import android.view.View
 import com.example.makeiteven2.room.RoomUserNote
+import com.google.android.gms.ads.rewarded.RewardedAd
 
 
 object Constants {
@@ -45,5 +46,6 @@ object Constants {
     }
 
     lateinit var User: RoomUserNote
+    lateinit var  rewardedAd : RewardedAd
 
 }

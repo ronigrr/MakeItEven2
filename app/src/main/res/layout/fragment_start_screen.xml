@@ -91,7 +91,7 @@
         android:src="@drawable/ic_trophy" />
 
     <ImageButton
-        android:id="@+id/btnStore"
+        android:id="@+id/btnStoreStageMode"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_alignParentRight="true"
