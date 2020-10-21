@@ -102,9 +102,9 @@
             android:layout_toLeftOf="@+id/IBtnEditNickname"
             android:layout_toEndOf="@+id/tvNickname"
             android:enabled="false"
+            android:gravity="center"
             android:inputType="text"
             android:maxLength="24"
-            android:gravity="center"
             android:text="@string/test_string"
             android:textSize="22sp" />
 
@@ -127,8 +127,8 @@
         android:layout_below="@+id/nickNameLayout"
         android:layout_centerHorizontal="true"
         android:layout_margin="20dp"
-        android:padding="5dp"
         android:background="@drawable/reset_game"
+        android:padding="5dp"
         android:text="@string/reset_game_levels"
         android:textAllCaps="false" />
 
