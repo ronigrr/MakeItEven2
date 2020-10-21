@@ -14,6 +14,7 @@ import com.example.makeiteven2.R
 import com.github.jinatonic.confetti.CommonConfetti
 
 object Animations {
+    
     fun getTouchAnimation(context: Context): View.OnTouchListener {
         AnimationUtils.loadAnimation(context, R.anim.btn_pressed)
         val btPressAnimation = AnimationUtils.loadAnimation(context, R.anim.btn_pressed)
@@ -71,16 +72,6 @@ object Animations {
             doOnEnd { animator -> animator.start() }
         }
     }
-    fun setFadeInOutAnimationToLevel(view: View) {
-        val animationSet = AnimatorSet()
-        animationSet.apply {
-            play(ObjectAnimator.ofFloat(view, "alpha", 0.6f, 1.0f).setDuration(500))
-                .after(ObjectAnimator.ofFloat(view, "alpha", 1.0f, 0.6f).setDuration(500))
-            start()
-            doOnEnd { animator -> animator.start() }
-        }
-    }
-
 }
 
 

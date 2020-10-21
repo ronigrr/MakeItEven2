@@ -51,9 +51,7 @@ class LevelsAdapter(private var mLevelsList: List<Level> = ArrayList(), private 
                     view.layoutStageNumber.visibility = View.INVISIBLE
                 }
             }
-            if (level.levelNum == currentStage){
-                Animations.setFadeInOutAnimationToLevel(view)
-            }
+
 
             view.btnLevel.setOnClickListener {
                 if (view.ivLock.visibility == View.VISIBLE) {
@@ -72,7 +70,7 @@ class LevelsAdapter(private var mLevelsList: List<Level> = ArrayList(), private 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        mLevelsList[position].let { list -> holder.bind(list, mCurrentStage, mCallBack) }
+        mLevelsList[position].let { level -> holder.bind(level, mCurrentStage, mCallBack) }
     }
 
     override fun getItemCount(): Int {
