@@ -61,7 +61,7 @@ class FragmentLevelsScreen : Fragment() {
         mLevelsRecyclerView.layoutManager = GridLayoutManager(context, 4)
         mLevelsRecyclerView.adapter = mLevelsAdapter
         mLevelsRecyclerView.scrollToPosition(DatabaseHelper.getStageInfoList().lastIndex)
-        mLevelsRecyclerView.layoutAnimation = LayoutAnimationController(Animations.getScaleInAnimation(context!!))
+        mLevelsRecyclerView.layoutAnimation = LayoutAnimationController(Animations.getFastScaleInAnimation(context!!))
     }
 
     override fun onAttach(context: Context) {

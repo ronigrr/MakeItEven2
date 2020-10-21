@@ -62,6 +62,9 @@ object Animations {
     fun getScaleInAnimation(context: Context): Animation =
         AnimationUtils.loadAnimation(context, R.anim.scale_in)
 
+    fun getFastScaleInAnimation(context: Context): Animation =
+        AnimationUtils.loadAnimation(context, R.anim.levels_scale_in)
+
     fun setFadeInOutAnimation(view: View) {
         val animationSet = AnimatorSet()
         animationSet.apply {
