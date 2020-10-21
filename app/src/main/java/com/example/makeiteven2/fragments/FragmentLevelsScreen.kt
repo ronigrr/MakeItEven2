@@ -10,6 +10,7 @@ import android.view.animation.LayoutAnimationController
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.example.makeiteven2.R
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.Level
@@ -18,6 +19,8 @@ import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.intefaces.IFragmentLevelsScreenListener
 import com.example.makeiteven2.room.DatabaseHelper
 import kotlinx.android.synthetic.main.fragment_levels.view.*
+import kotlin.math.max
+
 
 class FragmentLevelsScreen : Fragment() {
 
@@ -58,11 +61,22 @@ class FragmentLevelsScreen : Fragment() {
 
     private fun initRecyclerView() {
         mLevelsRecyclerView.setHasFixedSize(true)
-        mLevelsRecyclerView.layoutManager = GridLayoutManager(context, 4)
+
+        val layout = GridLayoutManager(context, Constants.calculateNoOfColumns(context!!,90))
+
+        layout.apply {
+            isUsingSpansToEstimateScrollbarDimensions = true
+            isSmoothScrollbarEnabled = true
+        }
+
+        mLevelsRecyclerView.layoutManager = layout
         mLevelsRecyclerView.adapter = mLevelsAdapter
         mLevelsRecyclerView.scrollToPosition(DatabaseHelper.getStageInfoList().lastIndex)
         mLevelsRecyclerView.layoutAnimation = LayoutAnimationController(Animations.getFastScaleInAnimation(context!!))
     }
+
+
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
