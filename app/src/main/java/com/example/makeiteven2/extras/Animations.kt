@@ -14,9 +14,7 @@ import com.example.makeiteven2.R
 import com.github.jinatonic.confetti.CommonConfetti
 
 object Animations {
-
-    private val mAnimationSet = AnimatorSet()
-
+    
     fun getTouchAnimation(context: Context): View.OnTouchListener {
         AnimationUtils.loadAnimation(context, R.anim.btn_pressed)
         val btPressAnimation = AnimationUtils.loadAnimation(context, R.anim.btn_pressed)
