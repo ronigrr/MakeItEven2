@@ -21,6 +21,10 @@ import com.example.makeiteven2.game.GameFactory
 import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentArcadeModeListener
+import com.example.makeiteven2.managers.AnimationsManager
+import com.example.makeiteven2.managers.AudioManager
+import com.example.makeiteven2.dialogs.DialogEndGameManager
+import com.example.makeiteven2.managers.TimerManager
 import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
@@ -147,21 +151,21 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
     }
 
     private fun setButtonAnimation() {
-        mBackButtonIB.startAnimation(Animations.getScaleInAnimation(context!!))
-        mHintIB1.startAnimation(Animations.getScaleInAnimation(context!!))
-        mHintIB2.startAnimation(Animations.getScaleInAnimation(context!!))
-        mHintIB3.startAnimation(Animations.getScaleInAnimation(context!!))
+        mBackButtonIB.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mHintIB1.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mHintIB2.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mHintIB3.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
         for (i in 0..3) {
-            mGameButtonsList[i].startAnimation(Animations.getScaleInAnimation(context!!))
-            mOperatorsList[i].startAnimation(Animations.getScaleInAnimation(context!!))
+            mGameButtonsList[i].startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+            mOperatorsList[i].startAnimation(AnimationsManager.getScaleInAnimation(context!!))
         }
-        mActualScoreTV.startAnimation(Animations.getScaleInAnimation(context!!))
-        mTargetNumberTV.startAnimation(Animations.getScaleInAnimation(context!!))
-        mTimerTV.startAnimation(Animations.getScaleInAnimation(context!!))
-        mActualScoreTV.startAnimation(Animations.getScaleInAnimation(context!!))
-        mActualScoreTV.startAnimation(Animations.getScaleInAnimation(context!!))
-        mScoreTV.startAnimation(Animations.getScaleInAnimation(context!!))
-        mTargetNumberTV.startAnimation(Animations.getScaleInAnimation(context!!))
+        mActualScoreTV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mTargetNumberTV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mTimerTV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mActualScoreTV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mActualScoreTV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mScoreTV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mTargetNumberTV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
     }
 
     private fun gameSetup() {
@@ -191,15 +195,15 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         }
         mHintIB1.apply {
             setOnClickListener(hintListener)
-            setOnTouchListener(Animations.getTouchAnimation(context))
+            setOnTouchListener(AnimationsManager.getTouchAnimation(context))
         }
         mHintIB2.apply {
             setOnClickListener(hintListener)
-            setOnTouchListener(Animations.getTouchAnimation(context))
+            setOnTouchListener(AnimationsManager.getTouchAnimation(context))
         }
         mHintIB3.apply {
             setOnClickListener(hintListener)
-            setOnTouchListener(Animations.getTouchAnimation(context))
+            setOnTouchListener(AnimationsManager.getTouchAnimation(context))
         }
 
         mNumberGroup.apply {
@@ -226,20 +230,20 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         for (tb in mGameButtonsList) {
             tb.apply {
                 setOnClickListener(this@FragmentArcadeModeScreen)
-                setOnTouchListener(Animations.getTouchAnimation(context))
+                setOnTouchListener(AnimationsManager.getTouchAnimation(context))
                 isEnabled = false
             }
         }
         for (tb in mOperatorsList) {
             tb.apply {
-                setOnTouchListener(Animations.getTouchAnimation(context))
+                setOnTouchListener(AnimationsManager.getTouchAnimation(context))
                 setOnClickListener(this@FragmentArcadeModeScreen)
             }
         }
 
         mBackButtonIB.apply {
             setOnClickListener { listener.backButtonPressedArcade() }
-            setOnTouchListener(Animations.getTouchAnimation(context))
+            setOnTouchListener(AnimationsManager.getTouchAnimation(context))
         }
     }
 
@@ -249,7 +253,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 visibility = View.VISIBLE
                 isEnabled = true
                 isChecked = false
-                startAnimation(Animations.getScaleInAnimation(context!!))
+                startAnimation(AnimationsManager.getScaleInAnimation(context!!))
             }
         }
         for (tb in mOperatorsList) {
@@ -380,7 +384,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
             //set new button
             val toggleButton: ToggleButton = rootView.findViewById(selectedNumberID2)
-            toggleButton.startAnimation(Animations.getScaleOutAnimation(context!!))
+            toggleButton.startAnimation(AnimationsManager.getScaleOutAnimation(context!!))
             toggleButton.textOn = sum.toString()
             toggleButton.textOff = sum.toString()
             toggleButton.text = sum.toString()
@@ -389,12 +393,12 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
             //button to remove+anim
             val toggleButtonToHide: ToggleButton = rootView.findViewById(selectedNumberID1)
-            toggleButtonToHide.startAnimation(Animations.getScaleOutAnimation(context!!))
+            toggleButtonToHide.startAnimation(AnimationsManager.getScaleOutAnimation(context!!))
             toggleButtonToHide.visibility = View.INVISIBLE
             toggleButtonToHide.isEnabled = false
 
 
-            toggleButton.startAnimation(Animations.getScaleInAnimation(context!!))
+            toggleButton.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
 
             val operator: ToggleButton = rootView.findViewById(selectedOperatorID)
             operator.isChecked = false
@@ -418,7 +422,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 if (mTargetNumber == sum) {
                     //you win
                     AudioManager.startArcadeSuccessSound(context!!)
-                    Animations.getConfetti(rootView.game_root_container)
+                    AnimationsManager.getConfetti(rootView.game_root_container)
                     gameInit()
                     mTimerManager.addMoreTime(rewardTimeInMillis)
                     mWinsCounter++
@@ -442,7 +446,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
                 } else {
                     AudioManager.startWrongAnswerSound(context!!)
-                    view?.startAnimation(Animations.getShakeAnimation(context!!))
+                    view?.startAnimation(AnimationsManager.getShakeAnimation(context!!))
                     gameInit()
                 }
             }

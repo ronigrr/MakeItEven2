@@ -29,7 +29,7 @@
                 android:layout_marginTop="10dp"
                 android:padding="5dp"
                 android:textColor="@color/primaryTextColor"
-                android:textSize="24sp"
+                android:textSize="28sp"
                 android:textStyle="bold"
                 tools:text="Level : 5" />
 
@@ -126,7 +126,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/btn_layout"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="35dp">
+            android:layout_marginTop="30dp">
 
             <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
                 android:id="@+id/group_choices_of_operators"
@@ -206,11 +206,11 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_coins"></ImageView>
+                android:src="@drawable/ic_coins"/>
 
             <TextView
                 android:id="@+id/coinsLeftTV"
-                android:layout_width="match_parent"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/backofcoincounter"
                 android:gravity="center"
@@ -253,23 +253,13 @@
         </LinearLayout>
 
     </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/hiding_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffff"
-        android:visibility="gone">
-
-        <ImageView
-            android:id="@+id/ivCountdown"
-            android:layout_width="350dp"
-            android:layout_height="350dp"
-            android:layout_centerInParent="true"
-            android:layout_margin="5dp"
-            android:background="@drawable/ic_three"
-            android:focusable="true" />
-    </RelativeLayout>
-
-
+    <ImageButton
+        android:id="@+id/btnStoreStageMode"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="store icon"
+        android:layout_margin="5dp"
+        android:src="@drawable/ic_store" />
 </RelativeLayout>

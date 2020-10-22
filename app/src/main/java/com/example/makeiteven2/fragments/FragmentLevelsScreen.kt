@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.Level
-import com.example.makeiteven2.extras.Animations
+import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.intefaces.IFragmentLevelsScreenListener
 import com.example.makeiteven2.room.DatabaseHelper
@@ -34,7 +34,7 @@ class FragmentLevelsScreen : Fragment() {
         mLevelsRecyclerView = rootView.recyclerLevels
         mLevelsAdapter = LevelsAdapter(mLevelItemsList, rootView.context, Constants.User.currentLevel)
         rootView.ibBack.apply {
-            startAnimation(Animations.getScaleInAnimation(context!!))
+            startAnimation(AnimationsManager.getScaleInAnimation(context!!))
             setOnClickListener {
                 mCallBack.onLevelsFragmentBackPressed()
             }
@@ -70,7 +70,7 @@ class FragmentLevelsScreen : Fragment() {
         mLevelsRecyclerView.layoutManager = layout
         mLevelsRecyclerView.adapter = mLevelsAdapter
         mLevelsRecyclerView.scrollToPosition(DatabaseHelper.getStageInfoList().lastIndex)
-        mLevelsRecyclerView.layoutAnimation = LayoutAnimationController(Animations.getScaleInAnimation(context!!))
+        mLevelsRecyclerView.layoutAnimation = LayoutAnimationController(AnimationsManager.getFastScaleInAnimation(context!!))
     }
 
 

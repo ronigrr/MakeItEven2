@@ -1,4 +1,4 @@
-package com.example.makeiteven2.extras
+package com.example.makeiteven2.managers
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
@@ -13,7 +13,7 @@ import androidx.core.animation.doOnEnd
 import com.example.makeiteven2.R
 import com.github.jinatonic.confetti.CommonConfetti
 
-object Animations {
+object AnimationsManager {
     
     fun getTouchAnimation(context: Context): View.OnTouchListener {
         AnimationUtils.loadAnimation(context, R.anim.btn_pressed)
@@ -63,11 +63,14 @@ object Animations {
     fun getScaleInAnimation(context: Context): Animation =
         AnimationUtils.loadAnimation(context, R.anim.scale_in)
 
+    fun getFastScaleInAnimation(context: Context): Animation =
+        AnimationUtils.loadAnimation(context, R.anim.levels_scale_in)
+
     fun setFadeInOutAnimation(view: View) {
         val animationSet = AnimatorSet()
         animationSet.apply {
-            play(ObjectAnimator.ofFloat(view, "alpha", 0.1f, 0.5f).setDuration(500))
-                .after(ObjectAnimator.ofFloat(view, "alpha", 0.5f, 0.1f).setDuration(500))
+            play(ObjectAnimator.ofFloat(view, "alpha", 0.1f, 0.5f).setDuration(1500))
+                .after(ObjectAnimator.ofFloat(view, "alpha", 0.5f, 0.1f).setDuration(1500))
             start()
             doOnEnd { animator -> animator.start() }
         }

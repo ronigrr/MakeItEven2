@@ -1,8 +1,9 @@
-package com.example.makeiteven2.extras
+package com.example.makeiteven2.managers
 
 import android.os.CountDownTimer
 import android.util.Log
 import android.widget.TextView
+import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.intefaces.IFinishTimerListener
 
 class TimerManager(fragment: Any, private var viewToUpdate: TextView?, val modeOfOperation: String) {

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.adapters.ScoreBoardCellAdapter
 import com.example.makeiteven2.data_models.NameAndScoreInfo
-import com.example.makeiteven2.extras.Animations
+import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.intefaces.IFragmentScoreBoardScreenListener
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.viewmodel.NameAndScoreInfoViewModel
@@ -53,7 +53,7 @@ class FragmentScoreBoard : Fragment() {
         mScoreBoardRecyclerView.setHasFixedSize(true)
         mScoreBoardRecyclerView.layoutManager = LinearLayoutManager(context)
         mScoreBoardRecyclerView.adapter = mScoreBoardCellAdapter
-        mScoreBoardRecyclerView.layoutAnimation = LayoutAnimationController(Animations.getScaleInAnimation(context!!))
+        mScoreBoardRecyclerView.layoutAnimation = LayoutAnimationController(AnimationsManager.getScaleInAnimation(context!!))
     }
 
     override fun onAttach(context: Context) {
