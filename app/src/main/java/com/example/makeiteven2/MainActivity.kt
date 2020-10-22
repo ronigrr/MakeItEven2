@@ -59,8 +59,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         init3DotToolBar()
         initUpdateManager()
         Thread { GoogleAddManager.loadRewardAD(this) }.run()
-        //mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
-        //mEditor = mSharedPref.edit()
         startLoadingApp()
     }
 
@@ -97,6 +95,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     private fun loadUser() {
         GlobalScope.launch {
             DatabaseHelper.loadUserToConstants(applicationContext)
+            AudioManager.initAudioManager(this@MainActivity)
             AudioManager.startGameMusic(this@MainActivity)
         }
     }
@@ -196,10 +195,12 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onSeekBarMainVolume(mainVolume: Int) {
         AudioManager.setGameVolume(mainVolume)
+        AudioManager.updateAudioManagerVolume()
     }
 
     override fun onSeekBarSoundEffects(soundEffectsVolume: Int) {
         AudioManager.setEffectVolume(soundEffectsVolume)
+        AudioManager.updateAudioManagerVolume()
     }
 
     override fun onResetGame() {
@@ -265,12 +266,24 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onPause() {
         super.onPause()
-        AudioManager.stopGameMusic()
+        AudioManager.pauseGameMusic()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        AudioManager.pauseGameMusic()
     }
 
     override fun onRestart() {
         super.onRestart()
-        AudioManager.startGameMusic(this)
+        //AudioManager.startGameMusic(this)
+        AudioManager.resumeGameMusic(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AudioManager.stopGameMusic()
+        AudioManager.releaseAllMediaPlayers()
     }
 
     override fun backButtonPressedArcade() {

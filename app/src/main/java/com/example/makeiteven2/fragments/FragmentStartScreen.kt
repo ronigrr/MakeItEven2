@@ -79,7 +79,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener ,IStoreDialogBtnCli
         mTutorialBtn = rootView.btnTutorial
         mScoreBoardBtn = rootView.btnScoreBoard
         mLogoIv = rootView.ivGameLogo
-        mStoreBtn = rootView.btnStoreStageMode
+        mStoreBtn = rootView.IBtnStoreStageMode
         mStageModeShine = rootView.btnStageModeShine
         mArcadeModeShine = rootView.btnArcadeModeShine
         mTutorialShine = rootView.btnTutorialShine

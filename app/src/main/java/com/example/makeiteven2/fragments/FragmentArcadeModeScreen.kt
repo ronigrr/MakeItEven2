@@ -270,7 +270,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         when {
             mWinsCounter < 3 -> {
                 min = 0
-                max = 20
+                max = 14
                 difficulty = 6
             }
             mWinsCounter < 8 -> {
@@ -328,7 +328,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         mNumberGroup = rootView.group_choices_of_numbers
 
 
-        mActualScoreTV.text = "0"
+        mActualScoreTV.text = " 0"
 
     }
 
@@ -442,7 +442,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
                     }
 
-                    mActualScoreTV.text = mScoreCounter.toString() + ""
+                    mActualScoreTV.text = "$mScoreCounter "
 
                 } else {
                     AudioManager.startWrongAnswerSound(context!!)

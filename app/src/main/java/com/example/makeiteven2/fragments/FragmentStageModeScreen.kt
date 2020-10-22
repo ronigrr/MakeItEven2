@@ -409,17 +409,15 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         textToShow = " $mNumberOfCoinsLeft "
         mCoinsLeftTV.text = textToShow
 
-        mStoreIBTN = rootView.btnStoreStageMode
+        mStoreIBTN = rootView.IBtnStoreStageMode
     }
 
     override fun onClick(v: View?) {
-        Handler(Looper.getMainLooper()).post {
             if (!(v as ToggleButton).isChecked) {
                 AudioManager.playBtnOn(context!!)
             } else if (v.isChecked) {
                 AudioManager.playBtnOff(context!!)
             }
-        }
         /// checks that nobody checked
         var i = 0
         for (toggleButton in mGameButtonsList) {
@@ -489,7 +487,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 if (tb.isEnabled) i++
             }
             if (isDivideZero || isFraction) {
-                //showFinishDialog(Constants.LOSE_DIALOG)
                 mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
                 AudioManager.startWaWaSound(context!!)
                 gameInit()
@@ -513,16 +510,15 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
                     Handler(Looper.getMainLooper()).postDelayed({
                         mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
-                        AudioManager.startTaDaSound(context!!)
                         AnimationsManager.getConfetti(rootView.game_root_container)
                     }, 200)
-
+                    AudioManager.startTaDaSound(context!!)
                 } else {
                     //you loose
+                    AudioManager.startWaWaSound(context!!)
                     Handler(Looper.getMainLooper()).postDelayed({
                         mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
                     }, 200)
-
                     gameInit()
                 }
             }
@@ -558,7 +554,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 mEndGameDialog.dismissDialog()
             }
             R.id.ibtnNext -> {
-                mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + (++mLevelNum).toString()
+                mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + " " +(++mLevelNum).toString()
                 gameInit()
                 mEndGameDialog.dismissDialog()
             }
@@ -568,7 +564,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     override fun onDetach() {
         super.onDetach()
         fancyShowCaseQueue.cancel(true)
-
     }
 
     override fun onStoreDialogBtnClicked(view: View) {
