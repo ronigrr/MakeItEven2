@@ -96,5 +96,6 @@
     <string name="levels_screen_back_ibtn">levels screen back iBtn</string>
     <string name="level_scree_logo">level scree logo</string>
     <string name="dialog_image">dialog image</string>
+    <string name="start_screen_logo">start screen logo</string>
 
 </resources>

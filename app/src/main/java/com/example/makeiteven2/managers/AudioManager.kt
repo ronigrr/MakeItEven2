@@ -9,6 +9,9 @@ object AudioManager {
 
 
     private var mGameMediaPlayer = MediaPlayer()
+    private var mGameBeginsSound    = MediaPlayer()
+    private var mShortGameLoopSound = MediaPlayer()
+    private var mLongGameLoopSound  = MediaPlayer()
     private var mEffectsMediaPlayer = MediaPlayer()
     private var mTadaEffectMediaPlayer = MediaPlayer()
     private var mWawaEffectMediaPlayer = MediaPlayer()
@@ -22,23 +25,26 @@ object AudioManager {
 
     fun initAudioManager(context: Context){
         mGameMediaPlayer = MediaPlayer.create(context, R.raw.super_duper_by_ian_post)
-        //mGameMediaPlayer.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
         mGameMediaPlayer.isLooping = true
 
+        mGameBeginsSound = MediaPlayer.create(context, R.raw.game_begin)
+
+        mShortGameLoopSound = MediaPlayer.create(context, R.raw.game_loop_sound_short)
+        mShortGameLoopSound.isLooping = true
+
+        mLongGameLoopSound = MediaPlayer.create(context, R.raw.game_loop_sound_longer)
+        mLongGameLoopSound.isLooping = true
+
         mTadaEffectMediaPlayer =MediaPlayer.create(context, R.raw.ta_da)
-        //mTadaEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
 
         mWawaEffectMediaPlayer = MediaPlayer.create(context,R.raw.waa_waa_waaaa)
-        //mWawaEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
 
         mBtnOnEffectMediaPlayer = MediaPlayer.create(context,R.raw.btn_on_sound)
-        //mBtnOnEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
 
         mBtnOffEffectMediaPlayer = MediaPlayer.create(context,R.raw.btn_on_sound)
-        //mBtnOffEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
 
         mArcadeSuccessEffectMediaPlayer = MediaPlayer.create(context, R.raw.success_arcade)
-        //mArcadeSuccessEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
+
         mArcadeWrongAnswerEffectMediaPlayer = MediaPlayer.create(context,R.raw.wrong_answer)
 
         updateAudioManagerVolume()
@@ -49,6 +55,10 @@ object AudioManager {
         mMainSoundVolume = Constants.User.mainSoundLevel.toFloat()
 
         mGameMediaPlayer.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
+        mGameBeginsSound.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
+        mLongGameLoopSound.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
+        mShortGameLoopSound.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
+
         mTadaEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
         mWawaEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
         mBtnOnEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
@@ -67,70 +77,60 @@ object AudioManager {
         updateAudioManagerVolume()
     }
 
-    fun playBtnOn(context: Context) {
-//        mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
-//        mEffectsMediaPlayer = MediaPlayer.create(context, R.raw.btn_on_sound)
-//        mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
+    fun playGameBeginAndStartLoop()
+    {
+        mGameBeginsSound.start()
+        mGameBeginsSound.setOnCompletionListener {
+            mLongGameLoopSound.start()
+        }
+    }
+
+    fun playGameBegin(){
+        mGameBeginsSound.start()
+    }
+
+    fun playBtnOn() {
         mBtnOnEffectMediaPlayer.start()
     }
 
-    fun playBtnOff(context: Context) {
-//        mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
-//        mGameMediaPlayer = MediaPlayer.create(context, R.raw.btn_off_sound)
-//        mGameMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
+    fun playBtnOff() {
         mBtnOffEffectMediaPlayer.start()
     }
 
-    fun startWaWaSound(context: Context) {
-//        mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
-//        mEffectsMediaPlayer = MediaPlayer.create(context, R.raw.waa_waa_waaaa)
-//        mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
+    fun playWaWaSound() {
         mWawaEffectMediaPlayer.start()
     }
 
-    fun startArcadeSuccessSound(context: Context) {
-//        mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
-//        mEffectsMediaPlayer = MediaPlayer.create(context, R.raw.success_arcade)
-//        mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
+    fun playArcadeSuccessSound() {
         mArcadeSuccessEffectMediaPlayer.start()
     }
 
-    fun startTaDaSound(context: Context) {
-//        mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
-//        mEffectsMediaPlayer = MediaPlayer.create(context, R.raw.ta_da)
-//        mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
+    fun playTaDaSound() {
         mTadaEffectMediaPlayer.start()
     }
 
-    fun startGameMusic(context: Context) {
-
-//        mGameMediaPlayer = MediaPlayer.create(context, R.raw.super_duper_by_ian_post)
-//        mGameMediaPlayer.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
-//        mGameMediaPlayer.isLooping = true
-        mGameMediaPlayer.start()
+    fun playLongLoopGameMusic() {
+        mLongGameLoopSound.start()
     }
 
-    fun startWrongAnswerSound(context: Context) {
-//        mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
-//        mEffectsMediaPlayer = MediaPlayer.create(context, R.raw.wrong_answer)
-//        mEffectsMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
+    fun playWrongAnswerSound() {
         mArcadeWrongAnswerEffectMediaPlayer.start()
     }
 
-    fun resumeGameMusic(context: Context) {
-        mGameMediaPlayer.start()
+    fun resumeLongLoopMusic() {
+        mLongGameLoopSound.start()
+    }
+    fun stopLongLoopGameMusic() {
+        mLongGameLoopSound.stop()
     }
 
-    fun stopGameMusic() {
-        mGameMediaPlayer.stop()
-    }
-
-    fun pauseGameMusic() {
-        mGameMediaPlayer.pause()
+    fun pauseLongLoopGameMusic() {
+        mLongGameLoopSound.pause()
     }
 
     fun releaseAllMediaPlayers(){
         mGameMediaPlayer.release()
+
         mEffectsMediaPlayer.release()
         mTadaEffectMediaPlayer.release()
         mWawaEffectMediaPlayer.release()
@@ -138,6 +138,9 @@ object AudioManager {
         mBtnOffEffectMediaPlayer.release()
         mArcadeWrongAnswerEffectMediaPlayer.release()
         mArcadeSuccessEffectMediaPlayer.release()
+        mLongGameLoopSound.release()
+        mShortGameLoopSound.release()
+        mGameBeginsSound.release()
     }
 
 }

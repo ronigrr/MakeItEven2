@@ -86,6 +86,9 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private lateinit var fancyShowCaseQueue: FancyShowCaseQueue
 
+    private lateinit var sosToasty : Toast
+    private lateinit var hintToasty: Toast
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -98,7 +101,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_game_stage, container, false)
-        initToasty()
         gameSetup()
         gameInit()
         initDialogs()
@@ -190,12 +192,17 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private fun initToasty() {
         Toasty.Config.getInstance().tintIcon(false).setTextSize(30).allowQueue(true).apply()
+        hintToasty = Toasty.info(context!!, mHalfHintString, Toast.LENGTH_SHORT, true)
+        sosToasty = Toasty.info(context!!, mFullHintString, Toast.LENGTH_LONG, true)
     }
 
     private fun setButtonsListeners() {
         val hintListener = View.OnClickListener { _ ->
-            context?.let { letContext ->
-                Toasty.info(letContext, mHalfHintString, Toast.LENGTH_SHORT, true).show()
+            context?.let { _ ->
+                    hintToasty.cancel()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        hintToasty.show()
+                    },50)
             }
             mNumberOfCoinsLeft--
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
@@ -204,9 +211,12 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             checkIfNeedToShowSosHint()
         }
 
-        val sosHintListener = View.OnClickListener { view ->
-            context?.let { letContext ->
-                Toasty.info(letContext, mFullHintString, Toast.LENGTH_LONG, true).show()
+        val sosHintListener = View.OnClickListener { _ ->
+            context?.let { _ ->
+                sosToasty.cancel()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    sosToasty.show()
+                },50)
             }
             mNumberOfCoinsLeft -= 2
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
@@ -350,7 +360,13 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         } else {
             startSavedGameInfo()
         }
+        initToasty()
+    }
 
+    override fun onPause() {
+        super.onPause()
+        sosToasty.cancel()
+        hintToasty.cancel()
     }
 
     private fun startSavedGameInfo() {
@@ -414,9 +430,9 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onClick(v: View?) {
             if (!(v as ToggleButton).isChecked) {
-                AudioManager.playBtnOn(context!!)
+                AudioManager.playBtnOn()
             } else if (v.isChecked) {
-                AudioManager.playBtnOff(context!!)
+                AudioManager.playBtnOff()
             }
         /// checks that nobody checked
         var i = 0
@@ -488,7 +504,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             }
             if (isDivideZero || isFraction) {
                 mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
-                AudioManager.startWaWaSound(context!!)
+                AudioManager.playWaWaSound()
                 gameInit()
                 return
             }
@@ -512,10 +528,10 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                         mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
                         AnimationsManager.getConfetti(rootView.game_root_container)
                     }, 200)
-                    AudioManager.startTaDaSound(context!!)
+                    AudioManager.playTaDaSound()
                 } else {
                     //you loose
-                    AudioManager.startWaWaSound(context!!)
+                    AudioManager.playWaWaSound()
                     Handler(Looper.getMainLooper()).postDelayed({
                         mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
                     }, 200)

@@ -96,7 +96,9 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         GlobalScope.launch {
             DatabaseHelper.loadUserToConstants(applicationContext)
             AudioManager.initAudioManager(this@MainActivity)
-            AudioManager.startGameMusic(this@MainActivity)
+            Handler(Looper.getMainLooper()).postDelayed({
+                AudioManager.playGameBeginAndStartLoop()
+            },4000)
         }
     }
 
@@ -195,12 +197,11 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onSeekBarMainVolume(mainVolume: Int) {
         AudioManager.setGameVolume(mainVolume)
-        AudioManager.updateAudioManagerVolume()
     }
 
     override fun onSeekBarSoundEffects(soundEffectsVolume: Int) {
         AudioManager.setEffectVolume(soundEffectsVolume)
-        AudioManager.updateAudioManagerVolume()
+
     }
 
     override fun onResetGame() {
@@ -244,7 +245,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         createNewUser(inputText)
         ShearedPrefManager.setIsFirstTimeInApp(this, TRUE)
         loadStartScreen()
-        AudioManager.startGameMusic(this)
+        AudioManager.playGameBeginAndStartLoop()
     }
 
     private fun createNewUser(nickname: String) {
@@ -266,23 +267,22 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onPause() {
         super.onPause()
-        AudioManager.pauseGameMusic()
+        AudioManager.pauseLongLoopGameMusic()
     }
 
     override fun onStop() {
         super.onStop()
-        AudioManager.pauseGameMusic()
+        AudioManager.pauseLongLoopGameMusic()
     }
 
     override fun onRestart() {
         super.onRestart()
-        //AudioManager.startGameMusic(this)
-        AudioManager.resumeGameMusic(this)
+        AudioManager.resumeLongLoopMusic()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        AudioManager.stopGameMusic()
+        AudioManager.stopLongLoopGameMusic()
         AudioManager.releaseAllMediaPlayers()
     }
 
@@ -293,7 +293,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     override fun loadScoreBoardFromArcade() {
         fragmentManager.popBackStack()
         loadScoreBoard()
-
     }
 
     override fun restartArcadeGame() {

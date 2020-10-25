@@ -12,6 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -122,6 +124,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener ,IStoreDialogBtnCli
         }
 
         mStoreBtn.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+
         mLogoIv.startAnimation(AnimationsManager.getBounceAnimation(context!!))
 
         AnimationsManager.setFadeInOutAnimation(mStageModeShine)

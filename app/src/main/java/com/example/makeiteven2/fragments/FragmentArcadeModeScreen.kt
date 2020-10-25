@@ -413,7 +413,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 if (tb.isEnabled) i++
             }
             if (isDivideZero || isFraction) {
-                AudioManager.startWrongAnswerSound(context!!)
+                AudioManager.playWrongAnswerSound()
             }
 
             if (i == 1) {
@@ -421,7 +421,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
                 if (mTargetNumber == sum) {
                     //you win
-                    AudioManager.startArcadeSuccessSound(context!!)
+                    AudioManager.playArcadeSuccessSound()
                     AnimationsManager.getConfetti(rootView.game_root_container)
                     gameInit()
                     mTimerManager.addMoreTime(rewardTimeInMillis)
@@ -445,7 +445,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                     mActualScoreTV.text = "$mScoreCounter "
 
                 } else {
-                    AudioManager.startWrongAnswerSound(context!!)
+                    AudioManager.playWrongAnswerSound()
                     view?.startAnimation(AnimationsManager.getShakeAnimation(context!!))
                     gameInit()
                 }

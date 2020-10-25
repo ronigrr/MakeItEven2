@@ -15,7 +15,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:background="@color/Transparent"
-            android:src="@drawable/ic_back"></ImageButton>
+            android:src="@drawable/ic_back"/>
 
         <TextView
             android:id="@+id/tvHeadline"
