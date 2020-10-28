@@ -23,6 +23,7 @@ import com.example.makeiteven2.managers.GoogleAddManager
 import com.example.makeiteven2.managers.ShearedPrefManager
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.intefaces.*
+import com.example.makeiteven2.managers.RetentionManager
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.RoomUserNote
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -310,6 +311,16 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun scoreBoardHide3dotToolBar() {
         hide3DotsToolBar()
+    }
+
+    override fun onStop() {
+        super.onStop()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        RetentionManager.getInstance(applicationContext).cancelNotification()
+        RetentionManager.getInstance(applicationContext).setNotification(Constants.TEST_COUNTDOWN_10_SECONDS_IN_MILLIS)
     }
 }
 

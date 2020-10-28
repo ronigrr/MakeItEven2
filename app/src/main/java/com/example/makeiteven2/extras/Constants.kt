@@ -8,6 +8,8 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 
 object Constants {
 
+    const val NotificationText: String = """It's been a while that you didn't play and practice your brain!
+        Click here to Come and Play"""
     const val IS_FIRST_TIME_IN_STAGE_MODE: String = "first_time_in_stagemode"
     const val SCOREBOARD_SCREEN_FRAGMENT_TAG: String = "scoreboard_screen_fragment"
     const val IS_TUTORIAL = "is_tutorial"
