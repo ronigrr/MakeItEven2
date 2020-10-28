@@ -2,6 +2,7 @@ package com.example.makeiteven2.extras
 
 import android.content.Context
 import android.util.DisplayMetrics
+import androidx.lifecycle.MutableLiveData
 import com.example.makeiteven2.room.RoomUserNote
 import com.google.android.gms.ads.rewarded.RewardedAd
 
@@ -46,5 +47,6 @@ object Constants {
 
     lateinit var User: RoomUserNote
     lateinit var  rewardedAd : RewardedAd
+    var liveDataCoins = MutableLiveData<Int>()
 
 }

@@ -29,6 +29,25 @@ import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_arcade.view.*
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.actualScoreTV
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.backButtonIB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.btn1TB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.btn2TB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.btn3TB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.btn4TB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.countDownAnim
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.divideTB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.group_choices_of_numbers
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.group_choices_of_operators
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.hintButton2IB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.hintButton3IB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.hintButtonIB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.minusTB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.multiplyTB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.plusTB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.scoreTV
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.theTargetNumberTV
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.timerTV
 
 class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerListener, IEndDialogBtnClickedListener {
 
@@ -422,7 +441,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 if (mTargetNumber == sum) {
                     //you win
                     AudioManager.playArcadeSuccessSound()
-                    AnimationsManager.getConfetti(rootView.game_root_container)
+                    AnimationsManager.getConfetti(rootView.confetti_view)
                     gameInit()
                     mTimerManager.addMoreTime(rewardTimeInMillis)
                     mWinsCounter++

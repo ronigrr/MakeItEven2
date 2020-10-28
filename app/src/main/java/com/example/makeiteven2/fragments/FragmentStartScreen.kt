@@ -54,8 +54,6 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener ,IStoreDialogBtnCli
     private lateinit var mLogoIv: ImageView
     private lateinit var mStoreBtn: ImageView
 
-    //lateinit var rewardedAd: RewardedAd
-
     private var timerManager: TimerManager? = null
 
 

@@ -97,5 +97,9 @@
     <string name="level_scree_logo">level scree logo</string>
     <string name="dialog_image">dialog image</string>
     <string name="start_screen_logo">start screen logo</string>
+    <string name="hint_btn_stage">hint btn stage</string>
+    <string name="number_test">2</string>
+    <string name="scoreboard_icon">scoreBoard icon</string>
+    <string name="store_icon">store icon</string>
 
 </resources>

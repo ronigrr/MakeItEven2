@@ -9,6 +9,7 @@ import android.view.Window
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
@@ -48,7 +49,8 @@ class DialogStore(fragment: Any, private val mContext: Context,private val activ
         mStoreDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         mStoreDialog.setContentView(R.layout.store_dialog)
         mStoreDialog.setCancelable(true)
-        mStoreDialog.storeCoinsLeftTV.text = Constants.User.coinsLeft.toString()
+        Constants.liveDataCoins.observe(this.activityContext,{ mStoreDialog.storeCoinsLeftTV.text = it.toString() })
+//        mStoreDialog.storeCoinsLeftTV.text = Constants.User.coinsLeft.toString()
         if (Constants.User.isCoinsGiftGiven) {//disable btn and set timer
             initTimerForDialog(mStoreDialog.tvTimer)
             mStoreDialog.btnGetHint.isEnabled = false

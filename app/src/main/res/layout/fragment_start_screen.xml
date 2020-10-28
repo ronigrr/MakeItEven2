@@ -8,114 +8,165 @@
     android:layoutDirection="ltr"
     android:padding="2dp">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        app:layout_constraintBottom_toTopOf="@+id/btnScoreBoard"
+    <Button
+        android:id="@+id/btnStageModeShine"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:alpha="0.1"
+        android:background="@drawable/stage_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivGameLogo">
+        app:layout_constraintTop_toTopOf="@+id/btnStageMode"
+        app:layout_constraintWidth_percent="0.67"
+        app:layout_constraintHeight_percent="0.079"/>
 
-        <Button
-            android:id="@+id/btnStageModeShine"
-            android:layout_width="255dp"
-            android:layout_height="65dp"
-            android:alpha="0.1"
-            android:background="@drawable/stage_btn" />
+    <Button
+        android:id="@+id/btnStageMode"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/stage_btn"
+        android:text="@string/Stage_mode"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintWidth_percent="0.65"
+        app:layout_constraintHeight_percent="0.075"/>
 
-        <Button
-            android:id="@+id/btnStageMode"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
-            android:background="@drawable/stage_btn"
-            android:text="@string/Stage_mode"
-            android:textAllCaps="false"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <Button
+        android:id="@+id/btnArcadeModeShine"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/btnStageMode"
+        android:alpha="0.1"
+        android:background="@drawable/arcade_btn"
+        app:layout_constraintBottom_toTopOf="@+id/btnTutorialShine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnStageMode"
+        app:layout_constraintWidth_percent="0.67"
+        app:layout_constraintHeight_percent="0.079" />
 
-        <Button
-            android:id="@+id/btnArcadeModeShine"
-            android:layout_width="255dp"
-            android:layout_height="65dp"
-            android:layout_below="@id/btnStageMode"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="25dp"
-            android:alpha="0.1"
-            android:background="@drawable/arcade_btn" />
-
-        <Button
-            android:id="@+id/btnArcadeMode"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
-            android:layout_below="@id/btnStageMode"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/arcade_btn"
-            android:text="@string/Arcade_mode"
-            android:textAllCaps="false"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/btnTutorialShine"
-            android:layout_width="255dp"
-            android:layout_height="65dp"
-            android:layout_below="@id/btnArcadeMode"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="25dp"
-            android:alpha="0.1"
-            android:background="@drawable/tutorial_btn_background" />
-
-        <Button
-            android:id="@+id/btnTutorial"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
-            android:layout_below="@id/btnArcadeMode"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/tutorial_btn_background"
-            android:text="@string/tutorial"
-            android:textAllCaps="false"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <Button
+        android:id="@+id/btnArcadeMode"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/btnStageMode"
+        android:background="@drawable/arcade_btn"
+        android:text="@string/Arcade_mode"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnTutorialShine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnStageModeShine"
+        app:layout_constraintWidth_percent="0.65"
+        app:layout_constraintHeight_percent="0.075" />
 
 
-    </RelativeLayout>
+    <Button
+        android:id="@+id/btnTutorialShine"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/btnArcadeMode"
+        android:alpha="0.1"
+        android:background="@drawable/tutorial_btn_background"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.67"
+        app:layout_constraintHeight_percent="0.079"/>
+
+    <Button
+        android:id="@+id/btnTutorial"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@id/btnArcadeMode"
+        android:background="@drawable/tutorial_btn_background"
+        android:text="@string/tutorial"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.65"
+        app:layout_constraintHeight_percent="0.075"/>
+
+
     <ImageView
         android:id="@+id/ivGameLogo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="150dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_centerHorizontal="true"
         android:contentDescription="@string/start_screen_logo"
+        android:minHeight="150dp"
         android:src="@drawable/makeiteven_v2"
+        app:layout_constraintBottom_toTopOf="@+id/guideline1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
-
-
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintWidth_percent="1"/>
 
     <ImageButton
         android:id="@+id/btnScoreBoard"
-        android:layout_width="80dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/Transparent"
-        android:contentDescription="scoreBoard icon"
+        android:contentDescription="@string/scoreboard_icon"
+        android:scaleType="fitCenter"
         android:src="@drawable/ic_trophy"
+        android:layout_marginStart="2dp"
+        app:layout_constraintWidth_percent="0.2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHeight_percent="0.12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline" />
 
     <ImageButton
         android:id="@+id/IBtnStoreStageMode"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:contentDescription="store icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="@string/store_icon"
+        android:scaleType="fitCenter"
+        android:background="@color/Transparent"
         android:src="@drawable/ic_store"
+        android:layout_marginEnd="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/btnScoreBoard"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintWidth_percent="0.2"
+        app:layout_constraintHeight_percent="0.12"/>
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.88" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.44" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.73" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,23 +4,20 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.StageInfo
+import com.example.makeiteven2.dialogs.DialogEndGameManager
 import com.example.makeiteven2.dialogs.DialogStore
-import com.example.makeiteven2.extras.*
+import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.game.GameFactory
 import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import com.example.makeiteven2.intefaces.IFragmentStageModeListener
 import com.example.makeiteven2.intefaces.IStoreDialogBtnClickedListener
 import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.managers.AudioManager
-import com.example.makeiteven2.dialogs.DialogEndGameManager
 import com.example.makeiteven2.managers.ShearedPrefManager
 import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
@@ -110,9 +107,13 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         return rootView
     }
 
+    private fun initCoinsLiveData() {
+        Constants.liveDataCoins.observe(this.activity!!,{ mCoinsLeftTV.text = it.toString() })
+    }
+
     private fun initDialogs() {
         mEndGameDialog = DialogEndGameManager(this, context!!)
-        mStoreDialog = DialogStore(this,context!!,this.activity!!)
+        mStoreDialog = DialogStore(this, context!!, this.activity!!)
     }
 
     private fun startTutorial() {
@@ -121,19 +122,19 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         if (arguments?.getBoolean(Constants.IS_TUTORIAL) != null || ShearedPrefManager.getIsFirstTimeInStageMode(context!!)) {
 
             if (ShearedPrefManager.getIsFirstTimeInStageMode(context!!)) {
-                ShearedPrefManager.setIsFirstTimeInStageMode(context!!,false)
+                ShearedPrefManager.setIsFirstTimeInStageMode(context!!, false)
             }
             val one = FancyShowCaseView.Builder(activity!!)
                 .focusOn(rootView.theTargetNumberTV)
                 .title("This is the target number you need to reach")
                 .build()
             val two = FancyShowCaseView.Builder(activity!!)
-                .focusOn(rootView.btn_layout)
+                .focusOn(rootView.group_choices_of_operators)
                 .title("You need to use ALL four numbers to do so")
                 .titleGravity(Gravity.BOTTOM)
                 .build()
             val three = FancyShowCaseView.Builder(activity!!)
-                .focusOn(rootView.operatorsLayout)
+                .focusOn(rootView.group_choices_of_numbers)
                 .title("Use all operators as much as you want")
                 .titleGravity(Gravity.TOP)
                 .build()
@@ -170,7 +171,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mOperatorsList.add(mGameDivTB)
         setButtonsListeners()
         setButtonsAnimation()
-
+        initCoinsLiveData()
     }
 
     private fun setButtonsAnimation() {
@@ -202,12 +203,10 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     hintToasty.cancel()
                     Handler(Looper.getMainLooper()).postDelayed({
                         hintToasty.show()
-                    },50)
+                    }, 50)
             }
             mNumberOfCoinsLeft--
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
-            val textToShow = "$mNumberOfCoinsLeft"
-            mCoinsLeftTV.text = textToShow
             checkIfNeedToShowSosHint()
         }
 
@@ -216,12 +215,10 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 sosToasty.cancel()
                 Handler(Looper.getMainLooper()).postDelayed({
                     sosToasty.show()
-                },50)
+                }, 50)
             }
             mNumberOfCoinsLeft -= 2
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
-            val textToShow = " $mNumberOfCoinsLeft "
-            mCoinsLeftTV.text = textToShow
             checkIfNeedToShowSosHint()
         }
         mStoreIBTN.apply { setOnTouchListener(AnimationsManager.getTouchAnimation(context))
@@ -420,11 +417,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mNumberOfCoinsLeft = Constants.User.coinsLeft
         checkIfNeedToShowSosHint()
 
-        var textToShow = resources.getText(R.string.level_number).toString() + " " + mLevelNum.toString()
+        val textToShow = resources.getText(R.string.level_number).toString() + " " + mLevelNum.toString()
         mLevelNumberTV.text = textToShow
-        textToShow = " $mNumberOfCoinsLeft "
-        mCoinsLeftTV.text = textToShow
-
         mStoreIBTN = rootView.IBtnStoreStageMode
     }
 
@@ -520,13 +514,12 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                         //add coins
                         DatabaseHelper.addCoins(context!!, 1)
                         mNumberOfCoinsLeft++
-                        mCoinsLeftTV.text = mNumberOfCoinsLeft.toString()
                         checkIfNeedToShowSosHint()
                     }
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
                     Handler(Looper.getMainLooper()).postDelayed({
                         mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
-                        AnimationsManager.getConfetti(rootView.game_root_container)
+                        AnimationsManager.getConfetti(rootView.main_constraint)
                     }, 200)
                     AudioManager.playTaDaSound()
                 } else {
@@ -570,7 +563,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 mEndGameDialog.dismissDialog()
             }
             R.id.ibtnNext -> {
-                mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + " " +(++mLevelNum).toString()
+                mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + " " + (++mLevelNum).toString()
                 gameInit()
                 mEndGameDialog.dismissDialog()
             }

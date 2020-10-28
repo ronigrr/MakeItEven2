@@ -5,9 +5,11 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,12 +19,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.StageInfo
-import com.example.makeiteven2.managers.AudioManager
 import com.example.makeiteven2.extras.Constants
-import com.example.makeiteven2.managers.GoogleAddManager
-import com.example.makeiteven2.managers.ShearedPrefManager
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.intefaces.*
+import com.example.makeiteven2.managers.AudioManager
+import com.example.makeiteven2.managers.GoogleAddManager
+import com.example.makeiteven2.managers.ShearedPrefManager
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.RoomUserNote
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -44,10 +46,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     IFragmentScoreBoardScreenListener {
 
     private val fragmentManager = supportFragmentManager
-
-    private lateinit var mSharedPref: SharedPreferences
-    private lateinit var mEditor: Editor
-
     private lateinit var appToolbar: Toolbar
 
     private lateinit var appUpdateManager: AppUpdateManager
@@ -98,7 +96,8 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
             AudioManager.initAudioManager(this@MainActivity)
             Handler(Looper.getMainLooper()).postDelayed({
                 AudioManager.playGameBeginAndStartLoop()
-            },4000)
+                Constants.liveDataCoins.value = Constants.User.coinsLeft
+            }, 4000)
         }
     }
 
