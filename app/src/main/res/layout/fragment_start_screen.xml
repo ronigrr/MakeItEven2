@@ -14,11 +14,12 @@
         android:layout_height="0dp"
         android:alpha="0.1"
         android:background="@drawable/stage_btn"
+        app:layout_constraintBottom_toTopOf="@+id/btnArcadeModeShine"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.079"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnStageMode"
-        app:layout_constraintWidth_percent="0.67"
-        app:layout_constraintHeight_percent="0.079"/>
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintWidth_percent="0.67" />
 
     <Button
         android:id="@+id/btnStageMode"
@@ -29,11 +30,12 @@
         android:textAllCaps="false"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btnArcadeModeShine"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.075"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
-        app:layout_constraintWidth_percent="0.65"
-        app:layout_constraintHeight_percent="0.075"/>
+        app:layout_constraintWidth_percent="0.65" />
 
     <Button
         android:id="@+id/btnArcadeModeShine"
@@ -42,12 +44,12 @@
         android:layout_below="@id/btnStageMode"
         android:alpha="0.1"
         android:background="@drawable/arcade_btn"
-        app:layout_constraintBottom_toTopOf="@+id/btnTutorialShine"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.079"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnStageMode"
-        app:layout_constraintWidth_percent="0.67"
-        app:layout_constraintHeight_percent="0.079" />
+        app:layout_constraintTop_toBottomOf="@+id/ivGameLogo"
+        app:layout_constraintWidth_percent="0.67" />
 
     <Button
         android:id="@+id/btnArcadeMode"
@@ -59,12 +61,12 @@
         android:textAllCaps="false"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btnTutorialShine"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.075"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnStageModeShine"
-        app:layout_constraintWidth_percent="0.65"
-        app:layout_constraintHeight_percent="0.075" />
+        app:layout_constraintTop_toBottomOf="@+id/ivGameLogo"
+        app:layout_constraintWidth_percent="0.65" />
 
 
     <Button
@@ -76,9 +78,10 @@
         android:background="@drawable/tutorial_btn_background"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.079"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.67"
-        app:layout_constraintHeight_percent="0.079"/>
+        app:layout_constraintTop_toBottomOf="@+id/btnArcadeModeShine"
+        app:layout_constraintWidth_percent="0.67" />
 
     <Button
         android:id="@+id/btnTutorial"
@@ -92,9 +95,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.075"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintWidth_percent="0.65"
-        app:layout_constraintHeight_percent="0.075"/>
+        app:layout_constraintTop_toBottomOf="@+id/btnArcadeModeShine"
+        app:layout_constraintWidth_percent="0.65" />
 
 
     <ImageView
@@ -161,12 +165,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.44" />
+        app:layout_constraintGuide_percent="0.39" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.73" />
+        app:layout_constraintGuide_percent="0.78" />
 </androidx.constraintlayout.widget.ConstraintLayout>

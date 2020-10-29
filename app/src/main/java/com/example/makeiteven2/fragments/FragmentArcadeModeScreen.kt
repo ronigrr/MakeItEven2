@@ -433,11 +433,13 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
             }
             if (isDivideZero || isFraction) {
                 AudioManager.playWrongAnswerSound()
+                view?.startAnimation(AnimationsManager.getShakeAnimation(context!!))
+                mTimerManager.reduceTime(Constants.ARCADE_MODE_REDUCE_TIME_PENALTY)
+                gameInit()
             }
 
             if (i == 1) {
                 //game finished
-
                 if (mTargetNumber == sum) {
                     //you win
                     AudioManager.playArcadeSuccessSound()
@@ -461,11 +463,12 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
                     }
 
-                    mActualScoreTV.text = "$mScoreCounter "
+                    mActualScoreTV.text = mScoreCounter.toString()
 
                 } else {
                     AudioManager.playWrongAnswerSound()
                     view?.startAnimation(AnimationsManager.getShakeAnimation(context!!))
+                    mTimerManager.reduceTime(Constants.ARCADE_MODE_REDUCE_TIME_PENALTY)
                     gameInit()
                 }
             }
