@@ -15,7 +15,8 @@ import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
-import com.example.makeiteven2.extras.*
+import com.example.makeiteven2.dialogs.DialogEndGameManager
+import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.firebase.FireBaseHelper.saveScoreToDatabaseScoreBoard
 import com.example.makeiteven2.game.GameFactory
 import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
@@ -23,7 +24,6 @@ import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentArcadeModeListener
 import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.managers.AudioManager
-import com.example.makeiteven2.dialogs.DialogEndGameManager
 import com.example.makeiteven2.managers.TimerManager
 import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
@@ -414,6 +414,9 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
             }
             if (isDivideZero || isFraction) {
                 AudioManager.startWrongAnswerSound(context!!)
+                gameInit()
+                return
+                manipulateTimeAndScore(false)
             }
 
             if (i == 1) {
@@ -423,24 +426,9 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                     //you win
                     AudioManager.startArcadeSuccessSound(context!!)
                     AnimationsManager.getConfetti(rootView.game_root_container)
-                    gameInit()
-                    mTimerManager.addMoreTime(rewardTimeInMillis)
-                    mWinsCounter++
-                    when {
-                        mWinsCounter < 5 -> mScoreCounter += 100
-                        mWinsCounter < 7 -> {
-                            mScoreCounter += 200
-                            //adding more 12sec
-                            val millisToAdd: Long = (9 * 1000)
-                            rewardTimeInMillis = millisToAdd
-                        }
-                        else -> {
-                            mScoreCounter += 300
-                            val millisToAdd: Long = (12 * 1000)
-                            rewardTimeInMillis = millisToAdd
-                        }
 
-                    }
+                    mWinsCounter++
+                    manipulateTimeAndScore(true)
 
                     mActualScoreTV.text = mScoreCounter.toString() + ""
 
@@ -448,10 +436,33 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                     AudioManager.startWrongAnswerSound(context!!)
                     view?.startAnimation(AnimationsManager.getShakeAnimation(context!!))
                     gameInit()
+                    manipulateTimeAndScore(false)
                 }
             }
 
         }
+    }
+
+    private fun manipulateTimeAndScore(isWin: Boolean) {
+        if (isWin) {
+            when {
+                mWinsCounter < 5 -> mScoreCounter += 100
+                mWinsCounter < 7 -> {
+                    mScoreCounter += 200
+                    //adding more 12sec
+                    val millisToAdd: Long = (9 * 1000)
+                    rewardTimeInMillis = millisToAdd
+                }
+                else -> {
+                    mScoreCounter += 300
+                    val millisToAdd: Long = (12 * 1000)
+                    rewardTimeInMillis = millisToAdd
+                }
+            }
+        } else {
+            rewardTimeInMillis -= (5 * 1000)
+        }
+        mTimerManager.addMoreTime(rewardTimeInMillis)
     }
 
     override fun onFinishTimer() {

@@ -315,12 +315,13 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onStop() {
         super.onStop()
+        RetentionManager.getInstance(applicationContext).setNotification(Constants.NOTIFICATION_COUNTDOWN_3_DAYS_IN_MILLIS)
     }
 
     override fun onStart() {
         super.onStart()
         RetentionManager.getInstance(applicationContext).cancelNotification()
-        RetentionManager.getInstance(applicationContext).setNotification(Constants.TEST_COUNTDOWN_10_SECONDS_IN_MILLIS)
     }
+
 }
 

@@ -33,7 +33,7 @@ class NotificationHelper(private val mContext: Context) {
         mBuilder = NotificationCompat.Builder(mContext, mChannelId!!)
         mBuilder?.apply {
             setSmallIcon(R.drawable.star_on)
-            setLargeIcon(BitmapFactory.decodeResource(mContext.resources,0))
+            setLargeIcon(BitmapFactory.decodeResource(mContext.resources,com.example.makeiteven2.R.drawable.ic_app_round))
             setContentIntent(PendingIntent.getActivity(mContext,0, Intent(mContext,MainActivity::class.java),PendingIntent.FLAG_CANCEL_CURRENT))
             setContentText(textToShow)
             setStyle(NotificationCompat.BigTextStyle().bigText(textToShow))

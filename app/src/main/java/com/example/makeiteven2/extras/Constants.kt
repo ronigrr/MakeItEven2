@@ -9,12 +9,13 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 object Constants {
 
     const val NotificationText: String = """It's been a while that you didn't play and practice your brain!
-        Click here to Come and Play"""
+Click here to Come and Play"""
     const val IS_FIRST_TIME_IN_STAGE_MODE: String = "first_time_in_stagemode"
     const val SCOREBOARD_SCREEN_FRAGMENT_TAG: String = "scoreboard_screen_fragment"
     const val IS_TUTORIAL = "is_tutorial"
     const val TEST_COUNTDOWN_10_SECONDS_IN_MILLIS: Long = (0.2 * 1000 * 60).toLong()
-    const val START_COUNTDOWN_ARCADE_TIMER_IN_MILLIS: Long = (1* 1000 * 60).toLong()
+    const val NOTIFICATION_COUNTDOWN_3_DAYS_IN_MILLIS: Long = (3*24*60*60*1000).toLong()
+    const val START_COUNTDOWN_ARCADE_TIMER_IN_MILLIS: Long = (1 * 1000 * 60).toLong()
     const val ARCADE_TIMER = "arcade_timer"
     const val COINS_TIMER = "coins_timer"
     const val TUTORIAL_GAME_TYPE = "tutorial_game_type"
@@ -47,6 +48,6 @@ object Constants {
     }
 
     lateinit var User: RoomUserNote
-    lateinit var  rewardedAd : RewardedAd
+    lateinit var rewardedAd: RewardedAd
 
 }
