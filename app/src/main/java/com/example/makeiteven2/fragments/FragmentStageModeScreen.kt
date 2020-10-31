@@ -4,23 +4,20 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
 import com.example.makeiteven2.data_models.StageInfo
+import com.example.makeiteven2.dialogs.DialogEndGameManager
 import com.example.makeiteven2.dialogs.DialogStore
-import com.example.makeiteven2.extras.*
+import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.game.GameFactory
 import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import com.example.makeiteven2.intefaces.IFragmentStageModeListener
 import com.example.makeiteven2.intefaces.IStoreDialogBtnClickedListener
 import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.managers.AudioManager
-import com.example.makeiteven2.dialogs.DialogEndGameManager
 import com.example.makeiteven2.managers.ShearedPrefManager
 import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
@@ -86,6 +83,9 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private lateinit var fancyShowCaseQueue: FancyShowCaseQueue
 
+    private lateinit var sosToasty : Toast
+    private lateinit var hintToasty: Toast
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -98,7 +98,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_game_stage, container, false)
-        initToasty()
         gameSetup()
         gameInit()
         initDialogs()
@@ -108,9 +107,15 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         return rootView
     }
 
+    private fun initCoinsLiveData() {
+        Constants.liveDataCoins.observe(this.activity!!,{ mCoinsLeftTV.text = it.toString()
+        mNumberOfCoinsLeft = it })
+
+    }
+
     private fun initDialogs() {
         mEndGameDialog = DialogEndGameManager(this, context!!)
-        mStoreDialog = DialogStore(this,context!!,this.activity!!)
+        mStoreDialog = DialogStore(this, context!!, this.activity!!)
     }
 
     private fun startTutorial() {
@@ -119,19 +124,19 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         if (arguments?.getBoolean(Constants.IS_TUTORIAL) != null || ShearedPrefManager.getIsFirstTimeInStageMode(context!!)) {
 
             if (ShearedPrefManager.getIsFirstTimeInStageMode(context!!)) {
-                ShearedPrefManager.setIsFirstTimeInStageMode(context!!,false)
+                ShearedPrefManager.setIsFirstTimeInStageMode(context!!, false)
             }
             val one = FancyShowCaseView.Builder(activity!!)
                 .focusOn(rootView.theTargetNumberTV)
                 .title("This is the target number you need to reach")
                 .build()
             val two = FancyShowCaseView.Builder(activity!!)
-                .focusOn(rootView.btn_layout)
+                .focusOn(rootView.group_choices_of_operators)
                 .title("You need to use ALL four numbers to do so")
                 .titleGravity(Gravity.BOTTOM)
                 .build()
             val three = FancyShowCaseView.Builder(activity!!)
-                .focusOn(rootView.operatorsLayout)
+                .focusOn(rootView.group_choices_of_numbers)
                 .title("Use all operators as much as you want")
                 .titleGravity(Gravity.TOP)
                 .build()
@@ -168,7 +173,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mOperatorsList.add(mGameDivTB)
         setButtonsListeners()
         setButtonsAnimation()
-
+        initCoinsLiveData()
     }
 
     private fun setButtonsAnimation() {
@@ -190,28 +195,32 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private fun initToasty() {
         Toasty.Config.getInstance().tintIcon(false).setTextSize(30).allowQueue(true).apply()
+        hintToasty = Toasty.info(context!!, mHalfHintString, Toast.LENGTH_SHORT, true)
+        sosToasty = Toasty.info(context!!, mFullHintString, Toast.LENGTH_LONG, true)
     }
 
     private fun setButtonsListeners() {
         val hintListener = View.OnClickListener { _ ->
-            context?.let { letContext ->
-                Toasty.info(letContext, mHalfHintString, Toast.LENGTH_SHORT, true).show()
+            context?.let { _ ->
+                    hintToasty.cancel()
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        hintToasty.show()
+                    }, 50)
             }
             mNumberOfCoinsLeft--
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
-            val textToShow = "$mNumberOfCoinsLeft"
-            mCoinsLeftTV.text = textToShow
             checkIfNeedToShowSosHint()
         }
 
-        val sosHintListener = View.OnClickListener { view ->
-            context?.let { letContext ->
-                Toasty.info(letContext, mFullHintString, Toast.LENGTH_LONG, true).show()
+        val sosHintListener = View.OnClickListener { _ ->
+            context?.let { _ ->
+                sosToasty.cancel()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    sosToasty.show()
+                }, 50)
             }
             mNumberOfCoinsLeft -= 2
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
-            val textToShow = " $mNumberOfCoinsLeft "
-            mCoinsLeftTV.text = textToShow
             checkIfNeedToShowSosHint()
         }
         mStoreIBTN.apply { setOnTouchListener(AnimationsManager.getTouchAnimation(context))
@@ -350,7 +359,13 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         } else {
             startSavedGameInfo()
         }
+        initToasty()
+    }
 
+    override fun onPause() {
+        super.onPause()
+        sosToasty.cancel()
+        hintToasty.cancel()
     }
 
     private fun startSavedGameInfo() {
@@ -404,22 +419,17 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mNumberOfCoinsLeft = Constants.User.coinsLeft
         checkIfNeedToShowSosHint()
 
-        var textToShow = resources.getText(R.string.level_number).toString() + " " + mLevelNum.toString()
+        val textToShow = resources.getText(R.string.level_number).toString() + " " + mLevelNum.toString()
         mLevelNumberTV.text = textToShow
-        textToShow = " $mNumberOfCoinsLeft "
-        mCoinsLeftTV.text = textToShow
-
-        mStoreIBTN = rootView.btnStoreStageMode
+        mStoreIBTN = rootView.IBtnStoreStageMode
     }
 
     override fun onClick(v: View?) {
-        Handler(Looper.getMainLooper()).post {
             if (!(v as ToggleButton).isChecked) {
-                AudioManager.playBtnOn(context!!)
+                AudioManager.playBtnOn()
             } else if (v.isChecked) {
-                AudioManager.playBtnOff(context!!)
+                AudioManager.playBtnOff()
             }
-        }
         /// checks that nobody checked
         var i = 0
         for (toggleButton in mGameButtonsList) {
@@ -489,9 +499,8 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 if (tb.isEnabled) i++
             }
             if (isDivideZero || isFraction) {
-                //showFinishDialog(Constants.LOSE_DIALOG)
                 mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
-                AudioManager.startWaWaSound(context!!)
+                AudioManager.playWaWaSound()
                 gameInit()
                 return
             }
@@ -507,22 +516,20 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                         //add coins
                         DatabaseHelper.addCoins(context!!, 1)
                         mNumberOfCoinsLeft++
-                        mCoinsLeftTV.text = mNumberOfCoinsLeft.toString()
                         checkIfNeedToShowSosHint()
                     }
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
                     Handler(Looper.getMainLooper()).postDelayed({
                         mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
-                        AudioManager.startTaDaSound(context!!)
-                        AnimationsManager.getConfetti(rootView.game_root_container)
+                        AnimationsManager.getConfetti(rootView.main_constraint)
                     }, 200)
-
+                    AudioManager.playTaDaSound()
                 } else {
                     //you loose
+                    AudioManager.playWaWaSound()
                     Handler(Looper.getMainLooper()).postDelayed({
                         mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
                     }, 200)
-
                     gameInit()
                 }
             }
@@ -558,7 +565,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 mEndGameDialog.dismissDialog()
             }
             R.id.ibtnNext -> {
-                mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + (++mLevelNum).toString()
+                mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + " " + (++mLevelNum).toString()
                 gameInit()
                 mEndGameDialog.dismissDialog()
             }
@@ -568,11 +575,15 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     override fun onDetach() {
         super.onDetach()
         fancyShowCaseQueue.cancel(true)
-
     }
 
     override fun onStoreDialogBtnClicked(view: View) {
     }
+
+    override fun storeDialogDismissed() {
+        checkIfNeedToShowSosHint()
+    }
+
 }
 
 
