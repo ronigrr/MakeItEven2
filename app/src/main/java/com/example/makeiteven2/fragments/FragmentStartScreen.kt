@@ -222,4 +222,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener ,IStoreDialogBtnCli
     override fun onStoreDialogBtnClicked(view: View) {
 
     }
+
+    override fun storeDialogDismissed() {
+    }
 }

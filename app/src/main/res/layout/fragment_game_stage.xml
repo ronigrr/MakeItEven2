@@ -45,7 +45,7 @@
         android:layout_marginStart="5dp"
         android:textColor="#000"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintHeight_percent="0.065"
+        app:layout_constraintHeight_percent="0.066"
         app:layout_constraintStart_toEndOf="@+id/coinsIV"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.13" />

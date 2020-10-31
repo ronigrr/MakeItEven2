@@ -50,7 +50,9 @@ class DialogStore(fragment: Any, private val mContext: Context,private val activ
         mStoreDialog.setContentView(R.layout.store_dialog)
         mStoreDialog.setCancelable(true)
         Constants.liveDataCoins.observe(this.activityContext,{ mStoreDialog.storeCoinsLeftTV.text = it.toString() })
-//        mStoreDialog.storeCoinsLeftTV.text = Constants.User.coinsLeft.toString()
+        mStoreDialog.btnCloseSettings.setOnClickListener {
+            mStoreDialog.dismiss()
+        }
         if (Constants.User.isCoinsGiftGiven) {//disable btn and set timer
             initTimerForDialog(mStoreDialog.tvTimer)
             mStoreDialog.btnGetHint.isEnabled = false
@@ -99,11 +101,11 @@ class DialogStore(fragment: Any, private val mContext: Context,private val activ
             GoogleAddManager.loadRewardVideo(mContext,activityContext)
         }
 
-        mStoreDialog.btnCloseSettings.setOnClickListener {
-            mStoreDialog.dismiss()
+        mStoreDialog.setOnDismissListener {
+            listener.storeDialogDismissed()
         }
-
         mStoreDialog.show()
+
     }
 
     private fun initTimerForDialog(tvTimer: TextView) {
@@ -132,4 +134,5 @@ class DialogStore(fragment: Any, private val mContext: Context,private val activ
     override fun onFinishTimer() {
 
     }
+
 }

@@ -108,7 +108,9 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     private fun initCoinsLiveData() {
-        Constants.liveDataCoins.observe(this.activity!!,{ mCoinsLeftTV.text = it.toString() })
+        Constants.liveDataCoins.observe(this.activity!!,{ mCoinsLeftTV.text = it.toString()
+        mNumberOfCoinsLeft = it })
+
     }
 
     private fun initDialogs() {
@@ -577,6 +579,11 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onStoreDialogBtnClicked(view: View) {
     }
+
+    override fun storeDialogDismissed() {
+        checkIfNeedToShowSosHint()
+    }
+
 }
 
 
