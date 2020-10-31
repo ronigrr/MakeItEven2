@@ -24,6 +24,7 @@ import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.intefaces.*
 import com.example.makeiteven2.managers.AudioManager
 import com.example.makeiteven2.managers.GoogleAddManager
+import com.example.makeiteven2.managers.RetentionManager
 import com.example.makeiteven2.managers.ShearedPrefManager
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.RoomUserNote
@@ -200,7 +201,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onSeekBarSoundEffects(soundEffectsVolume: Int) {
         AudioManager.setEffectVolume(soundEffectsVolume)
-
     }
 
     override fun onResetGame() {
@@ -272,6 +272,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     override fun onStop() {
         super.onStop()
         AudioManager.pauseLongLoopGameMusic()
+        RetentionManager.getInstance(applicationContext).setNotification(Constants.NOTIFICATION_COUNTDOWN_3_DAYS_IN_MILLIS)
     }
 
     override fun onRestart() {
@@ -322,5 +323,11 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     override fun scoreBoardHide3dotToolBar() {
         hide3DotsToolBar()
     }
+
+    override fun onStart() {
+        super.onStart()
+        RetentionManager.getInstance(applicationContext).cancelNotification()
+    }
+
 }
 

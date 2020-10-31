@@ -15,7 +15,8 @@ import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
-import com.example.makeiteven2.extras.*
+import com.example.makeiteven2.dialogs.DialogEndGameManager
+import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.firebase.FireBaseHelper.saveScoreToDatabaseScoreBoard
 import com.example.makeiteven2.game.GameFactory
 import com.example.makeiteven2.intefaces.IEndDialogBtnClickedListener
@@ -23,7 +24,6 @@ import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentArcadeModeListener
 import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.managers.AudioManager
-import com.example.makeiteven2.dialogs.DialogEndGameManager
 import com.example.makeiteven2.managers.TimerManager
 import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
@@ -436,6 +436,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 view?.startAnimation(AnimationsManager.getShakeAnimation(context!!))
                 mTimerManager.reduceTime(Constants.ARCADE_MODE_REDUCE_TIME_PENALTY)
                 gameInit()
+                return
             }
 
             if (i == 1) {
