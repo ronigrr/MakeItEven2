@@ -5,9 +5,11 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -17,12 +19,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.StageInfo
-import com.example.makeiteven2.managers.AudioManager
 import com.example.makeiteven2.extras.Constants
-import com.example.makeiteven2.managers.GoogleAddManager
-import com.example.makeiteven2.managers.ShearedPrefManager
 import com.example.makeiteven2.fragments.*
 import com.example.makeiteven2.intefaces.*
+import com.example.makeiteven2.managers.AudioManager
+import com.example.makeiteven2.managers.GoogleAddManager
+import com.example.makeiteven2.managers.ShearedPrefManager
 import com.example.makeiteven2.room.DatabaseHelper
 import com.example.makeiteven2.room.RoomUserNote
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -44,10 +46,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     IFragmentScoreBoardScreenListener {
 
     private val fragmentManager = supportFragmentManager
-
-    private lateinit var mSharedPref: SharedPreferences
-    private lateinit var mEditor: Editor
-
     private lateinit var appToolbar: Toolbar
 
     private lateinit var appUpdateManager: AppUpdateManager
@@ -59,8 +57,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         init3DotToolBar()
         initUpdateManager()
         Thread { GoogleAddManager.loadRewardAD(this) }.run()
-        //mSharedPref = applicationContext.getSharedPreferences(Constants.SHARED_PREFS, Context.MODE_PRIVATE)
-        //mEditor = mSharedPref.edit()
         startLoadingApp()
     }
 
@@ -97,7 +93,11 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     private fun loadUser() {
         GlobalScope.launch {
             DatabaseHelper.loadUserToConstants(applicationContext)
-            AudioManager.startGameMusic(this@MainActivity)
+            AudioManager.initAudioManager(this@MainActivity)
+            Handler(Looper.getMainLooper()).postDelayed({
+                AudioManager.playGameBeginAndStartLoop()
+                Constants.liveDataCoins.value = Constants.User.coinsLeft
+            }, 4000)
         }
     }
 
@@ -200,6 +200,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onSeekBarSoundEffects(soundEffectsVolume: Int) {
         AudioManager.setEffectVolume(soundEffectsVolume)
+
     }
 
     override fun onResetGame() {
@@ -243,7 +244,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         createNewUser(inputText)
         ShearedPrefManager.setIsFirstTimeInApp(this, TRUE)
         loadStartScreen()
-        AudioManager.startGameMusic(this)
+        AudioManager.playGameBeginAndStartLoop()
     }
 
     private fun createNewUser(nickname: String) {
@@ -265,12 +266,23 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onPause() {
         super.onPause()
-        AudioManager.stopGameMusic()
+        AudioManager.pauseLongLoopGameMusic()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        AudioManager.pauseLongLoopGameMusic()
     }
 
     override fun onRestart() {
         super.onRestart()
-        AudioManager.startGameMusic(this)
+        AudioManager.resumeLongLoopMusic()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        AudioManager.stopLongLoopGameMusic()
+        AudioManager.releaseAllMediaPlayers()
     }
 
     override fun backButtonPressedArcade() {
@@ -280,7 +292,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     override fun loadScoreBoardFromArcade() {
         fragmentManager.popBackStack()
         loadScoreBoard()
-
     }
 
     override fun restartArcadeGame() {

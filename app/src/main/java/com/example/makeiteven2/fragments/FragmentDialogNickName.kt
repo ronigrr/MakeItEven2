@@ -51,17 +51,18 @@ class FragmentDialogNickName : DialogFragment() {
         if (arguments != null && !TextUtils.isEmpty(arguments?.getString(Constants.NICK_NAME_kYE)))
             nicknameEt.setText(arguments?.getString(Constants.NICK_NAME_kYE))
 
-        view.btnDone.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                if (nicknameEt.text.isEmpty()) {
-                    Toast.makeText(view.context, "You must chose name or nickname", Toast.LENGTH_SHORT).show()
-                } else {
-                    val dialogListener = activity as DialogListener
-                    dialogListener.onFinishEditDialog(nicknameEt.text.toString())
-                    dismiss()
-                }
+        view.btnDone.setOnClickListener {
+            if (nicknameEt.text.length > 16) {
+                Toast.makeText(view.context, "Name is to long", Toast.LENGTH_SHORT).show()
             }
-        })
+            if (nicknameEt.text.isEmpty()) {
+                Toast.makeText(view.context, "You must chose name or nickname", Toast.LENGTH_SHORT).show()
+            } else {
+                val dialogListener = activity as DialogListener
+                dialogListener.onFinishEditDialog(nicknameEt.text.toString())
+                dismiss()
+            }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

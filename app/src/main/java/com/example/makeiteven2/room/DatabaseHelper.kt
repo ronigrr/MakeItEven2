@@ -21,6 +21,8 @@ object DatabaseHelper {
     fun saveCoinsToDataBase(context: Context, numberCoinsLeft: Int) {
         getDataBase(context)
         Constants.User.coinsLeft = numberCoinsLeft
+        //update coins liveData
+        Constants.liveDataCoins.value = numberCoinsLeft
         GlobalScope.launch { mNoteDao.insertOrUpdateNote(Constants.User) }
     }
 
@@ -28,7 +30,6 @@ object DatabaseHelper {
     suspend fun loadUserToConstants(context: Context) {
         getDataBase(context)
         Constants.User = mNoteDao.getNotes()[0]
-
     }
 
     fun createOrUpdateUser(context: Context, newUserNote: RoomUserNote) {
@@ -51,9 +52,7 @@ object DatabaseHelper {
     fun addCoins(context: Context, coinsToAdd: Int) {
         getDataBase(context)
         Constants.User.coinsLeft += coinsToAdd
-        GlobalScope.launch {
-            mNoteDao.insertOrUpdateNote(Constants.User)
-        }
+        saveCoinsToDataBase(context,Constants.User.coinsLeft)
     }
 
     fun setGiftGiven(context: Context, isGiftGiven: Boolean) {

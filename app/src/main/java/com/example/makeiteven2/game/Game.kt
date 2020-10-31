@@ -43,30 +43,30 @@ open class Game(private var mDifficulty: Int) {
             if (randIdx == 3) {
                 if (btn1 % btn2 == 0) {
                     sum = btn1 / btn2
-                    mHint = "$mHint($btn1/$btn2)"
+                    mHint = "$mHint((($btn1/$btn2)"
                     operatorList.add(EOperators.DIVIDE)
                 } else {
                     sum = btn1 + btn2
-                    mHint = "$mHint($btn1+$btn2)"
+                    mHint = "$mHint((($btn1+$btn2)"
                     operatorList.add(EOperators.PLUS)
                 }
             } else if (randIdx == 2) {
                 sum = btn1 * btn2
-                mHint = "$mHint($btn1*$btn2)"
+                mHint = "$mHint((($btn1*$btn2)"
                 operatorList.add(EOperators.MULTIPLY)
             } else if (randIdx == 1) {
                 if (btn1 - btn2 > 0) {
                     sum = btn1 - btn2
-                    mHint = "$mHint($btn1-$btn2)"
+                    mHint = "$mHint((($btn1-$btn2)"
                     operatorList.add(EOperators.MINUS)
                 } else {
                     sum = btn1 + btn2
-                    mHint = "$mHint($btn1+$btn2)"
+                    mHint = "$mHint((($btn1+$btn2)"
                     operatorList.add(EOperators.PLUS)
                 }
             } else {
                 sum = btn1 + btn2
-                mHint = "$mHint($btn1+$btn2)"
+                mHint = "$mHint((($btn1+$btn2)"
                 operatorList.add(EOperators.PLUS)
             }
 

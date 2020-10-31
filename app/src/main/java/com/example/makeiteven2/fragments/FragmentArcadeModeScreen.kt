@@ -29,6 +29,25 @@ import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.fragment_game_arcade.view.*
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.actualScoreTV
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.backButtonIB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.btn1TB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.btn2TB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.btn3TB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.btn4TB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.countDownAnim
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.divideTB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.group_choices_of_numbers
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.group_choices_of_operators
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.hintButton2IB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.hintButton3IB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.hintButtonIB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.minusTB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.multiplyTB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.plusTB
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.scoreTV
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.theTargetNumberTV
+import kotlinx.android.synthetic.main.fragment_game_arcade.view.timerTV
 
 class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerListener, IEndDialogBtnClickedListener {
 
@@ -270,7 +289,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         when {
             mWinsCounter < 3 -> {
                 min = 0
-                max = 20
+                max = 14
                 difficulty = 6
             }
             mWinsCounter < 8 -> {
@@ -328,7 +347,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         mNumberGroup = rootView.group_choices_of_numbers
 
 
-        mActualScoreTV.text = "0"
+        mActualScoreTV.text = " 0"
 
     }
 
@@ -413,16 +432,18 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 if (tb.isEnabled) i++
             }
             if (isDivideZero || isFraction) {
-                AudioManager.startWrongAnswerSound(context!!)
+                AudioManager.playWrongAnswerSound()
+                view?.startAnimation(AnimationsManager.getShakeAnimation(context!!))
+                mTimerManager.reduceTime(Constants.ARCADE_MODE_REDUCE_TIME_PENALTY)
+                gameInit()
             }
 
             if (i == 1) {
                 //game finished
-
                 if (mTargetNumber == sum) {
                     //you win
-                    AudioManager.startArcadeSuccessSound(context!!)
-                    AnimationsManager.getConfetti(rootView.game_root_container)
+                    AudioManager.playArcadeSuccessSound()
+                    AnimationsManager.getConfetti(rootView.confetti_view)
                     gameInit()
                     mTimerManager.addMoreTime(rewardTimeInMillis)
                     mWinsCounter++
@@ -442,11 +463,12 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
                     }
 
-                    mActualScoreTV.text = mScoreCounter.toString() + ""
+                    mActualScoreTV.text = mScoreCounter.toString()
 
                 } else {
-                    AudioManager.startWrongAnswerSound(context!!)
+                    AudioManager.playWrongAnswerSound()
                     view?.startAnimation(AnimationsManager.getShakeAnimation(context!!))
+                    mTimerManager.reduceTime(Constants.ARCADE_MODE_REDUCE_TIME_PENALTY)
                     gameInit()
                 }
             }

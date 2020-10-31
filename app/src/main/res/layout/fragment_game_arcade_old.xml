@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/game_root_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="ltr">
+
+
+    <RelativeLayout
+        android:id="@+id/viewOfAllGameBtns"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+
+        <LinearLayout
+            android:id="@+id/arcade_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/timerTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                tools:text="2:30" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layoutDirection="locale"
+                android:orientation="horizontal"
+                android:textDirection="locale">
+
+                <TextView
+                    android:id="@+id/scoreTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/score"
+                    android:textColor="@color/primaryTextColor"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/actualScoreTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:textColor="@color/blue"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    tools:text="10" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/theTargetNumberTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/arcade_container"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/primaryTextColor"
+            android:textSize="55sp"
+            tools:text="5" />
+
+        <LinearLayout
+            android:id="@+id/btn_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/theTargetNumberTV"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
+                android:id="@+id/group_choices_of_numbers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:tbgChildSpacingForLastRow="align"
+                app:tbgRowSpacing="5dp">
+
+                <ToggleButton
+                    android:id="@+id/btn1TB"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/game_qube_btns"
+                    android:fontFamily="@font/robotoslab_bold"
+                    android:padding="5dp"
+                    android:textColor="#fff"
+                    android:textOff=""
+                    android:textOn=""
+                    android:textSize="40sp"
+                    tools:textOff="5" />
+
+                <ToggleButton
+                    android:id="@+id/btn2TB"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/game_qube_btns"
+                    android:fontFamily="@font/robotoslab_bold"
+                    android:padding="5dp"
+                    android:textColor="#fff"
+                    android:textOff=""
+                    android:textOn=""
+                    android:textSize="40sp"
+                    tools:textOff="5" />
+
+                <ToggleButton
+                    android:id="@+id/btn3TB"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/game_qube_btns"
+                    android:fontFamily="@font/robotoslab_bold"
+                    android:padding="5dp"
+                    android:textColor="#fff"
+                    android:textOff=""
+                    android:textOn=""
+                    android:textSize="40sp"
+                    tools:textOff="5" />
+
+                <ToggleButton
+                    android:id="@+id/btn4TB"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_margin="15dp"
+                    android:background="@drawable/game_qube_btns"
+                    android:fontFamily="@font/robotoslab_bold"
+                    android:padding="5dp"
+                    android:textColor="#fff"
+                    android:textOff=""
+                    android:textOn=""
+                    android:textSize="40sp"
+                    tools:textOff="5" />
+            </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/operatorsLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="35dp">
+
+            <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
+                android:id="@+id/group_choices_of_operators"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ToggleButton
+                    android:id="@+id/plusTB"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:background="@drawable/selector_plus_img"
+                    android:tag="plus"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <ToggleButton
+                    android:id="@+id/minusTB"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/selector_minus_img"
+                    android:tag="minus"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <ToggleButton
+                    android:id="@+id/multiplyTB"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/selector_multipliction_img"
+                    android:tag="mul"
+                    android:textOff=""
+                    android:textOn="" />
+
+                <ToggleButton
+                    android:id="@+id/divideTB"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_marginStart="20dp"
+                    android:background="@drawable/selector_division_img"
+                    android:tag="div"
+                    android:textOff=""
+                    android:textOn="" />
+
+
+            </com.nex3z.togglebuttongroup.SingleSelectToggleGroup>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutUpper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/backButtonIB"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@color/Transparent"
+            android:contentDescription="@string/arcadeModeBackIBTN"
+            android:src="@drawable/ic_back" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="end"
+            android:padding="5dp">
+
+            <ImageButton
+                android:id="@+id/hintButtonIB"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="7dp"
+                android:background="@color/Transparent"
+                android:contentDescription="@string/arcadeModeHintIBTN1"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_help" />
+
+            <ImageButton
+                android:id="@+id/hintButton2IB"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="7dp"
+                android:background="@color/Transparent"
+                android:contentDescription="@string/arcadeModeHintIBTN2"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_help" />
+
+
+            <ImageButton
+                android:id="@+id/hintButton3IB"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="7dp"
+                android:background="@color/Transparent"
+                android:contentDescription="@string/arcadeModeHintIBTN3"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_help" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/countDownAnim"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/color_change"
+        app:lottie_loop="false"
+        tools:visibility="gone" />
+</RelativeLayout>

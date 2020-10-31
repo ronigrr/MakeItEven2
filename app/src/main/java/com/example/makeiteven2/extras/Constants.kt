@@ -2,6 +2,7 @@ package com.example.makeiteven2.extras
 
 import android.content.Context
 import android.util.DisplayMetrics
+import androidx.lifecycle.MutableLiveData
 import com.example.makeiteven2.room.RoomUserNote
 import com.google.android.gms.ads.rewarded.RewardedAd
 
@@ -37,6 +38,7 @@ object Constants {
     const val ADD_MOB = "ca-app-pub-4722610653423402/4300443792"
     const val ADD_MOB_TEST = "ca-app-pub-3940256099942544/5224354917"
     const val SCOREBOARD_FIREBASE_REFERENCE = "scoreBoard"
+    const val ARCADE_MODE_REDUCE_TIME_PENALTY : Long = 5*1000
 
     fun calculateNoOfColumns(context: Context, columnWidthDp: Int): Int {
         val displayMetrics: DisplayMetrics = context.resources.displayMetrics
@@ -46,5 +48,6 @@ object Constants {
 
     lateinit var User: RoomUserNote
     lateinit var  rewardedAd : RewardedAd
+    var liveDataCoins = MutableLiveData<Int>()
 
 }
