@@ -10,6 +10,8 @@ import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 open class Game(private var mDifficulty: Int) {
+    private var testSum = 0
+    private var sum = 0
     private var mHint: String = ""
     private val mOperatorList = ArrayList<EOperators>()
     private val mBtnList = ArrayList<Int>()
@@ -22,12 +24,16 @@ open class Game(private var mDifficulty: Int) {
     }
 
     fun gameGenerator(playButtons: List<ToggleButton>): Int {
+
         val randomList = List(4) { Random.nextInt(mDifficulty) }
 
 
-
-        //reset hint for new game generate
+        //reset for new game generate
         mHint = ""
+        mBtnList.clear()
+        mOperatorList.clear()
+        sum = 0
+        testSum = 0
 
         val btn1: Int = randomList[0] + Random.nextInt(0, 4)
         val btn2: Int = randomList[1] + Random.nextInt(0, 4)
@@ -39,7 +45,6 @@ open class Game(private var mDifficulty: Int) {
         mBtnList.add(btn3)
         mBtnList.add(btn4)
 
-        var sum: Int = -1
 
         var randIdx = Random.nextInt(0, 4)
         try {
@@ -157,33 +162,32 @@ open class Game(private var mDifficulty: Int) {
 
             //test conditions for deliver the game
             if (sum == 0) {
+                Log.e("game", "sum is zero generate game again")
                 throw GameGeneratorException(Constants.SUM_ZERO_EX)
             }
-            if (isSameOperators() && mDifficulty>8) {
+            if (isSameOperators() && mDifficulty > 8) {
+                Log.e("game", "sum is zero generate game again")
                 throw GameGeneratorException(Constants.SAME_OPERATOR_EX)
             }
-            if (isZeroButton() && mDifficulty>8){
+            if (isZeroButton() && mDifficulty > 8) {
                 throw GameGeneratorException(Constants.ZERO_BUTTON_EX)
             }
 
         } catch (ex: ArithmeticException) {
             Log.e("game", "divide by zero")
-            gameGenerator(playButtons)
+            return gameGenerator(playButtons)
         } catch (ex: GameGeneratorException) {
             when (ex.message) {
                 Constants.SUM_ZERO_EX -> {
-                    Log.e("game", "sum is zero generate game again")
-                    gameGenerator(playButtons)
+                    return gameGenerator(playButtons)
                 }
                 Constants.SAME_OPERATOR_EX -> {
-                    Log.e("game", "sum is zero generate game again")
-                    gameGenerator(playButtons)
+                    return gameGenerator(playButtons)
                 }
             }
         }
-
         try {
-            var testSum = 0
+            testSum = 0
             for (i in 0..2) {
                 if (i == 0) {
                     when (mOperatorList[i].operator) {
@@ -202,17 +206,17 @@ open class Game(private var mDifficulty: Int) {
                 }
             }
             //Test prints
-            //print("$mHint \n")
-            //print("$testSum $sum \n")
+            print("$mHint \n")
+            print("$testSum $sum \n")
 
             if (testSum != sum) {
+
                 throw Exception("unsolvable equation")
             }
         } catch (ex: Exception) {
-            Log.e("calculation", "unsolvable equation")
-            gameGenerator(playButtons)
+            return gameGenerator(playButtons)
         }
-
+        Log.e("calculation", "before return $mHint sum = $sum testsum = $testSum")
         return sum
     }
 
