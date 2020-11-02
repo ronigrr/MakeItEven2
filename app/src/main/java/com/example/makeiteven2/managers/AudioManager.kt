@@ -119,15 +119,22 @@ class AudioManager private constructor(context: Context) {
     }
 
     fun resumeLongLoopMusic() {
-        mLongGameLoopSound.start()
+        if (!mLongGameLoopSound.isPlaying) {
+            mLongGameLoopSound.start()
+        }
     }
 
     fun stopLongLoopGameMusic() {
+        if (mLongGameLoopSound.isPlaying) {
+            mLongGameLoopSound.stop()
+        }
         mLongGameLoopSound.stop()
     }
 
     fun pauseLongLoopGameMusic() {
-        mLongGameLoopSound.pause()
+        if (mLongGameLoopSound.isPlaying) {
+            mLongGameLoopSound.pause()
+        }
     }
 
     fun releaseAllMediaPlayers() {
