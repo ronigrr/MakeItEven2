@@ -26,11 +26,10 @@ class ExampleUnitTest {
     }
 
     @Test
-    fun testGameGenerator() {
+    fun testgame() {
         val mGameButtonsList = ArrayList<ToggleButton>()
         val game = Game(10)
-        for (i in 0..100)
-            game.gameGenerator(mGameButtonsList, 1, 10)
-
+        for (i in 0..1000)
+            game.gameGenerator(mGameButtonsList)
     }
 }
