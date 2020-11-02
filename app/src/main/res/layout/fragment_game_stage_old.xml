@@ -193,7 +193,7 @@
             android:layout_height="50dp"
             android:layout_margin="5dp"
             android:background="@color/Transparent"
-            android:src="@drawable/ic_back"/>
+            android:src="@drawable/ic_back" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -208,7 +208,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="5dp"
-                android:src="@drawable/ic_coins"/>
+                android:src="@drawable/ic_coins" />
 
             <TextView
                 android:id="@+id/coinsLeftTV"
@@ -255,6 +255,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
     <ImageButton
         android:id="@+id/IBtnStoreStageMode"
         android:layout_width="80dp"

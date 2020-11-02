@@ -15,8 +15,8 @@ import com.example.makeiteven2.R
 import com.example.makeiteven2.extras.SingletonHolder
 import com.github.jinatonic.confetti.CommonConfetti
 
-class AnimationsManager private constructor(private val context: Context){
-    companion object : SingletonHolder<AnimationsManager,Context>(::AnimationsManager)
+class AnimationsManager private constructor(private val context: Context) {
+    companion object : SingletonHolder<AnimationsManager, Context>(::AnimationsManager)
 
     @SuppressLint("ClickableViewAccessibility")
     fun getTouchAnimation(): View.OnTouchListener {

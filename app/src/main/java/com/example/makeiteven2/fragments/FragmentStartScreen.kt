@@ -12,8 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -25,7 +23,8 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.example.makeiteven2.R
 import com.example.makeiteven2.dialogs.DialogStore
-import com.example.makeiteven2.extras.*
+import com.example.makeiteven2.extras.Constants
+import com.example.makeiteven2.extras.HintsWorker
 import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentsStartsScreenListener
 import com.example.makeiteven2.intefaces.IStoreDialogBtnClickedListener
@@ -41,7 +40,7 @@ import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
 import kotlin.math.absoluteValue
 
-class FragmentStartScreen : Fragment(), IFinishTimerListener ,IStoreDialogBtnClickedListener {
+class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnClickedListener {
 
     private lateinit var mStageModeShine: Button
     private lateinit var mArcadeModeShine: Button
@@ -97,7 +96,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener ,IStoreDialogBtnCli
         mArcadeModeBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
         mStoreBtn.setOnClickListener {
             //openStoreDialog()
-            DialogStore(this,context!!,this.activity!!).showStoreDialog()
+            DialogStore(this, context!!, this.activity!!).showStoreDialog()
         }
 
     }
@@ -202,7 +201,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener ,IStoreDialogBtnCli
             timerManager?.cancelTimer()
         }
         storeDialog.btnGetHintByAd.setOnClickListener {
-            GoogleAddManager.loadRewardVideo(context!!,this.activity!!)
+            GoogleAddManager.loadRewardVideo(context!!, this.activity!!)
         }
         storeDialog.show()
     }

@@ -7,7 +7,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.media.RingtoneManager
@@ -25,7 +24,6 @@ class NotificationHelper(private val mContext: Context) {
     private var mNotificationManagerCompat: NotificationManagerCompat? = null
 
 
-
     @SuppressLint("RestrictedApi")
     fun createNotification(textToShow: String?, channelId: String) {
         createChannelId(channelId)
@@ -33,13 +31,14 @@ class NotificationHelper(private val mContext: Context) {
         mBuilder = NotificationCompat.Builder(mContext, mChannelId!!)
         mBuilder?.apply {
             setSmallIcon(R.drawable.star_on)
-            setLargeIcon(BitmapFactory.decodeResource(mContext.resources,com.example.makeiteven2.R.drawable.ic_app_round))
-            setContentIntent(PendingIntent.getActivity(mContext,0, Intent(mContext,MainActivity::class.java),PendingIntent.FLAG_CANCEL_CURRENT))
+            setLargeIcon(BitmapFactory.decodeResource(mContext.resources, com.example.makeiteven2.R.drawable.ic_app_round))
+            setContentIntent(PendingIntent.getActivity(mContext, 0, Intent(mContext, MainActivity::class.java), PendingIntent.FLAG_CANCEL_CURRENT))
             setContentText(textToShow)
             setStyle(NotificationCompat.BigTextStyle().bigText(textToShow))
             setAutoCancel(true)
             setChannelId(mChannelId!!)
-            setSound(defaultSoundUri) }
+            setSound(defaultSoundUri)
+        }
         mBuilder?.build()?.let { mNotificationManagerCompat!!.notify(1, it) }
     }
 

@@ -50,7 +50,7 @@ class TimerManager(fragment: Any, private var viewToUpdate: TextView?, val modeO
         startTimer(currentTimeToFinish + timeInMillis)
     }
 
-    fun reduceTime(timeInMillis: Long){
+    fun reduceTime(timeInMillis: Long) {
         mTimer?.cancel()
         startTimer(currentTimeToFinish - timeInMillis)
     }

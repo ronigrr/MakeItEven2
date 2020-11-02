@@ -28,115 +28,116 @@
             android:text="Version:   1.1.1v"
             android:textColor="@color/primaryTextColor" />
     </LinearLayout>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginTop="25dp"
-        android:orientation="vertical"
-        >
 
-        <TextView
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Credits:"
-            android:textColor="@color/primaryTextColor" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Aptekar Ilya "
-            android:textColor="@color/primaryTextColor" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Credits:"
+                android:textColor="@color/primaryTextColor" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Granovsky Ronald"
-            android:textColor="@color/primaryTextColor" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Aptekar Ilya "
+                android:textColor="@color/primaryTextColor" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Icon made by Freepik from www.flaticon.com"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Granovsky Ronald"
+                android:textColor="@color/primaryTextColor" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Icon made by Vectors Market from www.flaticon.com"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Icon made by Freepik from www.flaticon.com"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"></TextView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Icon made by Smashicons from www.flaticon.com"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Icon made by Vectors Market from www.flaticon.com"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"></TextView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Icon made by DinosoftLabs from www.flaticon.com"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Icon made by Smashicons from www.flaticon.com"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"></TextView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Animation by @华灯初上 /LottieFiles"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Icon made by DinosoftLabs from www.flaticon.com"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"></TextView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Animation by @Splash Animation /LottieFiles"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Animation by @华灯初上 /LottieFiles"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"></TextView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Animation by @Studio Wassink /LottieFiles"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Animation by @Splash Animation /LottieFiles"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"></TextView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Animation by @ada /LottieFiles"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Animation by @Studio Wassink /LottieFiles"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"></TextView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sound effects obtained from www.zapsplat.com“"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Animation by @ada /LottieFiles"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"></TextView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sound effect by unadamlar and grunz from freesound.org"
-            android:textColor="@android:color/black"
-            android:textSize="16sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sound effects obtained from www.zapsplat.com“"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"></TextView>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="https://creativecommons.org/licenses/by/3.0/legalcode"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"></TextView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sound effect by unadamlar and grunz from freesound.org"
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="https://creativecommons.org/licenses/by/3.0/legalcode"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"></TextView>
 
 
-    </LinearLayout>
-</ScrollView>
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="wrap_content"

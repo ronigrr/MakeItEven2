@@ -10,9 +10,9 @@ import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
-import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.intefaces.IFragmentSettingsListener
+import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.room.DatabaseHelper.changePlayerNickname
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 

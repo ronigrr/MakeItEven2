@@ -9,7 +9,6 @@ import android.view.Window
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Observer
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkRequest
@@ -30,7 +29,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.math.absoluteValue
 
 
-class DialogStore(fragment: Any, private val mContext: Context,private val activityContext: FragmentActivity) : IFinishTimerListener{
+class DialogStore(fragment: Any, private val mContext: Context, private val activityContext: FragmentActivity) : IFinishTimerListener {
 
     private val listener: IStoreDialogBtnClickedListener
     private lateinit var mStoreDialog: Dialog
@@ -44,12 +43,12 @@ class DialogStore(fragment: Any, private val mContext: Context,private val activ
         }
     }
 
-    fun showStoreDialog(){
+    fun showStoreDialog() {
         mStoreDialog = Dialog(mContext)
         mStoreDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         mStoreDialog.setContentView(R.layout.store_dialog)
         mStoreDialog.setCancelable(true)
-        Constants.liveDataCoins.observe(this.activityContext,{ mStoreDialog.storeCoinsLeftTV.text = it.toString() })
+        Constants.liveDataCoins.observe(this.activityContext, { mStoreDialog.storeCoinsLeftTV.text = it.toString() })
         mStoreDialog.btnCloseSettings.setOnClickListener {
             mStoreDialog.dismiss()
         }
@@ -96,16 +95,18 @@ class DialogStore(fragment: Any, private val mContext: Context,private val activ
             mStoreDialog.cancel()
             timerManager?.cancelTimer()
         }
-        Constants.rewardedAdLoaded.observe(this.activityContext,{
+        Constants.rewardedAdLoaded.observe(this.activityContext, {
             mStoreDialog.btnGetHintByAd.isEnabled = it
-            when(it){
+            when (it) {
                 false -> mStoreDialog.btnGetHintByAd.setTextColor(Color.GRAY)
-                true-> mStoreDialog.btnGetHintByAd.setTextColor(Color.BLACK)
+                true -> mStoreDialog.btnGetHintByAd.setTextColor(Color.BLACK)
             }
         })
         mStoreDialog.btnGetHintByAd.apply {
-            setOnClickListener { GoogleAddManager.loadRewardVideo(mContext,activityContext)
-            Constants.rewardedAdLoaded.postValue(false)}
+            setOnClickListener {
+                GoogleAddManager.loadRewardVideo(mContext, activityContext)
+                Constants.rewardedAdLoaded.postValue(false)
+            }
         }
 
         mStoreDialog.setOnDismissListener {

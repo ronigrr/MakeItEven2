@@ -22,8 +22,8 @@
             android:layout_width="150dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:visibility="gone"
-            android:contentDescription="@string/dialog_image"/>
+            android:contentDescription="@string/dialog_image"
+            android:visibility="gone" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/animationView"
