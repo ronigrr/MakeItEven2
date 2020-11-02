@@ -3,6 +3,7 @@ package com.example.makeiteven2.managers
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.room.DatabaseHelper
 import com.google.android.gms.ads.AdError
@@ -15,21 +16,24 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 
 object GoogleAddManager {
 
-     fun loadRewardAD(context : Context) {
-         Constants.rewardedAd = RewardedAd(context, Constants.ADD_MOB_TEST)
-             val adLoadCallback = object : RewardedAdLoadCallback() {
-                 override fun onRewardedAdLoaded() {
-                     Log.v("ad", "onRewardedAdLoaded")
-                 }
+    fun loadRewardAD(context: Context) {
+        Constants.rewardedAd = RewardedAd(context, Constants.ADD_MOB_TEST)
+        val adLoadCallback = object : RewardedAdLoadCallback() {
+            override fun onRewardedAdLoaded() {
+                Log.v("ad", "onRewardedAdLoaded")
+                Constants.rewardedAdLoaded.postValue(true)
+            }
 
-                 override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
-                     Log.v("ad", "onRewardedAdFailedToLoad")
-                 }
-             }
-             Constants.rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
+            override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
+                Log.v("ad", "onRewardedAdFailedToLoad")
+                Constants.rewardedAdLoaded.postValue(false)
+                Toast.makeText(context, "check your internet connection", Toast.LENGTH_SHORT).show()
+            }
+        }
+        Constants.rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
     }
 
-    fun loadRewardVideo(context : Context,activityContext: Activity) {
+    fun loadRewardVideo(context: Context, activityContext: Activity) {
         if (Constants.rewardedAd.isLoaded) {
             val adCallback = object : RewardedAdCallback() {
                 override fun onRewardedAdOpened() {

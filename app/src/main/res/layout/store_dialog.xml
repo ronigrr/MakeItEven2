@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
     android:orientation="vertical">
 
-        <ImageButton
-            android:id="@+id/btnCloseSettings"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="end"
-            android:background="@color/Transparent"
-            android:contentDescription="@string/exit_setting_btn"
-            android:src="@drawable/close_icon" />
+    <ImageButton
+        android:id="@+id/btnCloseSettings"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="end"
+        android:background="@color/Transparent"
+        android:contentDescription="@string/exit_setting_btn"
+        android:src="@drawable/close_icon" />
 
-        <ImageView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -26,8 +25,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/storeCoinsIV"
@@ -35,7 +34,7 @@
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/ic_coins"/>
+            android:src="@drawable/ic_coins" />
 
         <TextView
             android:id="@+id/storeCoinsLeftTV"
@@ -54,7 +53,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:background="@drawable/free_hints_btn"
-        android:text="free hint"
+        android:text="free Coin"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
@@ -64,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="00:00:00"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
     <Button
         android:id="@+id/btnGetHintByAd"
@@ -74,7 +73,7 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/levels_color"
         android:drawableLeft="@drawable/ic_video"
-        android:text="Double hints"
-        android:textColor="@android:color/black"
+        android:text="Double Coins"
+        android:textColor="@android:color/darker_gray"
         android:textSize="18sp" />
 </LinearLayout>

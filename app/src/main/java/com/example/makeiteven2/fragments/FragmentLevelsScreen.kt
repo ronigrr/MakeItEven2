@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.makeiteven2.R
 import com.example.makeiteven2.adapters.LevelsAdapter
 import com.example.makeiteven2.data_models.Level
-import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.intefaces.IFragmentLevelsScreenListener
+import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.room.DatabaseHelper
 import kotlinx.android.synthetic.main.fragment_levels.view.*
 

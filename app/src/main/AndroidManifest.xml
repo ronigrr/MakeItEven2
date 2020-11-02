@@ -30,9 +30,10 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".extras.AlarmReceiver"
-            android:exported="true"
-            android:enabled="true"/>
+        <receiver
+            android:name=".extras.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>

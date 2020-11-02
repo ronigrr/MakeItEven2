@@ -52,7 +52,7 @@ object DatabaseHelper {
     fun addCoins(context: Context, coinsToAdd: Int) {
         getDataBase(context)
         Constants.User.coinsLeft += coinsToAdd
-        saveCoinsToDataBase(context,Constants.User.coinsLeft)
+        saveCoinsToDataBase(context, Constants.User.coinsLeft)
     }
 
     fun setGiftGiven(context: Context, isGiftGiven: Boolean) {
@@ -90,6 +90,7 @@ object DatabaseHelper {
     fun getCurrentScoreBoard(): ArrayList<NameAndScoreInfo> {
         return Constants.User.arcadeScoreBoard
     }
+
     fun changePlayerNickname(context: Context, nickName: String) {
         getDataBase(context)
         Constants.User.playerName = nickName

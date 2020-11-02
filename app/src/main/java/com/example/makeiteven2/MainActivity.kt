@@ -3,13 +3,9 @@ package com.example.makeiteven2
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.SharedPreferences
-import android.content.SharedPreferences.Editor
-import android.content.res.Resources
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -38,7 +34,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
-import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
@@ -59,8 +54,11 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         setContentView(R.layout.activity_main)
         init3DotToolBar()
         //initUpdateManager()
-        GoogleAddManager.loadRewardAD(applicationContext)
         startLoadingApp()
+        Handler(Looper.getMainLooper()).postDelayed({
+            GoogleAddManager.loadRewardAD(applicationContext)
+        }, 7 * 1000)
+
     }
 
     private fun startLoadingApp() {
@@ -109,8 +107,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
             fragmentManager.beginTransaction()
                 .add(R.id.fragmentContainer, FragmentStartScreen(), Constants.START_SCREEN_FRAGMENT_TAG)
                 .commit()
-        }
-        catch (e:Exception){
+        } catch (e: Exception) {
             finish()
             exitProcess(0)
         }
@@ -158,6 +155,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         menuInflater.inflate(R.menu.action_menu, menu)
         return true
     }
+
     @SuppressLint("InflateParams")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

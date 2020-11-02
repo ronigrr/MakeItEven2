@@ -31,9 +31,9 @@ import me.toptas.fancyshowcase.FancyShowCaseQueue
 import me.toptas.fancyshowcase.FancyShowCaseView
 
 
-class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener, IEndDialogBtnClickedListener,IStoreDialogBtnClickedListener {
+class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListener, IEndDialogBtnClickedListener, IStoreDialogBtnClickedListener {
 
-    private lateinit var mStoreIBTN : ImageButton
+    private lateinit var mStoreIBTN: ImageButton
     private lateinit var mCoinsIV: ImageView
 
     private lateinit var mLevelNumberTV: TextView
@@ -87,7 +87,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private lateinit var fancyShowCaseQueue: FancyShowCaseQueue
 
-    private lateinit var sosToasty : Toast
+    private lateinit var sosToasty: Toast
     private lateinit var hintToasty: Toast
     private var retry: Int = 0
 
@@ -113,8 +113,10 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     private fun initCoinsLiveData() {
-        Constants.liveDataCoins.observe(this.activity!!,{ mCoinsLeftTV.text = it.toString()
-        mNumberOfCoinsLeft = it })
+        Constants.liveDataCoins.observe(this.activity!!, {
+            mCoinsLeftTV.text = it.toString()
+            mNumberOfCoinsLeft = it
+        })
 
     }
 
@@ -207,10 +209,10 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     private fun setButtonsListeners() {
         val hintListener = View.OnClickListener { _ ->
             context?.let { _ ->
-                    hintToasty.cancel()
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        hintToasty.show()
-                    }, 50)
+                hintToasty.cancel()
+                Handler(Looper.getMainLooper()).postDelayed({
+                    hintToasty.show()
+                }, 50)
             }
             mNumberOfCoinsLeft--
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
@@ -228,10 +230,12 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
             checkIfNeedToShowSosHint()
         }
-        mStoreIBTN.apply { setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
-        setOnClickListener {
-            mStoreDialog.showStoreDialog()
-        }}
+        mStoreIBTN.apply {
+            setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
+            setOnClickListener {
+                mStoreDialog.showStoreDialog()
+            }
+        }
         mHintIB.apply {
             setOnClickListener(hintListener)
             setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
@@ -336,15 +340,15 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     difficulty = 10
                 }
                 in 81..100 -> {
-                min = 70
-                max = 100
-                difficulty = 11
-            }
+                    min = 70
+                    max = 100
+                    difficulty = 11
+                }
                 in 101..150 -> {
-                min = 80
-                max = 120
-                difficulty = 13
-            }
+                    min = 80
+                    max = 120
+                    difficulty = 13
+                }
                 else -> {
                     min = 90
                     max = 120
@@ -357,7 +361,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     mTargetNumber = mGame.gameGenerator(mGameButtonsList)
                     mFullHintString = mGame.getHint()
                     mHalfHintString = mFullHintString.substringBefore(")") + ")"
-                    Log.e("game","num of retrys = ${retry++} difficulty = $difficulty min = $min max = $max")
+                    Log.e("game", "num of retrys = ${retry++} difficulty = $difficulty min = $min max = $max")
                 }
             } while (mTargetNumber > max || mTargetNumber < min)
 
@@ -442,11 +446,11 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     override fun onClick(v: View?) {
-            if (!(v as ToggleButton).isChecked) {
-                AudioManager.getInstance(context!!).playBtnOn()
-            } else if (v.isChecked) {
-                AudioManager.getInstance(context!!).playBtnOff()
-            }
+        if (!(v as ToggleButton).isChecked) {
+            AudioManager.getInstance(context!!).playBtnOn()
+        } else if (v.isChecked) {
+            AudioManager.getInstance(context!!).playBtnOff()
+        }
         /// checks that nobody checked
         var i = 0
         for (toggleButton in mGameButtonsList) {

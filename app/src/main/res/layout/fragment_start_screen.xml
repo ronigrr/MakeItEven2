@@ -111,40 +111,40 @@
         android:src="@drawable/makeiteven_v2"
         app:layout_constraintBottom_toTopOf="@+id/guideline1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHeight_percent="0.3"
-        app:layout_constraintWidth_percent="1"/>
+        app:layout_constraintWidth_percent="1" />
 
     <ImageButton
         android:id="@+id/btnScoreBoard"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginStart="2dp"
         android:background="@color/Transparent"
         android:contentDescription="@string/scoreboard_icon"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_trophy"
-        android:layout_marginStart="2dp"
-        app:layout_constraintWidth_percent="0.2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHeight_percent="0.12"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline" />
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintWidth_percent="0.2" />
 
     <ImageButton
         android:id="@+id/IBtnStoreStageMode"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/Transparent"
         android:contentDescription="@string/store_icon"
         android:scaleType="fitCenter"
-        android:background="@color/Transparent"
         android:src="@drawable/ic_store"
-        android:layout_marginEnd="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/btnScoreBoard"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.12"
         app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintWidth_percent="0.2"
-        app:layout_constraintHeight_percent="0.12"/>
+        app:layout_constraintWidth_percent="0.2" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
