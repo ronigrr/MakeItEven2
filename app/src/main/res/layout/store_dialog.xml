@@ -54,7 +54,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:background="@drawable/free_hints_btn"
-        android:text="free hint"
+        android:text="free Coin"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
@@ -74,7 +74,7 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/levels_color"
         android:drawableLeft="@drawable/ic_video"
-        android:text="Double hints"
-        android:textColor="@android:color/black"
+        android:text="Double Coins"
+        android:textColor="@android:color/darker_gray"
         android:textSize="18sp" />
 </LinearLayout>

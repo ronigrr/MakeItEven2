@@ -54,6 +54,7 @@ Click here to Come and Play"""
 
     lateinit var User: RoomUserNote
     lateinit var rewardedAd: RewardedAd
+    val rewardedAdLoaded = MutableLiveData<Boolean>()
     var liveDataCoins = MutableLiveData<Int>()
 
 }

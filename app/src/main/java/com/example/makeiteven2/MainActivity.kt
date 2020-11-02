@@ -57,8 +57,11 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         setContentView(R.layout.activity_main)
         init3DotToolBar()
         initUpdateManager()
-        GoogleAddManager.loadRewardAD(applicationContext)
         startLoadingApp()
+       Handler(Looper.getMainLooper()).postDelayed({
+           GoogleAddManager.loadRewardAD(applicationContext)
+       },7*1000)
+
     }
 
     private fun startLoadingApp() {
@@ -327,6 +330,5 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         super.onStart()
         RetentionManager.getInstance(applicationContext).cancelNotification()
     }
-
 }
 

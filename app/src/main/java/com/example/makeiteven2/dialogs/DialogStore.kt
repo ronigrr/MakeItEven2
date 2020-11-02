@@ -96,9 +96,16 @@ class DialogStore(fragment: Any, private val mContext: Context,private val activ
             mStoreDialog.cancel()
             timerManager?.cancelTimer()
         }
-        mStoreDialog.btnGetHintByAd.setOnClickListener {
-            //TODO:: the number of hints is not updating after you get your hints (only in the view)
-            GoogleAddManager.loadRewardVideo(mContext,activityContext)
+        Constants.rewardedAdLoaded.observe(this.activityContext,{
+            mStoreDialog.btnGetHintByAd.isEnabled = it
+            when(it){
+                false -> mStoreDialog.btnGetHintByAd.setTextColor(Color.GRAY)
+                true-> mStoreDialog.btnGetHintByAd.setTextColor(Color.BLACK)
+            }
+        })
+        mStoreDialog.btnGetHintByAd.apply {
+            setOnClickListener { GoogleAddManager.loadRewardVideo(mContext,activityContext)
+            Constants.rewardedAdLoaded.postValue(false)}
         }
 
         mStoreDialog.setOnDismissListener {

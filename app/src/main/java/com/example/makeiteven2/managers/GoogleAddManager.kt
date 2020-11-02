@@ -3,6 +3,7 @@ package com.example.makeiteven2.managers
 import android.app.Activity
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.room.DatabaseHelper
 import com.google.android.gms.ads.AdError
@@ -20,10 +21,13 @@ object GoogleAddManager {
              val adLoadCallback = object : RewardedAdLoadCallback() {
                  override fun onRewardedAdLoaded() {
                      Log.v("ad", "onRewardedAdLoaded")
+                     Constants.rewardedAdLoaded.postValue(true)
                  }
 
                  override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
                      Log.v("ad", "onRewardedAdFailedToLoad")
+                     Constants.rewardedAdLoaded.postValue(false)
+                     Toast.makeText(context,"check your internet connection",Toast.LENGTH_SHORT).show()
                  }
              }
              Constants.rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
