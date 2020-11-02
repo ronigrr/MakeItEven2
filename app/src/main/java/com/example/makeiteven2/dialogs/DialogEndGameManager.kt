@@ -34,9 +34,9 @@ class DialogEndGameManager(fragment: Any, private val mContext: Context) {
         winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         winLooseDialog.setCancelable(false)
         winLooseDialog.setContentView(R.layout.win_loose_dialog)
-        winLooseDialog.ibtnHome.setOnTouchListener(AnimationsManager.getTouchAnimation(mContext))
-        winLooseDialog.ibtnNext.setOnTouchListener(AnimationsManager.getTouchAnimation(mContext))
-        winLooseDialog.ibtnRetry.setOnTouchListener(AnimationsManager.getTouchAnimation(mContext))
+        winLooseDialog.ibtnHome.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
+        winLooseDialog.ibtnNext.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
+        winLooseDialog.ibtnRetry.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
 
         winLooseDialog.ibtnHome.setOnClickListener { listener.onEndDialogBtnClicked(it) }
         winLooseDialog.ibtnNext.setOnClickListener { listener.onEndDialogBtnClicked(it) }

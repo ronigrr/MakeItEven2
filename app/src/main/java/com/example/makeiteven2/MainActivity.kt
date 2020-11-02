@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         setContentView(R.layout.activity_main)
         init3DotToolBar()
         initUpdateManager()
-        Thread { GoogleAddManager.loadRewardAD(this) }.run()
+        GoogleAddManager.loadRewardAD(applicationContext)
         startLoadingApp()
     }
 
@@ -94,9 +94,8 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     private fun loadUser() {
         GlobalScope.launch {
             DatabaseHelper.loadUserToConstants(applicationContext)
-            AudioManager.initAudioManager(this@MainActivity)
             Handler(Looper.getMainLooper()).postDelayed({
-                AudioManager.playGameBeginAndStartLoop()
+                AudioManager.getInstance(this@MainActivity).playGameBeginAndStartLoop()
                 Constants.liveDataCoins.value = Constants.User.coinsLeft
             }, 4000)
         }
@@ -196,11 +195,11 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     override fun onSeekBarMainVolume(mainVolume: Int) {
-        AudioManager.setGameVolume(mainVolume)
+        AudioManager.getInstance(this).setGameVolume(mainVolume)
     }
 
     override fun onSeekBarSoundEffects(soundEffectsVolume: Int) {
-        AudioManager.setEffectVolume(soundEffectsVolume)
+        AudioManager.getInstance(this).setEffectVolume(soundEffectsVolume)
     }
 
     override fun onResetGame() {
@@ -244,7 +243,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         createNewUser(inputText)
         ShearedPrefManager.setIsFirstTimeInApp(this, TRUE)
         loadStartScreen()
-        AudioManager.playGameBeginAndStartLoop()
+        AudioManager.getInstance(this).playGameBeginAndStartLoop()
     }
 
     private fun createNewUser(nickname: String) {
@@ -266,24 +265,24 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onPause() {
         super.onPause()
-        AudioManager.pauseLongLoopGameMusic()
+        AudioManager.getInstance(this).pauseLongLoopGameMusic()
     }
 
     override fun onStop() {
         super.onStop()
-        AudioManager.pauseLongLoopGameMusic()
+        AudioManager.getInstance(this).pauseLongLoopGameMusic()
         RetentionManager.getInstance(applicationContext).setNotification(Constants.NOTIFICATION_COUNTDOWN_3_DAYS_IN_MILLIS)
     }
 
     override fun onRestart() {
         super.onRestart()
-        AudioManager.resumeLongLoopMusic()
+        AudioManager.getInstance(this).resumeLongLoopMusic()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        AudioManager.stopLongLoopGameMusic()
-        AudioManager.releaseAllMediaPlayers()
+        AudioManager.getInstance(this).stopLongLoopGameMusic()
+        AudioManager.getInstance(this).releaseAllMediaPlayers()
     }
 
     override fun backButtonPressedArcade() {

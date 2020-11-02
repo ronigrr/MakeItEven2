@@ -9,6 +9,9 @@ import com.google.android.gms.ads.rewarded.RewardedAd
 
 object Constants {
 
+    val ZERO_BUTTON_EX = "zeroButtonEx"
+    const val SAME_OPERATOR_EX = "operatorEx"
+    const val SUM_ZERO_EX = "sumEx"
     const val NotificationText: String = """It's been a while that you didn't play and practice your brain!
 Click here to Come and Play"""
     const val IS_FIRST_TIME_IN_STAGE_MODE: String = "first_time_in_stagemode"

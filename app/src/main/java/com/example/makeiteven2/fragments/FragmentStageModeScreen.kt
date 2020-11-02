@@ -4,7 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.*
+import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.makeiteven2.R
@@ -85,6 +89,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private lateinit var sosToasty : Toast
     private lateinit var hintToasty: Toast
+    private var retry: Int = 0
 
 
     override fun onAttach(context: Context) {
@@ -177,20 +182,20 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     private fun setButtonsAnimation() {
-        mBackButtonIB.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
-        mCoinsLeftTV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mBackButtonIB.startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
+        mCoinsLeftTV.startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
         for (i in 0..3) {
-            mGameButtonsList[i].startAnimation(AnimationsManager.getScaleInAnimation(context!!))
-            mOperatorsList[i].startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+            mGameButtonsList[i].startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
+            mOperatorsList[i].startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
         }
-        mStoreIBTN.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
-        mCoinsIV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
-        mCoinsLeftTV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
-        mHintIB.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
-        mSosHintIB.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
-        mRetryButtonIB.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
-        mLevelNumberTV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
-        mTargetNumberTV.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+        mStoreIBTN.startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
+        mCoinsIV.startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
+        mCoinsLeftTV.startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
+        mHintIB.startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
+        mSosHintIB.startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
+        mRetryButtonIB.startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
+        mLevelNumberTV.startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
+        mTargetNumberTV.startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
     }
 
     private fun initToasty() {
@@ -223,30 +228,30 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
             checkIfNeedToShowSosHint()
         }
-        mStoreIBTN.apply { setOnTouchListener(AnimationsManager.getTouchAnimation(context))
+        mStoreIBTN.apply { setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
         setOnClickListener {
             mStoreDialog.showStoreDialog()
         }}
         mHintIB.apply {
             setOnClickListener(hintListener)
-            setOnTouchListener(AnimationsManager.getTouchAnimation(context))
+            setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
         }
 
         mSosHintIB.apply {
             setOnClickListener(sosHintListener)
-            setOnTouchListener(AnimationsManager.getTouchAnimation(context))
+            setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
         }
         mBackButtonIB.apply {
             setOnClickListener { listener.backButtonPressedStage() }
-            setOnTouchListener(AnimationsManager.getTouchAnimation(context))
+            setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
         }
         mRetryButtonIB.apply {
-            setOnTouchListener(AnimationsManager.getTouchAnimation(context))
+            setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
             setOnClickListener {
-                startAnimation(AnimationsManager.getRotateAnimation(context))
+                startAnimation(AnimationsManager.getInstance(context!!).getRotateAnimation())
                 gameInit()
                 for (tb in mGameButtonsList) {
-                    tb.startAnimation(AnimationsManager.getBounceAndShakeAnimation(context))
+                    tb.startAnimation(AnimationsManager.getInstance(context!!).getBounceAndShakeAnimation())
                 }
             }
         }
@@ -274,13 +279,13 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         for (tb in mGameButtonsList) {
             tb.apply {
                 setOnClickListener(this@FragmentStageModeScreen)
-                setOnTouchListener(AnimationsManager.getTouchAnimation(context))
+                setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
                 isEnabled = false
             }
         }
         for (tb in mOperatorsList) {
             tb.apply {
-                setOnTouchListener(AnimationsManager.getTouchAnimation(context))
+                setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
                 setOnClickListener(this@FragmentStageModeScreen)
             }
         }
@@ -292,7 +297,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 visibility = View.VISIBLE
                 isEnabled = true
                 isChecked = false
-                startAnimation(AnimationsManager.getBounceAnimation(context!!))
+                startAnimation(AnimationsManager.getInstance(context!!).getBounceAnimation())
             }
         }
         for (tb in mOperatorsList) {
@@ -310,41 +315,53 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mStageInfoArray = Constants.User.stageList
         if (mStageInfoArray.size < mLevelNum || currentStage < mLevelNum) {
             when (mLevelNum) {
-                in 1..10 -> {
+                in 1..20 -> {
                     min = 0
                     max = 20
                     difficulty = 6
                 }
-                in 11..20 -> {
+                in 21..40 -> {
                     min = 20
                     max = 40
                     difficulty = 8
                 }
-                in 21..30 -> {
+                in 41..60 -> {
                     min = 40
                     max = 60
                     difficulty = 9
                 }
-                in 31..40 -> {
+                in 61..80 -> {
                     min = 60
                     max = 90
                     difficulty = 10
                 }
+                in 81..100 -> {
+                min = 70
+                max = 100
+                difficulty = 11
+            }
+                in 101..150 -> {
+                min = 80
+                max = 120
+                difficulty = 13
+            }
                 else -> {
-                    min = 80
+                    min = 90
                     max = 120
-                    difficulty = 12
+                    difficulty = 14
                 }
             }
             mGame?.setDifficulty(difficulty)
             do {
                 if (mGame != null) {
-                    mTargetNumber = mGame.gameGenerator(mGameButtonsList, min, max)
+                    mTargetNumber = mGame.gameGenerator(mGameButtonsList)
                     mFullHintString = mGame.getHint()
                     mHalfHintString = mFullHintString.substringBefore(")") + ")"
+                    Log.e("game","num of retrys = ${retry++} difficulty = $difficulty min = $min max = $max")
                 }
             } while (mTargetNumber > max || mTargetNumber < min)
 
+            retry = 0
             mTargetNumberTV.text = mTargetNumber.toString()
             val stageInfo = StageInfo(
                 mGameButtonsList[0].text.toString().toInt(),
@@ -426,9 +443,9 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onClick(v: View?) {
             if (!(v as ToggleButton).isChecked) {
-                AudioManager.playBtnOn()
+                AudioManager.getInstance(context!!).playBtnOn()
             } else if (v.isChecked) {
-                AudioManager.playBtnOff()
+                AudioManager.getInstance(context!!).playBtnOff()
             }
         /// checks that nobody checked
         var i = 0
@@ -470,7 +487,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
             //set new button
             val toggleButton: ToggleButton = rootView.findViewById(selectedNumberID2)
-            toggleButton.startAnimation(AnimationsManager.getScaleOutAnimation(context!!))
+            toggleButton.startAnimation(AnimationsManager.getInstance(context!!).getScaleOutAnimation())
             toggleButton.textOn = sum.toString()
             toggleButton.textOff = sum.toString()
             toggleButton.text = sum.toString()
@@ -479,12 +496,12 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
             //button to remove+anim
             val toggleButtonToHide: ToggleButton = rootView.findViewById(selectedNumberID1)
-            toggleButtonToHide.startAnimation(AnimationsManager.getScaleOutAnimation(context!!))
+            toggleButtonToHide.startAnimation(AnimationsManager.getInstance(context!!).getScaleOutAnimation())
             toggleButtonToHide.visibility = View.INVISIBLE
             toggleButtonToHide.isEnabled = false
 
 
-            toggleButton.startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+            toggleButton.startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
 
             val operator: ToggleButton = rootView.findViewById(selectedOperatorID)
             operator.isChecked = false
@@ -500,7 +517,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             }
             if (isDivideZero || isFraction) {
                 mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
-                AudioManager.playWaWaSound()
+                AudioManager.getInstance(context!!).playWaWaSound()
                 gameInit()
                 return
             }
@@ -521,12 +538,12 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
                     Handler(Looper.getMainLooper()).postDelayed({
                         mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
-                        AnimationsManager.getConfetti(rootView.main_constraint)
+                        AnimationsManager.getInstance(context!!).getConfetti(rootView.main_constraint)
                     }, 200)
-                    AudioManager.playTaDaSound()
+                    AudioManager.getInstance(context!!).playTaDaSound()
                 } else {
                     //you loose
-                    AudioManager.playWaWaSound()
+                    AudioManager.getInstance(context!!).playWaWaSound()
                     Handler(Looper.getMainLooper()).postDelayed({
                         mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
                     }, 200)

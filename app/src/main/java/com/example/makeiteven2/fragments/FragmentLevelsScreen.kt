@@ -34,7 +34,7 @@ class FragmentLevelsScreen : Fragment() {
         mLevelsRecyclerView = rootView.recyclerLevels
         mLevelsAdapter = LevelsAdapter(mLevelItemsList, rootView.context, Constants.User.currentLevel)
         rootView.ibBack.apply {
-            startAnimation(AnimationsManager.getScaleInAnimation(context!!))
+            startAnimation(AnimationsManager.getInstance(context!!).getScaleInAnimation())
             setOnClickListener {
                 mCallBack.onLevelsFragmentBackPressed()
             }
@@ -70,7 +70,7 @@ class FragmentLevelsScreen : Fragment() {
         mLevelsRecyclerView.layoutManager = layout
         mLevelsRecyclerView.adapter = mLevelsAdapter
         mLevelsRecyclerView.scrollToPosition(DatabaseHelper.getStageInfoList().lastIndex)
-        mLevelsRecyclerView.layoutAnimation = LayoutAnimationController(AnimationsManager.getFastScaleInAnimation(context!!))
+        mLevelsRecyclerView.layoutAnimation = LayoutAnimationController(AnimationsManager.getInstance(context!!).getFastScaleInAnimation())
     }
 
 

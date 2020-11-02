@@ -2,6 +2,8 @@ package com.example.makeiteven2.game
 
 import android.util.Log
 import android.widget.ToggleButton
+import com.example.makeiteven2.exception.GameGeneratorException
+import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.extras.EOperators
 import java.util.*
 import kotlin.collections.ArrayList
@@ -9,7 +11,8 @@ import kotlin.random.Random
 
 open class Game(private var mDifficulty: Int) {
     private var mHint: String = ""
-
+    private val mOperatorList = ArrayList<EOperators>()
+    private val mBtnList = ArrayList<Int>()
     fun setDifficulty(difficulty: Int) {
         mDifficulty = difficulty
     }
@@ -18,10 +21,11 @@ open class Game(private var mDifficulty: Int) {
         return mHint
     }
 
-    fun gameGenerator(playButtons: List<ToggleButton>, minSum: Int, maxSum: Int): Int {
+    fun gameGenerator(playButtons: List<ToggleButton>): Int {
         val randomList = List(4) { Random.nextInt(mDifficulty) }
-        val btnList = ArrayList<Int>()
-        val operatorList = ArrayList<EOperators>()
+
+
+
         //reset hint for new game generate
         mHint = ""
 
@@ -30,10 +34,10 @@ open class Game(private var mDifficulty: Int) {
         val btn3: Int = randomList[2] + Random.nextInt(0, 4)
         val btn4: Int = randomList[3] + Random.nextInt(0, 4)
 
-        btnList.add(btn1)
-        btnList.add(btn2)
-        btnList.add(btn3)
-        btnList.add(btn4)
+        mBtnList.add(btn1)
+        mBtnList.add(btn2)
+        mBtnList.add(btn3)
+        mBtnList.add(btn4)
 
         var sum: Int = -1
 
@@ -44,30 +48,30 @@ open class Game(private var mDifficulty: Int) {
                 if (btn1 % btn2 == 0) {
                     sum = btn1 / btn2
                     mHint = "$mHint((($btn1/$btn2)"
-                    operatorList.add(EOperators.DIVIDE)
+                    mOperatorList.add(EOperators.DIVIDE)
                 } else {
                     sum = btn1 + btn2
                     mHint = "$mHint((($btn1+$btn2)"
-                    operatorList.add(EOperators.PLUS)
+                    mOperatorList.add(EOperators.PLUS)
                 }
             } else if (randIdx == 2) {
                 sum = btn1 * btn2
                 mHint = "$mHint((($btn1*$btn2)"
-                operatorList.add(EOperators.MULTIPLY)
+                mOperatorList.add(EOperators.MULTIPLY)
             } else if (randIdx == 1) {
                 if (btn1 - btn2 > 0) {
                     sum = btn1 - btn2
                     mHint = "$mHint((($btn1-$btn2)"
-                    operatorList.add(EOperators.MINUS)
+                    mOperatorList.add(EOperators.MINUS)
                 } else {
                     sum = btn1 + btn2
                     mHint = "$mHint((($btn1+$btn2)"
-                    operatorList.add(EOperators.PLUS)
+                    mOperatorList.add(EOperators.PLUS)
                 }
             } else {
                 sum = btn1 + btn2
                 mHint = "$mHint((($btn1+$btn2)"
-                operatorList.add(EOperators.PLUS)
+                mOperatorList.add(EOperators.PLUS)
             }
 
             randIdx = Random.nextInt(0, 4)
@@ -77,30 +81,30 @@ open class Game(private var mDifficulty: Int) {
                 if (sum % btn3 == 0) {
                     sum /= btn3
                     mHint = "$mHint/$btn3)"
-                    operatorList.add(EOperators.DIVIDE)
+                    mOperatorList.add(EOperators.DIVIDE)
                 } else {
                     sum += btn3
                     mHint = "$mHint+$btn3)"
-                    operatorList.add(EOperators.PLUS)
+                    mOperatorList.add(EOperators.PLUS)
                 }
             } else if (randIdx == 2) {
                 sum *= btn3
                 mHint = "$mHint*$btn3)"
-                operatorList.add(EOperators.MULTIPLY)
+                mOperatorList.add(EOperators.MULTIPLY)
             } else if (randIdx == 1) {
                 if (sum - btn3 > 0) {
                     sum -= btn3
                     mHint = "$mHint-$btn3)"
-                    operatorList.add(EOperators.MINUS)
+                    mOperatorList.add(EOperators.MINUS)
                 } else {
                     sum += btn3
                     mHint = "$mHint+$btn3)"
-                    operatorList.add(EOperators.PLUS)
+                    mOperatorList.add(EOperators.PLUS)
                 }
             } else {
                 sum += btn3
                 mHint = "$mHint+$btn3)"
-                operatorList.add(EOperators.PLUS)
+                mOperatorList.add(EOperators.PLUS)
             }
             randIdx = Random.nextInt(0, 4)
 
@@ -108,30 +112,30 @@ open class Game(private var mDifficulty: Int) {
                 if (sum % btn4 == 0) {
                     sum /= btn4
                     mHint = "$mHint/$btn4)"
-                    operatorList.add(EOperators.DIVIDE)
+                    mOperatorList.add(EOperators.DIVIDE)
                 } else {
                     sum += btn4
                     mHint = "$mHint+$btn4)"
-                    operatorList.add(EOperators.PLUS)
+                    mOperatorList.add(EOperators.PLUS)
                 }
             } else if (randIdx == 2) {
                 sum *= btn4
                 mHint = "$mHint*$btn4)"
-                operatorList.add(EOperators.MULTIPLY)
+                mOperatorList.add(EOperators.MULTIPLY)
             } else if (randIdx == 1) {
                 if (sum - btn4 > 0) {
                     sum -= btn4
                     mHint = "$mHint-$btn4)"
-                    operatorList.add(EOperators.MINUS)
+                    mOperatorList.add(EOperators.MINUS)
                 } else {
                     sum += btn4
                     mHint = "$mHint+$btn4)"
-                    operatorList.add(EOperators.PLUS)
+                    mOperatorList.add(EOperators.PLUS)
                 }
             } else {
                 sum += btn4
                 mHint = "$mHint+$btn4)"
-                operatorList.add(EOperators.PLUS)
+                mOperatorList.add(EOperators.PLUS)
             }
 
             Collections.shuffle(playButtons)
@@ -151,27 +155,49 @@ open class Game(private var mDifficulty: Int) {
             playButtons[2].text = btn3.toString()
             playButtons[3].text = btn4.toString()
 
+            //test conditions for deliver the game
+            if (sum == 0) {
+                throw GameGeneratorException(Constants.SUM_ZERO_EX)
+            }
+            if (isSameOperators() && mDifficulty>8) {
+                throw GameGeneratorException(Constants.SAME_OPERATOR_EX)
+            }
+            if (isZeroButton() && mDifficulty>8){
+                throw GameGeneratorException(Constants.ZERO_BUTTON_EX)
+            }
+
         } catch (ex: ArithmeticException) {
-            Log.e("zero", "divide by zero")
-            gameGenerator(playButtons, minSum, maxSum)
+            Log.e("game", "divide by zero")
+            gameGenerator(playButtons)
+        } catch (ex: GameGeneratorException) {
+            when (ex.message) {
+                Constants.SUM_ZERO_EX -> {
+                    Log.e("game", "sum is zero generate game again")
+                    gameGenerator(playButtons)
+                }
+                Constants.SAME_OPERATOR_EX -> {
+                    Log.e("game", "sum is zero generate game again")
+                    gameGenerator(playButtons)
+                }
+            }
         }
 
         try {
             var testSum = 0
             for (i in 0..2) {
                 if (i == 0) {
-                    when (operatorList[i].operator) {
-                        "+" -> testSum = btnList[i] + btnList[i + 1]
-                        "-" -> testSum = btnList[i] - btnList[i + 1]
-                        "*" -> testSum = btnList[i] * btnList[i + 1]
-                        "/" -> testSum = btnList[i] / btnList[i + 1]
+                    when (mOperatorList[i].operator) {
+                        "+" -> testSum = mBtnList[i] + mBtnList[i + 1]
+                        "-" -> testSum = mBtnList[i] - mBtnList[i + 1]
+                        "*" -> testSum = mBtnList[i] * mBtnList[i + 1]
+                        "/" -> testSum = mBtnList[i] / mBtnList[i + 1]
                     }
                 } else {
-                    when (operatorList[i].operator) {
-                        "+" -> testSum += btnList[i + 1]
-                        "-" -> testSum -= btnList[i + 1]
-                        "*" -> testSum *= btnList[i + 1]
-                        "/" -> testSum /= btnList[i + 1]
+                    when (mOperatorList[i].operator) {
+                        "+" -> testSum += mBtnList[i + 1]
+                        "-" -> testSum -= mBtnList[i + 1]
+                        "*" -> testSum *= mBtnList[i + 1]
+                        "/" -> testSum /= mBtnList[i + 1]
                     }
                 }
             }
@@ -184,9 +210,20 @@ open class Game(private var mDifficulty: Int) {
             }
         } catch (ex: Exception) {
             Log.e("calculation", "unsolvable equation")
-            gameGenerator(playButtons, minSum, maxSum)
+            gameGenerator(playButtons)
         }
 
         return sum
+    }
+
+    private fun isZeroButton(): Boolean {
+        return mBtnList.contains(0)
+    }
+
+    private fun isSameOperators(): Boolean {
+        var ret = false
+        if (mOperatorList.distinct().size == 1) ret = true
+        return ret
+
     }
 }
