@@ -31,10 +31,9 @@ class LevelsAdapter(private var mLevelsList: List<Level> = ArrayList(), private 
 
     class ViewHolder(private val view: View, private val context: Context) : RecyclerView.ViewHolder(view) {
 
-        @SuppressLint("ClickableViewAccessibility")
         fun bind(level: Level, currentStage: Int, callback: ILevelsAdapter) {
             view.tvStageNumber.text = level.levelNum.toString()
-            view.btnLevel.setOnTouchListener(AnimationsManager.getTouchAnimation(context))
+            view.btnLevel.setOnTouchListener(AnimationsManager.getInstance(context).getTouchAnimation())
 
             when {
                 level.levelNum == 0 -> {

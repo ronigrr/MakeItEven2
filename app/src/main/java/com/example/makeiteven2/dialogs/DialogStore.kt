@@ -63,7 +63,7 @@ class DialogStore(fragment: Any, private val mContext: Context,private val activ
 
             mStoreDialog.btnGetHint.text = activityContext.getString(R.string.free_coins_in)
         } else {
-            mStoreDialog.btnGetHint.setOnTouchListener(AnimationsManager.getTouchAnimation(mContext))
+            mStoreDialog.btnGetHint.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
             mStoreDialog.btnGetHint.background = ContextCompat.getDrawable(mContext, R.drawable.free_hints_btn)
             //onClick
             mStoreDialog.btnGetHint.setOnClickListener {

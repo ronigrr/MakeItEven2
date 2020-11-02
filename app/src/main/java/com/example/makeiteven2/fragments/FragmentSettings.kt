@@ -24,8 +24,8 @@ class FragmentSettings : Fragment() {
         mSoundEffectsBar = rootView.seekBarSoundEffects
         mExitBtn = rootView.btnCloseSettings
 
-        rootView.IBtnEditNickname.setOnTouchListener(AnimationsManager.getTouchAnimation(context!!))
-        rootView.btnGameReset.setOnTouchListener(AnimationsManager.getTouchAnimation(context!!))
+        rootView.IBtnEditNickname.setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
+        rootView.btnGameReset.setOnTouchListener(AnimationsManager.getInstance(context!!).getTouchAnimation())
         rootView.etNickname.setText(Constants.User.playerName)
 
         rootView.seekBarMainSound.progress = Constants.User.mainSoundLevel

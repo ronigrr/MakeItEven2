@@ -2,6 +2,7 @@ package com.example.makeiteven2.managers
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.view.MotionEvent
@@ -11,11 +12,14 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.animation.doOnEnd
 import com.example.makeiteven2.R
+import com.example.makeiteven2.extras.SingletonHolder
 import com.github.jinatonic.confetti.CommonConfetti
 
-object AnimationsManager {
-    
-    fun getTouchAnimation(context: Context): View.OnTouchListener {
+class AnimationsManager private constructor(private val context: Context){
+    companion object : SingletonHolder<AnimationsManager,Context>(::AnimationsManager)
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun getTouchAnimation(): View.OnTouchListener {
         AnimationUtils.loadAnimation(context, R.anim.btn_pressed)
         val btPressAnimation = AnimationUtils.loadAnimation(context, R.anim.btn_pressed)
         val btnReleaseAnimation = AnimationUtils.loadAnimation(context, R.anim.btn_realeas)
@@ -31,13 +35,13 @@ object AnimationsManager {
         }
     }
 
-    fun getBounceAnimation(context: Context): Animation =
+    fun getBounceAnimation(): Animation =
         AnimationUtils.loadAnimation(context, R.anim.bounce)
 
-    fun getRotateAnimation(context: Context): Animation =
+    fun getRotateAnimation(): Animation =
         AnimationUtils.loadAnimation(context, R.anim.rotate_restart)
 
-    fun getBounceAndShakeAnimation(context: Context): Animation =
+    fun getBounceAndShakeAnimation(): Animation =
         AnimationUtils.loadAnimation(context, R.anim.bounce_shake)
 
     fun getConfetti(view: ViewGroup) {
@@ -54,16 +58,16 @@ object AnimationsManager {
             .oneShot()
     } // just send in the layout you want to show the Confetti
 
-    fun getShakeAnimation(context: Context): Animation =
+    fun getShakeAnimation(): Animation =
         AnimationUtils.loadAnimation(context, R.anim.shake)
 
-    fun getScaleOutAnimation(context: Context): Animation =
+    fun getScaleOutAnimation(): Animation =
         AnimationUtils.loadAnimation(context, R.anim.scale_out)
 
-    fun getScaleInAnimation(context: Context): Animation =
+    fun getScaleInAnimation(): Animation =
         AnimationUtils.loadAnimation(context, R.anim.scale_in)
 
-    fun getFastScaleInAnimation(context: Context): Animation =
+    fun getFastScaleInAnimation(): Animation =
         AnimationUtils.loadAnimation(context, R.anim.levels_scale_in)
 
     fun setFadeInOutAnimation(view: View) {

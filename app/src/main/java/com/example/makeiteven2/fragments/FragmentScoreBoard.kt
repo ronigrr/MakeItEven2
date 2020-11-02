@@ -53,7 +53,7 @@ class FragmentScoreBoard : Fragment() {
         mScoreBoardRecyclerView.setHasFixedSize(true)
         mScoreBoardRecyclerView.layoutManager = LinearLayoutManager(context)
         mScoreBoardRecyclerView.adapter = mScoreBoardCellAdapter
-        mScoreBoardRecyclerView.layoutAnimation = LayoutAnimationController(AnimationsManager.getScaleInAnimation(context!!))
+        mScoreBoardRecyclerView.layoutAnimation = LayoutAnimationController(AnimationsManager.getInstance(context!!).getScaleInAnimation())
     }
 
     override fun onAttach(context: Context) {
