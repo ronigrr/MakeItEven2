@@ -38,8 +38,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.lang.Boolean.FALSE
 import java.lang.Boolean.TRUE
+import java.lang.Exception
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragmentSettingsListener, LevelsAdapter.ILevelsAdapter,
@@ -56,7 +58,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         init3DotToolBar()
-        initUpdateManager()
+        //initUpdateManager()
         GoogleAddManager.loadRewardAD(applicationContext)
         startLoadingApp()
     }
@@ -102,10 +104,16 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     private fun loadStartScreen() {
-        setMainActivityVisible()
-        fragmentManager.beginTransaction()
-            .add(R.id.fragmentContainer, FragmentStartScreen(), Constants.START_SCREEN_FRAGMENT_TAG)
-            .commit()
+        try {
+            setMainActivityVisible()
+            fragmentManager.beginTransaction()
+                .add(R.id.fragmentContainer, FragmentStartScreen(), Constants.START_SCREEN_FRAGMENT_TAG)
+                .commit()
+        }
+        catch (e:Exception){
+            finish()
+            exitProcess(0)
+        }
     }
 
     override fun onStartScreenFragmentButtonClicked(view: View) {
