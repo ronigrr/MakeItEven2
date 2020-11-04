@@ -113,6 +113,7 @@ class AudioManager private constructor(context: Context) {
 
     fun playLongLoopGameMusic() {
         if (!mLongGameLoopSound.isPlaying) {
+            pauseCurrentLoopMusic()
             mLongGameLoopSound.start()
         }
     }
@@ -135,6 +136,7 @@ class AudioManager private constructor(context: Context) {
 
     fun playStageModeLoopGameMusic(){
         if (!mStageModeGameMusic.isPlaying) {
+            pauseCurrentLoopMusic()
             mStageModeGameMusic.start()
         }
     }

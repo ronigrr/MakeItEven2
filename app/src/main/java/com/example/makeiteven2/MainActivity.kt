@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -96,7 +97,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         GlobalScope.launch {
             DatabaseHelper.loadUserToConstants(applicationContext)
             Handler(Looper.getMainLooper()).postDelayed({
-                AudioManager.getInstance(this@MainActivity).playGameBeginAndStartLoop()
+                //AudioManager.getInstance(this@MainActivity).playGameBeginAndStartLoop()
                 Constants.liveDataCoins.value = Constants.User.coinsLeft
             }, 4000)
         }
@@ -274,17 +275,19 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         super.onStop()
         AudioManager.getInstance(this).pauseCurrentLoopMusic()
         RetentionManager.getInstance(applicationContext).setNotification(Constants.NOTIFICATION_COUNTDOWN_3_DAYS_IN_MILLIS)
+        Log.e("lifecycel","on stop mainactivity")
     }
 
     override fun onRestart() {
         super.onRestart()
-        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
-            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
-        }
+//        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
+//            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
+//        }
     }
     override fun onPause() {
         super.onPause()
         AudioManager.getInstance(this).pauseCurrentLoopMusic()
+        Log.e("lifecycel","on pause mainactivity")
     }
 
 //    override fun onResume() {
@@ -297,6 +300,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         super.onDestroy()
         AudioManager.getInstance(this).stopCurrentLoopMusic()
         AudioManager.getInstance(this).releaseAllMediaPlayers()
+        Log.e("lifecycel","on destroy mainactivity")
     }
 
     override fun backButtonPressedArcade() {

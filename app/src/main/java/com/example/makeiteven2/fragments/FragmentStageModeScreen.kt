@@ -139,12 +139,12 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 .title("This is the target number you need to reach")
                 .build()
             val two = FancyShowCaseView.Builder(activity!!)
-                .focusOn(rootView.group_choices_of_operators)
+                .focusOn(rootView.group_choices_of_numbers)
                 .title("You need to use ALL four numbers to do so")
                 .titleGravity(Gravity.BOTTOM)
                 .build()
             val three = FancyShowCaseView.Builder(activity!!)
-                .focusOn(rootView.group_choices_of_numbers)
+                .focusOn(rootView.group_choices_of_operators)
                 .title("Use all operators as much as you want")
                 .titleGravity(Gravity.TOP)
                 .build()
@@ -608,6 +608,10 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         checkIfNeedToShowSosHint()
     }
 
+    override fun onResume() {
+        super.onResume()
+        AudioManager.getInstance(context!!).playLoopMusicForSpecificFragment(Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG)
+    }
 }
 
 

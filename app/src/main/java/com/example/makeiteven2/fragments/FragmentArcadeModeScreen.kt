@@ -482,5 +482,10 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
             }
         }
     }
+
+    override fun onPause() {
+        super.onPause()
+        listener.backButtonPressedArcade()
+    }
 }
 

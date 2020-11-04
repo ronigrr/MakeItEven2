@@ -206,6 +206,11 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
         storeDialog.show()
     }
 
+    override fun onResume() {
+        super.onResume()
+        AudioManager.getInstance(context!!).playLoopMusicForSpecificFragment(Constants.START_SCREEN_FRAGMENT_TAG)
+    }
+
     override fun onAttach(context: Context) {
         if (context is IFragmentsStartsScreenListener) {
             mListener = context
