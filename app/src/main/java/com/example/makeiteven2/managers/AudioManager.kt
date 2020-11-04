@@ -21,6 +21,7 @@ class AudioManager private constructor(context: Context) {
     private var mBtnOffEffectMediaPlayer = MediaPlayer()
     private var mArcadeWrongAnswerEffectMediaPlayer = MediaPlayer()
     private var mArcadeSuccessEffectMediaPlayer = MediaPlayer()
+    private var mStageModeGameMusic = MediaPlayer()
 
     private var mSoundEffectsVolume = 0f
     private var mMainSoundVolume = 0f
@@ -36,6 +37,9 @@ class AudioManager private constructor(context: Context) {
 
         mLongGameLoopSound = MediaPlayer.create(context, R.raw.game_loop_sound_longer)
         mLongGameLoopSound.isLooping = true
+
+        mStageModeGameMusic = MediaPlayer.create(context, R.raw.stage_music)
+        mStageModeGameMusic.isLooping = true
 
         mTadaEffectMediaPlayer = MediaPlayer.create(context, R.raw.ta_da)
 
@@ -60,6 +64,7 @@ class AudioManager private constructor(context: Context) {
         mGameBeginsSound.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
         mLongGameLoopSound.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
         mShortGameLoopSound.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
+        mStageModeGameMusic.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
 
         mTadaEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
         mWawaEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
@@ -82,12 +87,8 @@ class AudioManager private constructor(context: Context) {
     fun playGameBeginAndStartLoop() {
         mGameBeginsSound.start()
         mGameBeginsSound.setOnCompletionListener {
-            mLongGameLoopSound.start()
+            playLongLoopGameMusic()
         }
-    }
-
-    fun playGameBegin() {
-        mGameBeginsSound.start()
     }
 
     fun playBtnOn() {
@@ -111,24 +112,19 @@ class AudioManager private constructor(context: Context) {
     }
 
     fun playLongLoopGameMusic() {
-        mLongGameLoopSound.start()
+        if (!mLongGameLoopSound.isPlaying) {
+            mLongGameLoopSound.start()
+        }
     }
 
     fun playWrongAnswerSound() {
         mArcadeWrongAnswerEffectMediaPlayer.start()
     }
 
-    fun resumeLongLoopMusic() {
-        if (!mLongGameLoopSound.isPlaying) {
-            mLongGameLoopSound.start()
-        }
-    }
-
     fun stopLongLoopGameMusic() {
         if (mLongGameLoopSound.isPlaying) {
             mLongGameLoopSound.stop()
         }
-        mLongGameLoopSound.stop()
     }
 
     fun pauseLongLoopGameMusic() {
@@ -137,6 +133,56 @@ class AudioManager private constructor(context: Context) {
         }
     }
 
+    fun playStageModeLoopGameMusic(){
+        if (!mStageModeGameMusic.isPlaying) {
+            mStageModeGameMusic.start()
+        }
+    }
+
+    fun stopStageModeLoopGameMusic(){
+        if (mStageModeGameMusic.isPlaying) {
+            mStageModeGameMusic.stop()
+        }
+    }
+
+    fun pauseStageModeLoopGameMusic(){
+        if (mStageModeGameMusic.isPlaying) {
+            mStageModeGameMusic.pause()
+        }
+    }
+
+    fun pauseCurrentLoopMusic(){
+        if (mStageModeGameMusic.isPlaying)
+        {
+            pauseStageModeLoopGameMusic()
+        }
+        else if (mLongGameLoopSound.isPlaying)
+        {
+            pauseLongLoopGameMusic()
+        }
+    }
+
+    fun stopCurrentLoopMusic(){
+        if (mStageModeGameMusic.isPlaying)
+        {
+            stopStageModeLoopGameMusic()
+        }
+        else if (mLongGameLoopSound.isPlaying)
+        {
+            stopLongLoopGameMusic()
+        }
+    }
+
+    fun playLoopMusicForSpecificFragment(currentFragmentTag: String) {
+        when(currentFragmentTag){
+            Constants.START_SCREEN_FRAGMENT_TAG->playLongLoopGameMusic()
+            Constants.LEVELS_SCREEN_FRAGMENT_TAG->playStageModeLoopGameMusic()
+            Constants.ARCADE_MODE_SCREEN_FRAGMENT_TAG->playStageModeLoopGameMusic()
+            Constants.SETTINGS_SCREEN_FRAGMENT_TAG->playLongLoopGameMusic()
+            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG->playStageModeLoopGameMusic()
+            Constants.SCOREBOARD_SCREEN_FRAGMENT_TAG->playLongLoopGameMusic()
+        }
+    }
     fun releaseAllMediaPlayers() {
         mGameMediaPlayer.release()
 
@@ -150,7 +196,6 @@ class AudioManager private constructor(context: Context) {
         mLongGameLoopSound.release()
         mShortGameLoopSound.release()
         mGameBeginsSound.release()
+        mStageModeGameMusic.release()
     }
-
-
 }

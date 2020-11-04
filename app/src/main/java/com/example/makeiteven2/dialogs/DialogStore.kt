@@ -104,7 +104,7 @@ class DialogStore(fragment: Any, private val mContext: Context, private val acti
         })
         mStoreDialog.btnGetHintByAd.apply {
             setOnClickListener {
-                GoogleAddManager.loadRewardVideo(mContext, activityContext)
+                GoogleAddManager.showRewardVideo(mContext, activityContext)
                 Constants.rewardedAdLoaded.postValue(false)
             }
         }

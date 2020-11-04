@@ -29,6 +29,7 @@ import com.example.makeiteven2.intefaces.IFinishTimerListener
 import com.example.makeiteven2.intefaces.IFragmentsStartsScreenListener
 import com.example.makeiteven2.intefaces.IStoreDialogBtnClickedListener
 import com.example.makeiteven2.managers.AnimationsManager
+import com.example.makeiteven2.managers.AudioManager
 import com.example.makeiteven2.managers.GoogleAddManager
 import com.example.makeiteven2.managers.TimerManager
 import com.example.makeiteven2.room.DatabaseHelper
@@ -68,7 +69,6 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
         initViews(rootView)
         initAnimations()
         initBtnOnClick()
-
         return rootView
     }
 
@@ -201,7 +201,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
             timerManager?.cancelTimer()
         }
         storeDialog.btnGetHintByAd.setOnClickListener {
-            GoogleAddManager.loadRewardVideo(context!!, this.activity!!)
+            GoogleAddManager.showRewardVideo(context!!, this.activity!!)
         }
         storeDialog.show()
     }

@@ -57,6 +57,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         startLoadingApp()
         Handler(Looper.getMainLooper()).postDelayed({
             GoogleAddManager.loadRewardAD(applicationContext)
+            GoogleAddManager.loadInterstitialAd(applicationContext)
         }, 7 * 1000)
 
     }
@@ -269,25 +270,32 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
             .commit()
     }
 
-    override fun onPause() {
-        super.onPause()
-        AudioManager.getInstance(this).pauseLongLoopGameMusic()
-    }
-
     override fun onStop() {
         super.onStop()
-        AudioManager.getInstance(this).pauseLongLoopGameMusic()
+        AudioManager.getInstance(this).pauseCurrentLoopMusic()
         RetentionManager.getInstance(applicationContext).setNotification(Constants.NOTIFICATION_COUNTDOWN_3_DAYS_IN_MILLIS)
     }
 
     override fun onRestart() {
         super.onRestart()
-        AudioManager.getInstance(this).resumeLongLoopMusic()
+        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
+            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
+        }
+    }
+    override fun onPause() {
+        super.onPause()
+        AudioManager.getInstance(this).pauseCurrentLoopMusic()
     }
 
+//    override fun onResume() {
+//        super.onResume()
+//        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
+//            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
+//        }
+//    }
     override fun onDestroy() {
         super.onDestroy()
-        AudioManager.getInstance(this).stopLongLoopGameMusic()
+        AudioManager.getInstance(this).stopCurrentLoopMusic()
         AudioManager.getInstance(this).releaseAllMediaPlayers()
     }
 
@@ -334,5 +342,19 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         RetentionManager.getInstance(applicationContext).cancelNotification()
     }
 
+//    supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
+//        if (currentFragment.tag == Constants.SCOREBOARD_SCREEN_FRAGMENT_TAG ||
+//            currentFragment.tag == Constants.START_SCREEN_FRAGMENT_TAG
+//            || currentFragment.tag == Constants.ARCADE_MODE_SCREEN_FRAGMENT_TAG
+//            ||currentFragment.tag == Constants.SETTINGS_SCREEN_FRAGMENT_TAG)
+//        {
+//            AudioManager.getInstance(this).playLongLoopMusic()
+//        }
+//        else
+//        {
+//            AudioManager.getInstance(this).playStageModLoop()
+//        }
+//    }
+//}
 }
 

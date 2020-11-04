@@ -6,9 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import com.example.makeiteven2.extras.Constants
 import com.example.makeiteven2.room.DatabaseHelper
-import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.*
 import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdCallback
@@ -16,16 +14,38 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 
 object GoogleAddManager {
 
+    fun loadInterstitialAd(context: Context){
+        Constants.mInterstitialAd = InterstitialAd(context)
+        Constants.mInterstitialAd.adUnitId = Constants.ADD_MOB_TEST
+        Constants.mInterstitialAd.loadAd(AdRequest.Builder().build())
+        Constants.mInterstitialAd.adListener = object : AdListener() {
+            override fun onAdClosed() {
+                Constants.mInterstitialAd.loadAd(AdRequest.Builder().build())
+            }
+            override fun onAdLoaded() {
+                Log.d("ad", "onInterstitialAdLoaded")
+            }
+        }
+    }
+
+    fun showInterstitialAd(){
+        if (Constants.mInterstitialAd.isLoaded) {
+            Constants.mInterstitialAd.show()
+        } else {
+            Log.d("ad", "The interstitial wasn't loaded yet.")
+        }
+    }
+
     fun loadRewardAD(context: Context) {
         Constants.rewardedAd = RewardedAd(context, Constants.ADD_MOB_TEST)
         val adLoadCallback = object : RewardedAdLoadCallback() {
             override fun onRewardedAdLoaded() {
-                Log.v("ad", "onRewardedAdLoaded")
+                Log.d("ad", "onRewardedAdLoaded")
                 Constants.rewardedAdLoaded.postValue(true)
             }
 
             override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
-                Log.v("ad", "onRewardedAdFailedToLoad")
+                Log.d("ad", "onRewardedAdFailedToLoad")
                 Constants.rewardedAdLoaded.postValue(false)
                 Toast.makeText(context, "check your internet connection", Toast.LENGTH_SHORT).show()
             }
@@ -33,25 +53,25 @@ object GoogleAddManager {
         Constants.rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
     }
 
-    fun loadRewardVideo(context: Context, activityContext: Activity) {
+    fun showRewardVideo(context: Context, activityContext: Activity) {
         if (Constants.rewardedAd.isLoaded) {
             val adCallback = object : RewardedAdCallback() {
                 override fun onRewardedAdOpened() {
-                    Log.v("ad", "onRewardedAdOpened")
+                    Log.d("ad", "onRewardedAdOpened")
                 }
 
                 override fun onRewardedAdClosed() {
-                    Log.v("ad", "onRewardedAdClosed")
+                    Log.d("ad", "onRewardedAdClosed")
                     loadRewardAD(context)
                 }
 
                 override fun onUserEarnedReward(reward: RewardItem) {
-                    Log.v("ad", "onUserEarnedReward (${reward.amount.toString()})")
+                    Log.d("ad", "onUserEarnedReward (${reward.amount.toString()})")
                     DatabaseHelper.addCoins(context, reward.amount)
                 }
 
                 override fun onRewardedAdFailedToShow(adError: AdError) {
-                    Log.v("ad", "onRewardedAdFailedToShow")
+                    Log.d("ad", "onRewardedAdFailedToShow")
                 }
             }
             Constants.rewardedAd.show(activityContext, adCallback)

@@ -25,7 +25,7 @@ class FragmentLevelsScreen : Fragment() {
     private lateinit var mCallBack: IFragmentLevelsScreenListener
     private lateinit var mLevelsRecyclerView: RecyclerView
     private lateinit var mLevelsAdapter: LevelsAdapter
-    var mLevelItemsList: ArrayList<Level> = ArrayList()
+    private var mLevelItemsList: ArrayList<Level> = ArrayList()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

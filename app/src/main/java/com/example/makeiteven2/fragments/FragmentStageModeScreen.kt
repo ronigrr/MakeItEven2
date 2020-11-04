@@ -22,6 +22,7 @@ import com.example.makeiteven2.intefaces.IFragmentStageModeListener
 import com.example.makeiteven2.intefaces.IStoreDialogBtnClickedListener
 import com.example.makeiteven2.managers.AnimationsManager
 import com.example.makeiteven2.managers.AudioManager
+import com.example.makeiteven2.managers.GoogleAddManager
 import com.example.makeiteven2.managers.ShearedPrefManager
 import com.example.makeiteven2.room.DatabaseHelper
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
@@ -536,7 +537,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                         currentStage++
                         //add coins
                         DatabaseHelper.addCoins(context!!, 1)
-                        mNumberOfCoinsLeft++
                         checkIfNeedToShowSosHint()
                     }
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
@@ -589,6 +589,9 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + " " + (++mLevelNum).toString()
                 gameInit()
                 mEndGameDialog.dismissDialog()
+                if (mLevelNum % 7 == 0){
+                    GoogleAddManager.showInterstitialAd()
+                }
             }
         }
     }
