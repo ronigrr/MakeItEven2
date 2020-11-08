@@ -86,6 +86,6 @@ class FragmentLevelsScreen : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        AudioManager.getInstance(context!!).playLoopMusicForSpecificFragment(Constants.LEVELS_SCREEN_FRAGMENT_TAG)
+        context?.let { AudioManager.getInstance(it).playLoopMusicForSpecificFragment(Constants.LEVELS_SCREEN_FRAGMENT_TAG)}
     }
 }

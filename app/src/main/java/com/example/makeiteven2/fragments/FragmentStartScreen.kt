@@ -209,12 +209,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
 
     override fun onResume() {
         super.onResume()
-        try {
-            AudioManager.getInstance(context!!).playLoopMusicForSpecificFragment(Constants.START_SCREEN_FRAGMENT_TAG)
-        }catch (ex:IllegalStateException){
-            Log.e("exception","????????????IllegalStateException?????????????????")
-        }
-
+            context?.let { AudioManager.getInstance(it).playLoopMusicForSpecificFragment(Constants.START_SCREEN_FRAGMENT_TAG)}
     }
 
     override fun onAttach(context: Context) {

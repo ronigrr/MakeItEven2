@@ -448,9 +448,9 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onClick(v: View?) {
         if (!(v as ToggleButton).isChecked) {
-            AudioManager.getInstance(context!!).playBtnOn()
+            context?.let { AudioManager.getInstance(it).playBtnOn()}
         } else if (v.isChecked) {
-            AudioManager.getInstance(context!!).playBtnOff()
+            context?.let { AudioManager.getInstance(it).playBtnOff()}
         }
         /// checks that nobody checked
         var i = 0
@@ -522,7 +522,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             }
             if (isDivideZero || isFraction) {
                 mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
-                AudioManager.getInstance(context!!).playWaWaSound()
+                context?.let { AudioManager.getInstance(it).playWaWaSound()}
                 gameInit()
                 return
             }
@@ -544,10 +544,10 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                         mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
                         AnimationsManager.getInstance(context!!).getConfetti(rootView.main_constraint)
                     }, 200)
-                    AudioManager.getInstance(context!!).playTaDaSound()
+                    context?.let { AudioManager.getInstance(it).playTaDaSound()}
                 } else {
                     //you loose
-                    AudioManager.getInstance(context!!).playWaWaSound()
+                    context?.let { AudioManager.getInstance(it).playWaWaSound()}
                     Handler(Looper.getMainLooper()).postDelayed({
                         mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
                     }, 200)
@@ -610,7 +610,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onResume() {
         super.onResume()
-        AudioManager.getInstance(context!!).playLoopMusicForSpecificFragment(Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG)
+        context?.let { AudioManager.getInstance(it).playLoopMusicForSpecificFragment(Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG)}
     }
 }
 
