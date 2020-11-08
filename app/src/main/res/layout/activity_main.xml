@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style = "@style/AppTheme"
     tools:context=".MainActivity">
 
     <include
@@ -16,12 +15,12 @@
         android:layout_gravity="end"
         android:visibility="gone" />
 
+
     <LinearLayout
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        style = "@style/AppTheme"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -29,7 +28,6 @@
 
     <pl.droidsonroids.gif.GifImageView
         android:id="@+id/gifView"
-        style = "@style/AppTheme"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/intro_gif"

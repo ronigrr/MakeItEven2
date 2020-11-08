@@ -12,6 +12,7 @@ import android.os.Looper
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.View.*
 import android.widget.Toast
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("lifecycle","oncreat")
+        Log.e("lifecycle","on create")
         hideNavBars()
         setContentView(R.layout.activity_main)
         init3DotToolBar()
@@ -67,8 +68,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     private fun hideNavBars() {
         window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-                SYSTEM_UI_FLAG_FULLSCREEN or SYSTEM_UI_FLAG_HIDE_NAVIGATION or
-                SYSTEM_UI_FLAG_LAYOUT_STABLE or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                SYSTEM_UI_FLAG_FULLSCREEN or SYSTEM_UI_FLAG_HIDE_NAVIGATION
     }
 
     private fun rateMe(v: View) {
@@ -191,12 +191,19 @@ override fun onCreateOptionsMenu(menu: Menu?): Boolean {
     return true
 }
 
+    var menuOpend = false
     override fun onMenuOpened(featureId: Int, menu: Menu): Boolean {
         super.onMenuOpened(featureId, menu)
         Log.e("onMenuOpened", "onMenuOpened")
-        return false
+        menuOpend = true
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (menuOpend) {
+                hideNavBars()
+            menuOpend = false}
+        },100)
+        return true
     }
-    
+
 @SuppressLint("InflateParams")
 override fun onOptionsItemSelected(item: MenuItem): Boolean {
     when (item.itemId) {
@@ -224,6 +231,8 @@ override fun onOptionsItemSelected(item: MenuItem): Boolean {
     }
     return super.onOptionsItemSelected(item)
 }
+
+
 
 private fun loadLevelScreen() {
     fragmentManager.beginTransaction().replace(R.id.fragmentContainer, FragmentLevelsScreen(), Constants.LEVELS_SCREEN_FRAGMENT_TAG)
