@@ -3,6 +3,7 @@ package com.example.makeiteven2.fragments
 import android.content.Context
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,6 +87,7 @@ class FragmentLevelsScreen : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        context?.let { AudioManager.getInstance(it).playLoopMusicForSpecificFragment(Constants.LEVELS_SCREEN_FRAGMENT_TAG)}
+        context?.let { AudioManager.getInstance(it).playLoopMusicForSpecificFragment(Constants.LEVELS_SCREEN_FRAGMENT_TAG)
+        Log.e("levels i am in","")}
     }
 }

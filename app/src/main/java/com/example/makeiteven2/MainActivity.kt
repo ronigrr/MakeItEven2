@@ -56,6 +56,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.e("lifecycle","oncreat")
         hideNavBars()
         setContentView(R.layout.activity_main)
         init3DotToolBar()
@@ -318,6 +319,7 @@ override fun onStop() {
 
 override fun onRestart() {
     super.onRestart()
+    Log.e("lifecycel", "on restart mainactivity")
 //        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
 //            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
 //        }
@@ -338,7 +340,6 @@ override fun onPause() {
 override fun onDestroy() {
     super.onDestroy()
     AudioManager.getInstance(this).stopCurrentLoopMusic()
-    AudioManager.getInstance(this).releaseAllMediaPlayers()
     Log.e("lifecycel", "on destroy mainactivity")
 }
 
@@ -383,6 +384,8 @@ override fun scoreBoardHide3dotToolBar() {
 override fun onStart() {
     super.onStart()
     RetentionManager.getInstance(applicationContext).cancelNotification()
+    Log.e("lifecycel", "on start mainactivity")
+
 }
 
     override fun onResume() {

@@ -209,7 +209,8 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
 
     override fun onResume() {
         super.onResume()
-            context?.let { AudioManager.getInstance(it).playLoopMusicForSpecificFragment(Constants.START_SCREEN_FRAGMENT_TAG)}
+            context?.let { AudioManager.getInstance(it).playLoopMusicForSpecificFragment(Constants.START_SCREEN_FRAGMENT_TAG)
+            Log.e("iam in start","")}
     }
 
     override fun onAttach(context: Context) {
