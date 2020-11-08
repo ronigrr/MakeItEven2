@@ -3,6 +3,9 @@ package com.example.makeiteven2
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.app.Dialog
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,6 +13,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.View.*
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -52,243 +56,278 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        hideNavBars()
         setContentView(R.layout.activity_main)
         init3DotToolBar()
         //initUpdateManager()
         startLoadingApp()
-        Handler(Looper.getMainLooper()).postDelayed({
-            GoogleAddManager.loadRewardAD(applicationContext)
-            GoogleAddManager.loadInterstitialAd(applicationContext)
-        }, 7 * 1000)
-
+        activeAd()
     }
 
-    private fun startLoadingApp() {
-        if (ShearedPrefManager.getIsFirstTimeInApp(this) == FALSE) {
-            Handler(Looper.getMainLooper()).postDelayed({
-                setMainActivityVisible()
-                firstTimeInApp()
-            }, 5000)
-        } else {
-            loadUser()
-            Handler(Looper.getMainLooper()).postDelayed({
-                loadStartScreen()
-            }, 5000)
+    private fun hideNavBars() {
+        window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+                SYSTEM_UI_FLAG_FULLSCREEN or SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+                SYSTEM_UI_FLAG_LAYOUT_STABLE or SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION or SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+    }
+
+    private fun rateMe(v: View) {
+        try {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=com.android.chrome")
+                )
+            )
+        } catch (e: ActivityNotFoundException) {
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("http://play.google.com/store/apps/details?id=$packageName")
+                )
+            )
         }
     }
 
-    private fun initUpdateManager() {
-        appUpdateManager = AppUpdateManagerFactory.create(this)
-        appUpdateInfoTask = appUpdateManager.appUpdateInfo
-    }
 
-    private fun setMainActivityVisible() {
-        fragmentContainer.visibility = View.VISIBLE
+private fun activeAd() {
+    Handler(Looper.getMainLooper()).postDelayed({
+        GoogleAddManager.loadRewardAD(applicationContext)
+        GoogleAddManager.loadInterstitialAd(applicationContext)
+    }, 7 * 1000)
+}
+
+private fun startLoadingApp() {
+    if (ShearedPrefManager.getIsFirstTimeInApp(this) == FALSE) {
+        Handler(Looper.getMainLooper()).postDelayed({
+            setMainActivityVisible()
+            firstTimeInApp()
+        }, 5000)
+    } else {
+        loadUser()
+        Handler(Looper.getMainLooper()).postDelayed({
+            loadStartScreen()
+        }, 5000)
+    }
+}
+
+private fun initUpdateManager() {
+    appUpdateManager = AppUpdateManagerFactory.create(this)
+    appUpdateInfoTask = appUpdateManager.appUpdateInfo
+}
+
+private fun setMainActivityVisible() {
+    fragmentContainer.visibility = View.VISIBLE
+    show3DotsToolBar()
+}
+
+private fun init3DotToolBar() {
+    appToolbar = toolBar as Toolbar
+    appToolbar.title = " "
+    setSupportActionBar(appToolbar)
+}
+
+private fun loadUser() {
+    GlobalScope.launch {
+        DatabaseHelper.loadUserToConstants(applicationContext)
+        Handler(Looper.getMainLooper()).postDelayed({
+            //AudioManager.getInstance(this@MainActivity).playGameBeginAndStartLoop()
+            Constants.liveDataCoins.value = Constants.User.coinsLeft
+        }, 4000)
+    }
+}
+
+private fun loadStartScreen() {
+    try {
+        setMainActivityVisible()
+        fragmentManager.beginTransaction()
+            .add(R.id.fragmentContainer, FragmentStartScreen(), Constants.START_SCREEN_FRAGMENT_TAG)
+            .commit()
+    } catch (e: Exception) {
+        finish()
+        exitProcess(0)
+    }
+}
+
+override fun onStartScreenFragmentButtonClicked(view: View) {
+    when (view.id) {
+        btnStageMode.id -> loadLevelScreen()
+        btnArcadeMode.id -> loadArcadeMode()
+        btnScoreBoard.id -> loadScoreBoard()
+        btnTutorial.id -> loadStageModeWithTutorial()
+    }
+}
+
+private fun loadScoreBoard() {
+    fragmentManager.beginTransaction().replace(
+        R.id.fragmentContainer,
+        FragmentScoreBoard(),
+        Constants.SCOREBOARD_SCREEN_FRAGMENT_TAG)
+        .addToBackStack(null).commit()
+}
+
+private fun loadStageModeWithTutorial() {
+    hide3DotsToolBar()
+    val arguments = bundleOf(Constants.IS_TUTORIAL to Constants.IS_TUTORIAL)
+    fragmentManager.beginTransaction().replace(
+        R.id.fragmentContainer,
+        FragmentStageModeScreen(1).apply { this.arguments = arguments },
+        Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG
+    )
+        .addToBackStack(null).commit()
+}
+
+private fun loadArcadeMode() {
+    fragmentManager.beginTransaction().replace(
+        R.id.fragmentContainer,
+        FragmentArcadeModeScreen(),
+        Constants.ARCADE_MODE_SCREEN_FRAGMENT_TAG
+    )
+        .addToBackStack(null).commit()
+}
+
+override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    menuInflater.inflate(R.menu.action_menu, menu)
+    return true
+}
+
+    override fun onMenuOpened(featureId: Int, menu: Menu): Boolean {
+        super.onMenuOpened(featureId, menu)
+        Log.e("onMenuOpened", "onMenuOpened")
+        return false
+    }
+    
+@SuppressLint("InflateParams")
+override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    when (item.itemId) {
+        R.id.action_about -> {
+            //about
+            val aboutDialog = Dialog(this)
+            val dialogView: View = layoutInflater.inflate(R.layout.about_dialog, null)
+            aboutDialog.setContentView(dialogView)
+            aboutDialog.setCanceledOnTouchOutside(true)
+            aboutDialog.show()
+        }
+        R.id.action_settings -> {
+            //settings
+            fragmentManager.beginTransaction().replace(
+                R.id.fragmentContainer,
+                FragmentSettings(),
+                Constants.SETTINGS_SCREEN_FRAGMENT_TAG
+            )
+                .addToBackStack(null).commit()
+            appToolbar.visibility = GONE
+            //item.isEnabled = false
+        }
+        else -> {
+        }
+    }
+    return super.onOptionsItemSelected(item)
+}
+
+private fun loadLevelScreen() {
+    fragmentManager.beginTransaction().replace(R.id.fragmentContainer, FragmentLevelsScreen(), Constants.LEVELS_SCREEN_FRAGMENT_TAG)
+        .addToBackStack(null).commit()
+}
+
+override fun onBackPressed() {
+    super.onBackPressed()
+    if (fragmentManager.findFragmentByTag(Constants.START_SCREEN_FRAGMENT_TAG)?.isVisible == true) {
         show3DotsToolBar()
     }
+}
 
-    private fun init3DotToolBar() {
-        appToolbar = toolBar as Toolbar
-        appToolbar.title = " "
-        setSupportActionBar(appToolbar)
-    }
+override fun show3DotsToolBar() {
+    appToolbar.visibility = VISIBLE
+}
 
-    private fun loadUser() {
-        GlobalScope.launch {
-            DatabaseHelper.loadUserToConstants(applicationContext)
-            Handler(Looper.getMainLooper()).postDelayed({
-                //AudioManager.getInstance(this@MainActivity).playGameBeginAndStartLoop()
-                Constants.liveDataCoins.value = Constants.User.coinsLeft
-            }, 4000)
-        }
-    }
+override fun onSeekBarMainVolume(mainVolume: Int) {
+    AudioManager.getInstance(this).setGameVolume(mainVolume)
+}
 
-    private fun loadStartScreen() {
-        try {
-            setMainActivityVisible()
-            fragmentManager.beginTransaction()
-                .add(R.id.fragmentContainer, FragmentStartScreen(), Constants.START_SCREEN_FRAGMENT_TAG)
-                .commit()
-        } catch (e: Exception) {
-            finish()
-            exitProcess(0)
-        }
-    }
+override fun onSeekBarSoundEffects(soundEffectsVolume: Int) {
+    AudioManager.getInstance(this).setEffectVolume(soundEffectsVolume)
+}
 
-    override fun onStartScreenFragmentButtonClicked(view: View) {
-        when (view.id) {
-            btnStageMode.id -> loadLevelScreen()
-            btnArcadeMode.id -> loadArcadeMode()
-            btnScoreBoard.id -> loadScoreBoard()
-            btnTutorial.id -> loadStageModeWithTutorial()
-        }
-    }
-
-    private fun loadScoreBoard() {
-        fragmentManager.beginTransaction().replace(
-            R.id.fragmentContainer,
-            FragmentScoreBoard(),
-            Constants.SCOREBOARD_SCREEN_FRAGMENT_TAG
-        )
-            .addToBackStack(null).commit()
-    }
-
-    private fun loadStageModeWithTutorial() {
-        hide3DotsToolBar()
-        val arguments = bundleOf(Constants.IS_TUTORIAL to Constants.IS_TUTORIAL)
-        fragmentManager.beginTransaction().replace(
-            R.id.fragmentContainer,
-            FragmentStageModeScreen(1).apply { this.arguments = arguments },
-            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG
-        )
-            .addToBackStack(null).commit()
-    }
-
-    private fun loadArcadeMode() {
-        fragmentManager.beginTransaction().replace(
-            R.id.fragmentContainer,
-            FragmentArcadeModeScreen(),
-            Constants.ARCADE_MODE_SCREEN_FRAGMENT_TAG
-        )
-            .addToBackStack(null).commit()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.action_menu, menu)
-        return true
-    }
-
-    @SuppressLint("InflateParams")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_about -> {
-                //about
-                val aboutDialog = Dialog(this)
-                val dialogView: View = layoutInflater.inflate(R.layout.about_dialog, null)
-                aboutDialog.setContentView(dialogView)
-                aboutDialog.setCanceledOnTouchOutside(true)
-                aboutDialog.show()
-            }
-            R.id.action_settings -> {
-                //settings
-                fragmentManager.beginTransaction().replace(
-                    R.id.fragmentContainer,
-                    FragmentSettings(),
-                    Constants.SETTINGS_SCREEN_FRAGMENT_TAG
-                )
-                    .addToBackStack(null).commit()
-                appToolbar.visibility = View.GONE
-                //item.isEnabled = false
-            }
-            else -> {
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun loadLevelScreen() {
-        fragmentManager.beginTransaction().replace(R.id.fragmentContainer, FragmentLevelsScreen(), Constants.LEVELS_SCREEN_FRAGMENT_TAG)
-            .addToBackStack(null).commit()
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (fragmentManager.findFragmentByTag(Constants.START_SCREEN_FRAGMENT_TAG)?.isVisible == true) {
-            show3DotsToolBar()
-        }
-    }
-
-    override fun show3DotsToolBar() {
-        appToolbar.visibility = View.VISIBLE
-    }
-
-    override fun onSeekBarMainVolume(mainVolume: Int) {
-        AudioManager.getInstance(this).setGameVolume(mainVolume)
-    }
-
-    override fun onSeekBarSoundEffects(soundEffectsVolume: Int) {
-        AudioManager.getInstance(this).setEffectVolume(soundEffectsVolume)
-    }
-
-    override fun onResetGame() {
-        val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
-        alertDialogBuilder.setIcon(R.drawable.warning_icon)
-        alertDialogBuilder.setMessage(R.string.Progress).setCancelable(false).setPositiveButton(R.string.Yes) { dialog, _ ->
-            Constants.User.currentLevel = 1
-            val newArrayList = ArrayList<StageInfo>()
-            newArrayList.add(Constants.User.stageList[0])
-            Constants.User.stageList = newArrayList
-            DatabaseHelper.createOrUpdateUser(applicationContext, Constants.User)
-            dialog.cancel()
-        }
-        alertDialogBuilder.setNegativeButton(R.string.No) { dialog, _ -> dialog.cancel() }
-
-        val alert = alertDialogBuilder.create()
-        alert.show()
-    }
-
-    override fun onExitFromSettingsFragment() {
+override fun onResetGame() {
+    val alertDialogBuilder = AlertDialog.Builder(this)
+    alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
+    alertDialogBuilder.setIcon(R.drawable.warning_icon)
+    alertDialogBuilder.setMessage(R.string.Progress).setCancelable(false).setPositiveButton(R.string.Yes) { dialog, _ ->
+        Constants.User.currentLevel = 1
+        val newArrayList = ArrayList<StageInfo>()
+        newArrayList.add(Constants.User.stageList[0])
+        Constants.User.stageList = newArrayList
         DatabaseHelper.createOrUpdateUser(applicationContext, Constants.User)
-        onBackPressed()
+        dialog.cancel()
     }
+    alertDialogBuilder.setNegativeButton(R.string.No) { dialog, _ -> dialog.cancel() }
 
-    private fun hide3DotsToolBar() {
-        appToolbar.visibility = View.GONE
-    }
+    val alert = alertDialogBuilder.create()
+    alert.show()
+}
 
-    override fun onLevelsAdapterItemClicked(levelNumber: Int) {
-        fragmentManager.beginTransaction().replace(
-            R.id.fragmentContainer,
-            FragmentStageModeScreen(levelNumber),
-            Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG
-        )
-            .addToBackStack(null).commit()
-    }
+override fun onExitFromSettingsFragment() {
+    DatabaseHelper.createOrUpdateUser(applicationContext, Constants.User)
+    onBackPressed()
+}
 
-    override fun onFinishEditDialog(inputText: String) {
-        Toast.makeText(this, "welcome $inputText", Toast.LENGTH_SHORT).show()
-        createNewUser(inputText)
-        ShearedPrefManager.setIsFirstTimeInApp(this, TRUE)
-        loadStartScreen()
-        AudioManager.getInstance(this).playGameBeginAndStartLoop()
-    }
+private fun hide3DotsToolBar() {
+    appToolbar.visibility = GONE
+}
 
-    private fun createNewUser(nickname: String) {
-        val newUserNote = RoomUserNote(
-            UUID.randomUUID().toString(), nickname, 1, 20, 50, 3, ArrayList(),
-            "", "", false, "0", ArrayList()
-        )
-        newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))
-        Constants.User = newUserNote
-        DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
-    }
+override fun onLevelsAdapterItemClicked(levelNumber: Int) {
+    fragmentManager.beginTransaction().replace(
+        R.id.fragmentContainer,
+        FragmentStageModeScreen(levelNumber),
+        Constants.STAGE_MODE_SCREEN_FRAGMENT_TAG
+    )
+        .addToBackStack(null).commit()
+}
 
-    private fun firstTimeInApp() {
-        hide3DotsToolBar()
-        fragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, FragmentDialogNickName(), Constants.NICK_NAME_DIALOG_TAG)
-            .commit()
-    }
+override fun onFinishEditDialog(inputText: String) {
+    Toast.makeText(this, "welcome $inputText", Toast.LENGTH_SHORT).show()
+    createNewUser(inputText)
+    ShearedPrefManager.setIsFirstTimeInApp(this, TRUE)
+    loadStartScreen()
+    AudioManager.getInstance(this).playGameBeginAndStartLoop()
+}
 
-    override fun onStop() {
-        super.onStop()
-        AudioManager.getInstance(this).pauseCurrentLoopMusic()
-        RetentionManager.getInstance(applicationContext).setNotification(Constants.NOTIFICATION_COUNTDOWN_3_DAYS_IN_MILLIS)
-        Log.e("lifecycel","on stop mainactivity")
-    }
+private fun createNewUser(nickname: String) {
+    val newUserNote = RoomUserNote(
+        UUID.randomUUID().toString(), nickname, 1, 20, 50, 3, ArrayList(),
+        "", "", false, "0", ArrayList()
+    )
+    newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))
+    Constants.User = newUserNote
+    DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
+}
 
-    override fun onRestart() {
-        super.onRestart()
+private fun firstTimeInApp() {
+    hide3DotsToolBar()
+    fragmentManager.beginTransaction()
+        .replace(R.id.fragmentContainer, FragmentDialogNickName(), Constants.NICK_NAME_DIALOG_TAG)
+        .commit()
+}
+
+override fun onStop() {
+    super.onStop()
+    AudioManager.getInstance(this).pauseCurrentLoopMusic()
+    RetentionManager.getInstance(applicationContext).setNotification(Constants.NOTIFICATION_COUNTDOWN_3_DAYS_IN_MILLIS)
+    Log.e("lifecycel", "on stop mainactivity")
+}
+
+override fun onRestart() {
+    super.onRestart()
 //        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
 //            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
 //        }
-    }
-    override fun onPause() {
-        super.onPause()
-        AudioManager.getInstance(this).pauseCurrentLoopMusic()
-        Log.e("lifecycel","on pause mainactivity")
-    }
+}
+
+override fun onPause() {
+    super.onPause()
+    AudioManager.getInstance(this).pauseCurrentLoopMusic()
+    Log.e("lifecycel", "on pause mainactivity")
+}
 
 //    override fun onResume() {
 //        super.onResume()
@@ -296,69 +335,60 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 //            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
 //        }
 //    }
-    override fun onDestroy() {
-        super.onDestroy()
-        AudioManager.getInstance(this).stopCurrentLoopMusic()
-        AudioManager.getInstance(this).releaseAllMediaPlayers()
-        Log.e("lifecycel","on destroy mainactivity")
-    }
+override fun onDestroy() {
+    super.onDestroy()
+    AudioManager.getInstance(this).stopCurrentLoopMusic()
+    AudioManager.getInstance(this).releaseAllMediaPlayers()
+    Log.e("lifecycel", "on destroy mainactivity")
+}
 
-    override fun backButtonPressedArcade() {
-        fragmentManager.popBackStack()
-    }
+override fun backButtonPressedArcade() {
+    fragmentManager.popBackStack()
+}
 
-    override fun loadScoreBoardFromArcade() {
-        fragmentManager.popBackStack()
-        loadScoreBoard()
-    }
+override fun loadScoreBoardFromArcade() {
+    fragmentManager.popBackStack()
+    loadScoreBoard()
+}
 
-    override fun restartArcadeGame() {
-        fragmentManager.popBackStack()
-        loadArcadeMode()
-    }
+override fun restartArcadeGame() {
+    fragmentManager.popBackStack()
+    loadArcadeMode()
+}
 
-    override fun arcadeModeHide3dotToolBar() {
-        hide3DotsToolBar()
-    }
+override fun arcadeModeHide3dotToolBar() {
+    hide3DotsToolBar()
+}
 
-    override fun backButtonPressedStage() {
-        fragmentManager.popBackStack()
-    }
+override fun backButtonPressedStage() {
+    fragmentManager.popBackStack()
+}
 
-    override fun onLevelsFragmentBackPressed() {
-        fragmentManager.popBackStack()
-    }
+override fun onLevelsFragmentBackPressed() {
+    fragmentManager.popBackStack()
+}
 
-    override fun levelsFragmentClose3dotToolBar() {
-        hide3DotsToolBar()
-    }
+override fun levelsFragmentClose3dotToolBar() {
+    hide3DotsToolBar()
+}
 
-    override fun onScoreBoardFragmentBackPressed() {
-        fragmentManager.popBackStack()
-    }
+override fun onScoreBoardFragmentBackPressed() {
+    fragmentManager.popBackStack()
+}
 
-    override fun scoreBoardHide3dotToolBar() {
-        hide3DotsToolBar()
-    }
+override fun scoreBoardHide3dotToolBar() {
+    hide3DotsToolBar()
+}
 
-    override fun onStart() {
-        super.onStart()
-        RetentionManager.getInstance(applicationContext).cancelNotification()
-    }
+override fun onStart() {
+    super.onStart()
+    RetentionManager.getInstance(applicationContext).cancelNotification()
+}
 
-//    supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
-//        if (currentFragment.tag == Constants.SCOREBOARD_SCREEN_FRAGMENT_TAG ||
-//            currentFragment.tag == Constants.START_SCREEN_FRAGMENT_TAG
-//            || currentFragment.tag == Constants.ARCADE_MODE_SCREEN_FRAGMENT_TAG
-//            ||currentFragment.tag == Constants.SETTINGS_SCREEN_FRAGMENT_TAG)
-//        {
-//            AudioManager.getInstance(this).playLongLoopMusic()
-//        }
-//        else
-//        {
-//            AudioManager.getInstance(this).playStageModLoop()
-//        }
-//    }
-//}
+    override fun onResume() {
+        super.onResume()
+        hideNavBars()
+        Log.e("lifecycel", "on resume mainactivity")
+    }
 }
 

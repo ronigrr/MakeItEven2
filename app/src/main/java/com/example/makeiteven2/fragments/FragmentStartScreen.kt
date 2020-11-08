@@ -35,6 +35,7 @@ import com.example.makeiteven2.managers.TimerManager
 import com.example.makeiteven2.room.DatabaseHelper
 import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 import kotlinx.android.synthetic.main.store_dialog.*
+import java.lang.IllegalStateException
 import java.sql.Timestamp
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
@@ -208,7 +209,12 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
 
     override fun onResume() {
         super.onResume()
-        AudioManager.getInstance(context!!).playLoopMusicForSpecificFragment(Constants.START_SCREEN_FRAGMENT_TAG)
+        try {
+            AudioManager.getInstance(context!!).playLoopMusicForSpecificFragment(Constants.START_SCREEN_FRAGMENT_TAG)
+        }catch (ex:IllegalStateException){
+            Log.e("exception","????????????IllegalStateException?????????????????")
+        }
+
     }
 
     override fun onAttach(context: Context) {

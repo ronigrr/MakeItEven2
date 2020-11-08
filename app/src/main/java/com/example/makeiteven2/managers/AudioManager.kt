@@ -154,11 +154,11 @@ class AudioManager private constructor(context: Context) {
     }
 
     fun pauseCurrentLoopMusic(){
-        if (mStageModeGameMusic.isPlaying)
+        if (mStageModeGameMusic?.isPlaying)
         {
             pauseStageModeLoopGameMusic()
         }
-        else if (mLongGameLoopSound.isPlaying)
+        else if (mLongGameLoopSound?.isPlaying)
         {
             pauseLongLoopGameMusic()
         }
