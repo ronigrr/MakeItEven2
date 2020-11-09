@@ -6,6 +6,7 @@ import com.yoyoG.makeiteven2.data_models.StageInfo
 import com.yoyoG.makeiteven2.extras.Constants
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 object DatabaseHelper {
@@ -27,14 +28,18 @@ object DatabaseHelper {
     }
 
 
-    suspend fun loadUserToConstants(context: Context) {
+    fun loadUserToConstants(context: Context) {
         getDataBase(context)
-        Constants.User = mNoteDao.getNotes()[0]
+        GlobalScope.launch {
+            withContext(coroutineContext) {
+                Constants.User = mNoteDao.getNotes()[0]
+            }
+        }
     }
 
     fun createOrUpdateUser(context: Context, newUserNote: RoomUserNote) {
         getDataBase(context)
-        GlobalScope.launch { mNoteDao.insertOrUpdateNote(newUserNote) }
+        GlobalScope.launch { withContext(coroutineContext) { mNoteDao.insertOrUpdateNote(newUserNote) } }
     }
 
     fun saveStageInfo(context: Context, stageInfo: StageInfo) {

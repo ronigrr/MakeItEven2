@@ -38,7 +38,6 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
     private lateinit var mbtnRateUs: ImageButton
     private lateinit var mDialogStore: DialogStore
 
-    private var timerManager: TimerManager? = null
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -59,6 +58,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
 
     private fun initStoreDialog() {
         mDialogStore = DialogStore(this, context!! , this.activity!!)
+        Constants.liveDataCoins.value = Constants.User.coinsLeft
     }
 
     private fun initViews(rootView: View) {

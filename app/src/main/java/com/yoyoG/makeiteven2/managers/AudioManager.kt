@@ -57,6 +57,7 @@ class AudioManager private constructor(context: Context) {
     }
 
     private fun updateAudioManagerVolume() {
+
         mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
         mMainSoundVolume = Constants.User.mainSoundLevel.toFloat()
 
@@ -65,7 +66,6 @@ class AudioManager private constructor(context: Context) {
         mLongGameLoopSound.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
         mShortGameLoopSound.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
         mStageModeGameMusic.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
-
         mTadaEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
         mWawaEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)
         mBtnOnEffectMediaPlayer.setVolume(mSoundEffectsVolume, mSoundEffectsVolume)

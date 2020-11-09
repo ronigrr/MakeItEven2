@@ -57,8 +57,8 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("lifecycle", "on create")
         hideNavBars()
+        Log.e("lifecycle", "on create")
         setContentView(R.layout.activity_main)
         init3DotToolBar()
         //initUpdateManager()
@@ -117,7 +117,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     private fun setMainActivityVisible() {
-        fragmentContainer.visibility = View.VISIBLE
+        fragmentContainer.visibility = VISIBLE
         show3DotsToolBar()
     }
 
@@ -128,13 +128,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     private fun loadUser() {
-        GlobalScope.launch {
-            DatabaseHelper.loadUserToConstants(applicationContext)
-            Handler(Looper.getMainLooper()).postDelayed({
-                //AudioManager.getInstance(this@MainActivity).playGameBeginAndStartLoop()
-                Constants.liveDataCoins.value = Constants.User.coinsLeft
-            }, 4000)
-        }
+        DatabaseHelper.loadUserToConstants(applicationContext)
     }
 
     private fun loadStartScreen() {
@@ -258,7 +252,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
         alertDialogBuilder.setIcon(R.drawable.warning_icon)
         alertDialogBuilder.setMessage(R.string.Progress).setCancelable(false).setPositiveButton(R.string.Yes) { dialog, _ ->
-            Constants.User.currentLevel = 1
+            Constants.User?.currentLevel  = 1
             val newArrayList = ArrayList<StageInfo>()
             newArrayList.add(Constants.User.stageList[0])
             Constants.User.stageList = newArrayList
@@ -307,7 +301,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         //update coins to live data
         Constants.liveDataCoins.value = newUserNote.coinsLeft
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
-        Constants.liveDataCoins.value = Constants.User.coinsLeft
     }
 
     private fun firstTimeInApp() {
@@ -335,12 +328,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         Log.e("lifecycel", "on pause mainactivity")
     }
 
-    //    override fun onResume() {
-//        super.onResume()
-//        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
-//            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
-//        }
-//    }
     override fun onDestroy() {
         super.onDestroy()
         AudioManager.getInstance(this).stopCurrentLoopMusic()
