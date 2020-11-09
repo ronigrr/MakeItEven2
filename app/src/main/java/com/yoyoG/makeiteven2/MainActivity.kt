@@ -24,7 +24,6 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.tasks.Task
 import com.yoyoG.makeiteven2.adapters.LevelsAdapter
 import com.yoyoG.makeiteven2.data_models.StageInfo
-import com.yoyoG.makeiteven2.dialogs.DialogStore
 import com.yoyoG.makeiteven2.extras.Constants
 import com.yoyoG.makeiteven2.fragments.*
 import com.yoyoG.makeiteven2.intefaces.*
@@ -36,10 +35,6 @@ import com.yoyoG.makeiteven2.room.DatabaseHelper
 import com.yoyoG.makeiteven2.room.RoomUserNote
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
@@ -98,7 +93,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     private fun startLoadingApp() {
-        if (ShearedPrefManager.getIsFirstTimeInApp(this) == FALSE) {
+        if (ShearedPrefManager.getIsFirstTimeInApp(this)) {
             Handler(Looper.getMainLooper()).postDelayed({
                 setMainActivityVisible()
                 firstTimeInApp()
@@ -286,7 +281,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     override fun onFinishEditDialog(inputText: String) {
         Toast.makeText(this, "welcome $inputText", Toast.LENGTH_SHORT).show()
         createNewUser(inputText)
-        ShearedPrefManager.setIsFirstTimeInApp(this, TRUE)
+        ShearedPrefManager.setIsFirstTimeInApp(this, false)
         loadStartScreen()
         AudioManager.getInstance(this).playGameBeginAndStartLoop()
     }

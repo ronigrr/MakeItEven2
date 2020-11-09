@@ -14,7 +14,7 @@ object ShearedPrefManager {
 
     fun getIsFirstTimeInApp(context: Context): Boolean {
         getDataBase(context)
-        return mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_APP, java.lang.Boolean.FALSE)
+        return mSharedPref.getBoolean(Constants.IS_FIRST_TIME_IN_APP, true)
     }
 
     fun setIsFirstTimeInApp(context: Context, boolean: Boolean) {

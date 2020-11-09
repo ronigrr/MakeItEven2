@@ -6,7 +6,7 @@ import com.yoyoG.makeiteven2.R
 import com.yoyoG.makeiteven2.extras.Constants
 import com.yoyoG.makeiteven2.extras.SingletonHolder
 
-class AudioManager private constructor(context: Context) {
+class AudioManager private constructor(val context: Context) {
 
     companion object : SingletonHolder<AudioManager, Context>(::AudioManager)
 
@@ -57,9 +57,10 @@ class AudioManager private constructor(context: Context) {
     }
 
     private fun updateAudioManagerVolume() {
-
-        mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
-        mMainSoundVolume = Constants.User.mainSoundLevel.toFloat()
+        if (!ShearedPrefManager.getIsFirstTimeInApp(context)) {
+            mSoundEffectsVolume = Constants.User.soundEffectsLevel.toFloat()
+            mMainSoundVolume = Constants.User.mainSoundLevel.toFloat()
+        }
 
         mGameMediaPlayer.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
         mGameBeginsSound.setVolume(mMainSoundVolume / 100, mMainSoundVolume / 100)
@@ -122,32 +123,32 @@ class AudioManager private constructor(context: Context) {
         mArcadeWrongAnswerEffectMediaPlayer.start()
     }
 
-    fun stopLongLoopGameMusic() {
+    private fun stopLongLoopGameMusic() {
         if (mLongGameLoopSound.isPlaying) {
             mLongGameLoopSound.stop()
         }
     }
 
-    fun pauseLongLoopGameMusic() {
+    private fun pauseLongLoopGameMusic() {
         if (mLongGameLoopSound.isPlaying) {
             mLongGameLoopSound.pause()
         }
     }
 
-    fun playStageModeLoopGameMusic() {
+    private fun playStageModeLoopGameMusic() {
         if (!mStageModeGameMusic.isPlaying) {
             pauseCurrentLoopMusic()
             mStageModeGameMusic.start()
         }
     }
 
-    fun stopStageModeLoopGameMusic() {
+    private fun stopStageModeLoopGameMusic() {
         if (mStageModeGameMusic.isPlaying) {
             mStageModeGameMusic.stop()
         }
     }
 
-    fun pauseStageModeLoopGameMusic() {
+    private fun pauseStageModeLoopGameMusic() {
         if (mStageModeGameMusic.isPlaying) {
             mStageModeGameMusic.pause()
         }
