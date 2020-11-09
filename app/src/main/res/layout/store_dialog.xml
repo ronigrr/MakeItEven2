@@ -42,7 +42,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/backofcoincounter"
             android:gravity="center"
-            android:text="@string/test_string"
+            android:text="0"
             android:textColor="#000" />
     </LinearLayout>
 

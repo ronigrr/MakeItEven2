@@ -303,6 +303,8 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         )
         newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))
         Constants.User = newUserNote
+        //update coins to live data
+        Constants.liveDataCoins.value = newUserNote.coinsLeft
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
     }
 
