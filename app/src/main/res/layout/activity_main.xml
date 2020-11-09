@@ -8,8 +8,8 @@
 
     <include
         android:id="@+id/toolBar"
+        style="@style/AppTheme"
         layout="@layout/app_toolbar"
-        style = "@style/AppTheme"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
