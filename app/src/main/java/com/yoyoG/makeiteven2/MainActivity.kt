@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
             startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=com.android.chrome")
+                    Uri.parse("market://details?id=$packageName")
                 )
             )
         } catch (e: ActivityNotFoundException) {

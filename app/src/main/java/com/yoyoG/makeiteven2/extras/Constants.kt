@@ -13,7 +13,7 @@ object Constants {
     const val ZERO_BUTTON_EX = "zeroButtonEx"
     const val SAME_OPERATOR_EX = "operatorEx"
     const val SUM_ZERO_EX = "sumEx"
-    const val NotificationText: String = """It's been a while that you didn't play and practice your brain!
+    const val NOTIFICATION_TEST: String = """It's been a while that you didn't play and practice your brain!
 Click here to Come and Play"""
     const val IS_FIRST_TIME_IN_STAGE_MODE: String = "first_time_in_stagemode"
     const val SCOREBOARD_SCREEN_FRAGMENT_TAG: String = "scoreboard_screen_fragment"
@@ -42,8 +42,8 @@ Click here to Come and Play"""
     const val SHOWCASE_ID = "showcase_id"
     const val TIME_UNITS_FOR_HINTS_IN_MILLI: Long = 21600000
     const val GIFT_HINTS_TO_GIVE = 1
-    const val ADD_MOB_INTERSTITIAL_AD = "ca-app-pub-4722610653423402/7149015092"
-    const val ADD_MOB_REWARD_AD = "ca-app-pub-4722610653423402/4300443792"
+    const val AD_MOB_INTERSTITIAL_AD = "ca-app-pub-4722610653423402/7149015092"
+    const val AD_MOB_REWARD_AD = "ca-app-pub-4722610653423402/4300443792"
     const val ADD_MOB_TEST = "ca-app-pub-3940256099942544/5224354917"
     const val SCOREBOARD_FIREBASE_REFERENCE = "scoreBoard"
     const val ARCADE_MODE_REDUCE_TIME_PENALTY: Long = 5 * 1000

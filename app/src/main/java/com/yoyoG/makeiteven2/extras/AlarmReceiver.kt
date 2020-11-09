@@ -6,6 +6,6 @@ import android.content.Intent
 
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        NotificationHelper(context!!).createNotification(Constants.NotificationText, "")
+        NotificationHelper(context!!).createNotification(Constants.NOTIFICATION_TEST, "")
     }
 }
