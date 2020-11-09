@@ -24,6 +24,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.tasks.Task
 import com.yoyoG.makeiteven2.adapters.LevelsAdapter
 import com.yoyoG.makeiteven2.data_models.StageInfo
+import com.yoyoG.makeiteven2.dialogs.DialogStore
 import com.yoyoG.makeiteven2.extras.Constants
 import com.yoyoG.makeiteven2.fragments.*
 import com.yoyoG.makeiteven2.intefaces.*
@@ -298,7 +299,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
-            UUID.randomUUID().toString(), nickname, 1, 20, 50, 3, ArrayList(),
+            UUID.randomUUID().toString(), nickname, 1, 10, 50, 3, ArrayList(),
             "", "", false, "0", ArrayList()
         )
         newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))
@@ -306,6 +307,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         //update coins to live data
         Constants.liveDataCoins.value = newUserNote.coinsLeft
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
+        Constants.liveDataCoins.value = Constants.User.coinsLeft
     }
 
     private fun firstTimeInApp() {
@@ -325,9 +327,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     override fun onRestart() {
         super.onRestart()
         Log.e("lifecycel", "on restart mainactivity")
-//        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
-//            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
-//        }
     }
 
     override fun onPause() {
@@ -395,6 +394,9 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onResume() {
         super.onResume()
+        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
+            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
+        }
         hideNavBars()
         Log.e("lifecycel", "on resume mainactivity")
     }

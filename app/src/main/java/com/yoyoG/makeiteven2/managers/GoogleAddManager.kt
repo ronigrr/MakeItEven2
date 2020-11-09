@@ -25,7 +25,11 @@ object GoogleAddManager {
             }
 
             override fun onAdLoaded() {
-                Log.d("ad", "onInterstitialAdLoaded")
+                Log.d("adMob", "onInterstitialAdLoaded")
+            }
+
+            override fun onAdFailedToLoad(p0: LoadAdError?) {
+                Log.d("adMob","${p0!!.message}")
             }
         }
     }
@@ -34,7 +38,7 @@ object GoogleAddManager {
         if (Constants.mInterstitialAd.isLoaded) {
             Constants.mInterstitialAd.show()
         } else {
-            Log.d("ad", "The interstitial wasn't loaded yet.")
+            Log.d("adMob", "The interstitial wasn't loaded yet.")
         }
     }
 
@@ -43,14 +47,14 @@ object GoogleAddManager {
         Constants.rewardedAd = RewardedAd(context, Constants.AD_MOB_REWARD_AD)
         val adLoadCallback = object : RewardedAdLoadCallback() {
             override fun onRewardedAdLoaded() {
-                Log.d("ad", "onRewardedAdLoaded")
+                Log.d("adMob", "onRewardedAdLoaded")
                 Constants.rewardedAdLoaded.postValue(true)
             }
 
             override fun onRewardedAdFailedToLoad(adError: LoadAdError) {
-                Log.d("ad", "onRewardedAdFailedToLoad")
+                Log.d("adMob", "onRewardedAdFailedToLoad ${adError.cause}")
                 Constants.rewardedAdLoaded.postValue(false)
-                Toast.makeText(context, "check your internet connection", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(context, "check your internet connection", Toast.LENGTH_SHORT).show()
             }
         }
         Constants.rewardedAd.loadAd(AdRequest.Builder().build(), adLoadCallback)
@@ -60,26 +64,26 @@ object GoogleAddManager {
         if (Constants.rewardedAd.isLoaded) {
             val adCallback = object : RewardedAdCallback() {
                 override fun onRewardedAdOpened() {
-                    Log.d("ad", "onRewardedAdOpened")
+                    Log.d("adMob", "onRewardedAdOpened")
                 }
 
                 override fun onRewardedAdClosed() {
-                    Log.d("ad", "onRewardedAdClosed")
+                    Log.d("adMob", "onRewardedAdClosed")
                     loadRewardAD(context)
                 }
 
                 override fun onUserEarnedReward(reward: RewardItem) {
-                    Log.d("ad", "onUserEarnedReward (${reward.amount.toString()})")
+                    Log.d("adMob", "onUserEarnedReward (${reward.amount.toString()})")
                     DatabaseHelper.addCoins(context, reward.amount)
                 }
 
                 override fun onRewardedAdFailedToShow(adError: AdError) {
-                    Log.d("ad", "onRewardedAdFailedToShow")
+                    Log.d("adMob", "onRewardedAdFailedToShow")
                 }
             }
             Constants.rewardedAd.show(activityContext, adCallback)
         } else {
-            Log.d("TAG", "The rewarded ad wasn't loaded yet.")
+            Log.d("adMob", "The rewarded ad wasn't loaded yet.")
         }
     }
 }

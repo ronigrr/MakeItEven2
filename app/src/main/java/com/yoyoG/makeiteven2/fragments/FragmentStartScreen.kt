@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.transition.TransitionInflater
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,10 +14,12 @@ import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.yoyoG.makeiteven2.R
 import com.yoyoG.makeiteven2.dialogs.DialogStore
+import com.yoyoG.makeiteven2.extras.Constants
 import com.yoyoG.makeiteven2.intefaces.IFinishTimerListener
 import com.yoyoG.makeiteven2.intefaces.IFragmentsStartsScreenListener
 import com.yoyoG.makeiteven2.intefaces.IStoreDialogBtnClickedListener
 import com.yoyoG.makeiteven2.managers.AnimationsManager
+import com.yoyoG.makeiteven2.managers.AudioManager
 import com.yoyoG.makeiteven2.managers.TimerManager
 import kotlinx.android.synthetic.main.fragment_start_screen.view.*
 
@@ -33,6 +36,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
     private lateinit var mLogoIv: ImageView
     private lateinit var mStoreBtn: ImageView
     private lateinit var mbtnRateUs: ImageButton
+    private lateinit var mDialogStore: DialogStore
 
     private var timerManager: TimerManager? = null
 
@@ -49,7 +53,12 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
         initViews(rootView)
         initAnimations()
         initBtnOnClick()
+        initStoreDialog()
         return rootView
+    }
+
+    private fun initStoreDialog() {
+        mDialogStore = DialogStore(this, context!! , this.activity!!)
     }
 
     private fun initViews(rootView: View) {
@@ -76,10 +85,12 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
         mTutorialBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
         mArcadeModeBtn.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
         mbtnRateUs.setOnClickListener { mListener.onStartScreenFragmentButtonClicked(it) }
-        mStoreBtn.setOnClickListener {
-            DialogStore(this, context!!, this.activity!!).showStoreDialog()
+        mStoreBtn.setOnClickListener { mDialogStore.showStoreDialog() }
         }
 
+    override fun onPause() {
+        super.onPause()
+        mDialogStore.let {it.hideStoreDialog() }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -130,5 +141,13 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
     }
 
     override fun storeDialogDismissed() {
+    }
+
+    override fun onResume() {
+        super.onResume()
+        context?.let {
+            AudioManager.getInstance(it).playLoopMusicForSpecificFragment(Constants.START_SCREEN_FRAGMENT_TAG)
+        }
+        Log.e("lifecycle", "start screen onresume")
     }
 }
