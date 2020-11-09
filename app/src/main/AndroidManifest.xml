@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.makeiteven2"
+    package="com.yoyoG.makeiteven2"
     android:installLocation="preferExternal">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -19,7 +19,7 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.yoyoG.makeiteven2.MainActivity"
             android:resizeableActivity="false"
             android:screenOrientation="portrait"
             tools:targetApi="n">
@@ -31,7 +31,7 @@
         </activity>
 
         <receiver
-            android:name=".extras.AlarmReceiver"
+            android:name="com.yoyoG.makeiteven2.extras.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
     </application>
