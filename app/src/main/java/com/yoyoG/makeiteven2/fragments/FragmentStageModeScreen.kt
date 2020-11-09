@@ -386,6 +386,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onPause() {
         super.onPause()
+        mStoreDialog.hideStoreDialog()
         sosToasty.cancel()
         hintToasty.cancel()
     }

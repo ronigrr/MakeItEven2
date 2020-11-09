@@ -32,7 +32,7 @@ import kotlin.math.absoluteValue
 class DialogStore(fragment: Any, private val mContext: Context, private val activityContext: FragmentActivity) : IFinishTimerListener {
 
     private val listener: IStoreDialogBtnClickedListener
-    private lateinit var mStoreDialog: Dialog
+    private var mStoreDialog: Dialog? =null
     private var timerManager: TimerManager? = null
 
     init {
@@ -45,36 +45,36 @@ class DialogStore(fragment: Any, private val mContext: Context, private val acti
 
     fun showStoreDialog() {
         mStoreDialog = Dialog(mContext)
-        mStoreDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        mStoreDialog.setContentView(R.layout.store_dialog)
-        mStoreDialog.setCancelable(true)
-        Constants.liveDataCoins.observe(this.activityContext, { mStoreDialog.storeCoinsLeftTV.text = it.toString() })
-        mStoreDialog.btnCloseSettings.setOnClickListener {
-            mStoreDialog.dismiss()
+        mStoreDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        mStoreDialog!!.setContentView(R.layout.store_dialog)
+        mStoreDialog!!.setCancelable(true)
+        Constants.liveDataCoins.observe(this.activityContext, { mStoreDialog!!.storeCoinsLeftTV.text = it.toString() })
+        mStoreDialog!!.btnCloseSettings.setOnClickListener {
+            mStoreDialog!!.dismiss()
         }
         if (Constants.User.isCoinsGiftGiven) {//disable btn and set timer
-            initTimerForDialog(mStoreDialog.tvTimer)
-            mStoreDialog.btnGetHint.isEnabled = false
-            mStoreDialog.btnGetHint.isClickable = false
-            mStoreDialog.btnGetHint.setTextColor(Color.BLACK)
-            mStoreDialog.btnGetHint.background = ContextCompat.getDrawable(mContext, R.drawable.reset_game)
-            mStoreDialog.btnGetHint.setTextColor(Color.GRAY)
+            initTimerForDialog(mStoreDialog!!.tvTimer)
+            mStoreDialog!!.btnGetHint.isEnabled = false
+            mStoreDialog!!.btnGetHint.isClickable = false
+            mStoreDialog!!.btnGetHint.setTextColor(Color.BLACK)
+            mStoreDialog!!.btnGetHint.background = ContextCompat.getDrawable(mContext, R.drawable.reset_game)
+            mStoreDialog!!.btnGetHint.setTextColor(Color.GRAY)
 
-            mStoreDialog.btnGetHint.text = activityContext.getString(R.string.free_coins_in)
+            mStoreDialog!!.btnGetHint.text = activityContext.getString(R.string.free_coins_in)
         } else {
-            mStoreDialog.btnGetHint.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
-            mStoreDialog.btnGetHint.background = ContextCompat.getDrawable(mContext, R.drawable.free_hints_btn)
+            mStoreDialog!!.btnGetHint.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
+            mStoreDialog!!.btnGetHint.background = ContextCompat.getDrawable(mContext, R.drawable.free_hints_btn)
             //onClick
-            mStoreDialog.btnGetHint.setOnClickListener {
+            mStoreDialog!!.btnGetHint.setOnClickListener {
                 //add hint
                 DatabaseHelper.addCoins(mContext, Constants.GIFT_HINTS_TO_GIVE)
                 DatabaseHelper.setGiftGiven(mContext, true)
                 //disable btn
-                mStoreDialog.btnGetHint.background = ContextCompat.getDrawable(mContext, R.drawable.reset_game)
-                mStoreDialog.btnGetHint.text = activityContext.getString(R.string.free_coins_in)
-                mStoreDialog.btnGetHint.isEnabled = false
-                mStoreDialog.btnGetHint.isClickable = false
-                mStoreDialog.btnGetHint.setTextColor(Color.GRAY)
+                mStoreDialog!!.btnGetHint.background = ContextCompat.getDrawable(mContext, R.drawable.reset_game)
+                mStoreDialog!!.btnGetHint.text = activityContext.getString(R.string.free_coins_in)
+                mStoreDialog!!.btnGetHint.isEnabled = false
+                mStoreDialog!!.btnGetHint.isClickable = false
+                mStoreDialog!!.btnGetHint.setTextColor(Color.GRAY)
                 //save time stamp to db
                 val stringTimeStamp = System.currentTimeMillis()
                 val tsTemp = Timestamp(stringTimeStamp)
@@ -83,7 +83,7 @@ class DialogStore(fragment: Any, private val mContext: Context, private val acti
                 DatabaseHelper.setGiftStartTimeStamp(mContext, currentTsToSave)
                 Log.v("time stamp", currentTsToSave)
                 //start timer with the time needed
-                timerManager = TimerManager(this, mStoreDialog.tvTimer, Constants.COINS_TIMER)
+                timerManager = TimerManager(this, mStoreDialog!!.tvTimer, Constants.COINS_TIMER)
                 timerManager?.startTimer(Constants.TIME_UNITS_FOR_HINTS_IN_MILLI)
                 //start a work
                 val addHintWorkRequest: WorkRequest =
@@ -91,28 +91,28 @@ class DialogStore(fragment: Any, private val mContext: Context, private val acti
                 WorkManager.getInstance(mContext).enqueue(addHintWorkRequest)
             }
         }
-        mStoreDialog.setOnDismissListener {
-            mStoreDialog.cancel()
+        mStoreDialog!!.setOnDismissListener {
+            mStoreDialog!!.cancel()
             timerManager?.cancelTimer()
         }
         Constants.rewardedAdLoaded.observe(this.activityContext, {
-            mStoreDialog.btnGetHintByAd.isEnabled = it
+            mStoreDialog!!.btnGetHintByAd.isEnabled = it
             when (it) {
-                false -> mStoreDialog.btnGetHintByAd.setTextColor(Color.GRAY)
-                true -> mStoreDialog.btnGetHintByAd.setTextColor(Color.BLACK)
+                false -> mStoreDialog!!.btnGetHintByAd.setTextColor(Color.GRAY)
+                true -> mStoreDialog!!.btnGetHintByAd.setTextColor(Color.BLACK)
             }
         })
-        mStoreDialog.btnGetHintByAd.apply {
+        mStoreDialog!!.btnGetHintByAd.apply {
             setOnClickListener {
                 GoogleAddManager.showRewardVideo(mContext, activityContext)
                 Constants.rewardedAdLoaded.postValue(false)
             }
         }
 
-        mStoreDialog.setOnDismissListener {
+        mStoreDialog!!.setOnDismissListener {
             listener.storeDialogDismissed()
         }
-        mStoreDialog.show()
+        mStoreDialog!!.show()
 
     }
 
@@ -141,6 +141,12 @@ class DialogStore(fragment: Any, private val mContext: Context, private val acti
 
     override fun onFinishTimer() {
 
+    }
+
+    fun hideStoreDialog(){
+        if (mStoreDialog!=null){
+            mStoreDialog!!.dismiss()
+        }
     }
 
 }

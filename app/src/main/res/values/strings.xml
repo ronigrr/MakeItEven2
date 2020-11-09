@@ -101,5 +101,6 @@
     <string name="number_test">2</string>
     <string name="scoreboard_icon">scoreBoard icon</string>
     <string name="store_icon">store icon</string>
+    <string name="rate_us_button">rate us button</string>
 
 </resources>
