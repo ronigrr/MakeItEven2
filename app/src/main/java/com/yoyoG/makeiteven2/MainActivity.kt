@@ -25,6 +25,7 @@ import com.google.android.play.core.tasks.Task
 import com.yoyoG.makeiteven2.adapters.LevelsAdapter
 import com.yoyoG.makeiteven2.data_models.StageInfo
 import com.yoyoG.makeiteven2.extras.Constants
+import com.yoyoG.makeiteven2.firebase.FireBaseHelper
 import com.yoyoG.makeiteven2.fragments.*
 import com.yoyoG.makeiteven2.intefaces.*
 import com.yoyoG.makeiteven2.managers.AudioManager
@@ -211,10 +212,31 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
                 appToolbar.visibility = GONE
                 //item.isEnabled = false
             }
+            R.id.action_contact_us -> {
+                FireBaseHelper.saveUserToDatabase()
+                sendEmailIntent()
+            }
             else -> {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun sendEmailIntent() {
+        val intent = Intent(Intent.ACTION_SENDTO)
+        val temp = Constants.User.playerTokenId.substringBefore("-")
+        intent.data = Uri.parse("mailto:") // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("aptekar.granovsky+support@gmail.com"))
+        intent.putExtra(Intent.EXTRA_SUBJECT, temp)
+        try {
+            startActivity(intent)
+        }
+        catch (e: Exception){
+            //if any thing goes wrong for example no email client application or any exception
+            //get and show exception message
+            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+            Log.d("contact us","${e.message}")
+        }
     }
 
 
@@ -288,7 +310,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
-            UUID.randomUUID().toString(), nickname, 1, 10, 50, 3, ArrayList(),
+            UUID.randomUUID().toString(), nickname, 1, 10, 50, 1, ArrayList(),
             "", "", false, "0", ArrayList()
         )
         newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))

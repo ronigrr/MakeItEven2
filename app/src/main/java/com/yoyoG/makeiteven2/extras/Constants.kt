@@ -46,7 +46,10 @@ Click here to Come and Play"""
     const val AD_MOB_REWARD_AD = "ca-app-pub-4722610653423402/4300443792"
     const val ADD_MOB_TEST = "ca-app-pub-3940256099942544/5224354917"
     const val SCOREBOARD_FIREBASE_REFERENCE = "scoreBoard"
+    const val USER_FIREBASE_REFERENCE = "users"
     const val ARCADE_MODE_REDUCE_TIME_PENALTY: Long = 5 * 1000
+    const val SOS_COST : Int = 3
+    const val HINT_COST : Int = 1
 
     fun calculateNoOfColumns(context: Context, columnWidthDp: Int): Int {
         val displayMetrics: DisplayMetrics = context.resources.displayMetrics

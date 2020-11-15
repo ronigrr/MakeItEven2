@@ -165,11 +165,11 @@ open class Game(private var mDifficulty: Int) {
                 Log.e("game", "sum is zero generate game again")
                 throw GameGeneratorException(Constants.SUM_ZERO_EX)
             }
-            if (isSameOperators() && mDifficulty > 8) {
+            if (isSameOperators() && mDifficulty >= 8) {
                 Log.e("game", "sum is zero generate game again")
                 throw GameGeneratorException(Constants.SAME_OPERATOR_EX)
             }
-            if (isZeroButton() && mDifficulty > 8) {
+            if (isZeroButton() && mDifficulty >= 8) {
                 throw GameGeneratorException(Constants.ZERO_BUTTON_EX)
             }
 

@@ -215,7 +215,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     hintToasty.show()
                 }, 50)
             }
-            mNumberOfCoinsLeft--
+            mNumberOfCoinsLeft-= Constants.HINT_COST
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
             checkIfNeedToShowSosHint()
         }
@@ -227,7 +227,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     sosToasty.show()
                 }, 50)
             }
-            mNumberOfCoinsLeft -= 2
+            mNumberOfCoinsLeft -= Constants.SOS_COST
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
             checkIfNeedToShowSosHint()
         }
@@ -320,8 +320,13 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mStageInfoArray = Constants.User.stageList
         if (mStageInfoArray.size < mLevelNum || currentStage < mLevelNum) {
             when (mLevelNum) {
-                in 1..20 -> {
+                in 1..10 -> {
                     min = 0
+                    max = 10
+                    difficulty = 5
+                }
+                in 11..20 -> {
+                    min = 10
                     max = 20
                     difficulty = 6
                 }
@@ -536,9 +541,11 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     var currentStage = Constants.User.currentLevel
                     if (mLevelNum == currentStage) {
                         currentStage++
-                        //add coins
+                        //add coins on every odd level
+                        if (currentStage % 2 == 0 ){
                         DatabaseHelper.addCoins(context!!, 1)
                         checkIfNeedToShowSosHint()
+                        }
                     }
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
                     Handler(Looper.getMainLooper()).postDelayed({
@@ -560,14 +567,14 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     private fun checkIfNeedToShowSosHint() {
-        if (mNumberOfCoinsLeft >= 1) {
+        if (mNumberOfCoinsLeft >= Constants.HINT_COST) {
             mHintIB.isEnabled = true
             mHintIB.setImageResource(R.drawable.ic_help)
         } else {
             mHintIB.isEnabled = false
             mHintIB.setImageResource(R.drawable.ic_help_off)
         }
-        if (mNumberOfCoinsLeft >= 2) {
+        if (mNumberOfCoinsLeft >= Constants.SOS_COST) {
             mSosHintIB.isEnabled = true
             mSosHintIB.setImageResource(R.drawable.ic_sos)
         } else {

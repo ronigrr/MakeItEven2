@@ -102,5 +102,6 @@
     <string name="scoreboard_icon">scoreBoard icon</string>
     <string name="store_icon">store icon</string>
     <string name="rate_us_button">rate us button</string>
+    <string name="contact_us">Contact us</string>
 
 </resources>
