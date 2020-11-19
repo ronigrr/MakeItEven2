@@ -22,6 +22,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -64,7 +65,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         hideNavBars()
         Log.e("lifecycle", "on create")
         setContentView(R.layout.activity_main)
-
         init3DotToolBar()
         //initUpdateManager()
         startLoadingApp()
@@ -336,6 +336,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         //update coins to live data
         Constants.liveDataCoins.value = newUserNote.coinsLeft
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
+        hideNavBars()
     }
 
     private fun firstTimeInApp() {
