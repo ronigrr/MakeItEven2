@@ -22,8 +22,7 @@
             android:name="com.yoyoG.makeiteven2.MainActivity"
             android:resizeableActivity="false"
             android:screenOrientation="portrait"
-            tools:targetApi="n"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            tools:targetApi="n">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
