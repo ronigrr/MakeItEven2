@@ -13,10 +13,6 @@ class GameFactory {
                 Constants.STAGE_GAME_TYPE -> {
                     gameToCreate = GameStage(difficulty)
                 }
-                Constants.TUTORIAL_GAME_TYPE -> {
-                    gameToCreate = GameTutorial(difficulty)
-                }
-
             }
             return gameToCreate
         }

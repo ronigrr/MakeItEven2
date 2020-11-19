@@ -268,30 +268,47 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         var max = 0
         var difficulty = 0
         when {
-            mWinsCounter < 4 -> {
+            mWinsCounter < 4 ->{
                 min = 0
-                max = 15
-                difficulty = 6
+                max = 10
+                difficulty = 5
+                mGame?.updateRandomLevelFlag(mWinsCounter)
             }
             mWinsCounter < 8 -> {
+                min = 10
+                max = 20
+                difficulty = 6
+                mGame?.updateRandomLevelFlag(mWinsCounter)
+            }
+            mWinsCounter < 12 -> {
                 min = 20
                 max = 40
                 difficulty = 7
+                mGame?.updateRandomLevelFlag(mWinsCounter)
             }
-            mWinsCounter < 12 -> {
+            mWinsCounter < 16 -> {
                 min = 40
                 max = 60
                 difficulty = 8
+                mGame?.updateRandomLevelFlag(mWinsCounter)
             }
-            mWinsCounter < 30 -> {
+            mWinsCounter < 20 -> {
                 min = 60
                 max = 90
                 difficulty = 9
+                mGame?.updateRandomLevelFlag(mWinsCounter)
             }
             mWinsCounter < 100 -> {
                 min = 80
-                max = 120
-                difficulty = 12
+                max = 140
+                difficulty = 18
+                mGame?.updateRandomLevelFlag(mWinsCounter)
+            }
+            else -> {
+                min = 140
+                max = 250
+                difficulty = 25
+                mGame?.updateRandomLevelFlag(mWinsCounter)
             }
         }
         mGame?.setDifficulty(difficulty)

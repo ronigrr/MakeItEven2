@@ -16,7 +16,8 @@ open class Game(private var mDifficulty: Int ) {
     private val mBtnList = ArrayList<Int>()
     private var mMinInt = 0
     private var mMaxInt = 0
-    private var mCurrentLevel = 0
+    private var mRandomLevelFlag = 0
+
 
 
     fun setDifficulty(difficulty: Int) {
@@ -150,7 +151,7 @@ open class Game(private var mDifficulty: Int ) {
             }
 
             Collections.shuffle(playButtons)
-            
+
             //set text to play buttons
             playButtons[0].textOff = btn1.toString()
             playButtons[1].textOff = btn2.toString()
@@ -189,12 +190,12 @@ open class Game(private var mDifficulty: Int ) {
                     Log.e("game", "mDifficulty == 8 | isAllOperatorsTheSame() !isMultiplyExists() Execute gameGenerator ")
                     return gameGenerator(playButtons)
                 }
-                if (mCurrentLevel%3 == 0 && !isDivideOperatorExits())
+                if (mRandomLevelFlag%3 == 0 && !isDivideOperatorExits())
                 {
                     Log.e("game", "mDifficulty == 8 | !isDivideOperatorExits() mCurrentLevel%3")
                     return gameGenerator(playButtons)
                 }
-                if (mCurrentLevel%2 == 0 && !isAllDifferentNumbers()){
+                if (mRandomLevelFlag%2 == 0 && !isAllDifferentNumbers()){
                     Log.e("game", "mDifficulty == 8 | !isAllDifferentNumbers() mCurrentLevel%3")
                     return gameGenerator(playButtons)
                 }
@@ -206,12 +207,12 @@ open class Game(private var mDifficulty: Int ) {
                     return gameGenerator(playButtons)
                 }
 
-                if (mCurrentLevel%2 == 0 && !isDivideOperatorExits()){
+                if (mRandomLevelFlag%2 == 0 && !isDivideOperatorExits()){
                     Log.e("game", "mDifficulty == 9 | !isDivideOperatorExits() mCurrentLevel%2")
                     return gameGenerator(playButtons)
                 }
 
-                if (mCurrentLevel%4 == 0 && !isAllDifferentOperators()){
+                if (mRandomLevelFlag%4 == 0 && !isAllDifferentOperators()){
                     Log.e("game", "mDifficulty == 9 | !isAllDifferentOperators() mCurrentLevel%4")
                     return gameGenerator(playButtons)
                 }
@@ -261,10 +262,29 @@ open class Game(private var mDifficulty: Int ) {
         return sum
     }
 
-    private fun setCurrentLevel() {
-        mCurrentLevel = Constants.User.currentLevel
-    }
+    private fun whoAmI() : String{
+        var ret = ""
+        if (this is GameArcade)
+           ret = Constants.ARCADE_GAME_TYPE
+        if (this is GameStage)
+            ret = Constants.STAGE_GAME_TYPE
 
+        return ret
+    }
+    private fun setCurrentLevel() {
+        when(whoAmI()){
+            Constants.STAGE_GAME_TYPE ->{
+                mRandomLevelFlag = Constants.User.currentLevel
+            }
+            Constants.ARCADE_GAME_TYPE->{
+                mRandomLevelFlag = 1
+            }
+        }
+    }
+    fun updateRandomLevelFlag(randomLevelFlag : Int){
+        mRandomLevelFlag = randomLevelFlag
+
+    }
     private fun setMinAndMaxIntForGameGenerator() {
         val random = Random.nextInt(2)
 
@@ -276,7 +296,7 @@ open class Game(private var mDifficulty: Int ) {
         if ((mDifficulty == 7) && (random == 1)) {
             mMinInt = 2
         }
-        if ((mDifficulty == 8) && (mCurrentLevel % 3 == 0) )
+        if ((mDifficulty == 8) && (mRandomLevelFlag % 3 == 0) )
         {
             mMinInt = 2
             mMaxInt++

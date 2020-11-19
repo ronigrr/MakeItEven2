@@ -1,9 +1,9 @@
 package com.yoyoG.makeiteven2
 
 import android.widget.ToggleButton
+import com.yoyoG.makeiteven2.extras.Constants
 import com.yoyoG.makeiteven2.extras.EOperators
-import com.yoyoG.makeiteven2.game.Game
-import org.junit.Assert.assertEquals
+import com.yoyoG.makeiteven2.game.GameFactory
 import org.junit.Test
 import kotlin.random.Random
 
@@ -36,17 +36,18 @@ class ExampleUnitTest {
     fun testgame() {
         val mGameButtonsList = ArrayList<ToggleButton>()
         var mTargetNumber : Int
-        var retry : Int
+        var retry = 0
         var averageOfRetry = 0.0
-        val min = 200
-        val max = 999
+        val min = 140
+        val max = 250
+        val DIFFICULTTY_TEST = 25
         var enterTime: Long
         val testStartTime: Long = System.currentTimeMillis()
         val testEndTime: Long
         var finishTime: Long
         var avgTime = 0.0
         val NUM_OF_GAMES_TO_TEST = 10000
-        val DIFFICULTTY_TEST = 30
+
 
 
         var minTime: Long = 1
@@ -55,14 +56,14 @@ class ExampleUnitTest {
         var maxRetry = 0
 
 
-        val mGame = Game(DIFFICULTTY_TEST)
+        val mGame = GameFactory.getGame(Constants.ARCADE_GAME_TYPE,DIFFICULTTY_TEST)
 
         for (i in 1..NUM_OF_GAMES_TO_TEST) {
             enterTime = System.currentTimeMillis()
             retry = -1
+            mGame?.updateRandomLevelFlag(i)
             do {
-                mTargetNumber = mGame.gameGenerator(mGameButtonsList)
-
+                mTargetNumber = mGame?.gameGenerator(mGameButtonsList)!!
                 retry++
                 //print("game" + "num of retrys = ${retry++} difficulty = 8 min = $min max = $max\n")
             } while (mTargetNumber > max || mTargetNumber < min)
@@ -78,7 +79,7 @@ class ExampleUnitTest {
             if (retry > maxRetry) maxRetry = retry
             avgTime += timeToGenerateGame
 
-            print("game ${mGame.getHint()} = $mTargetNumber" + " num of retrys = ${retry++} difficulty = $DIFFICULTTY_TEST min = $min max = $max time = $timeToGenerateGame\n")
+            print("game ${mGame?.getHint()} = $mTargetNumber" + " num of retrys = $retry difficulty = $DIFFICULTTY_TEST min = $min max = $max time = $timeToGenerateGame\n")
 
         }
 
