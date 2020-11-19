@@ -25,28 +25,24 @@ import com.google.android.play.core.tasks.Task
 import com.yoyoG.makeiteven2.adapters.LevelsAdapter
 import com.yoyoG.makeiteven2.data_models.StageInfo
 import com.yoyoG.makeiteven2.extras.Constants
+import com.yoyoG.makeiteven2.firebase.FireBaseHelper
 import com.yoyoG.makeiteven2.fragments.*
 import com.yoyoG.makeiteven2.intefaces.*
-import com.yoyoG.makeiteven2.managers.AudioManager
-import com.yoyoG.makeiteven2.managers.GoogleAddManager
-import com.yoyoG.makeiteven2.managers.RetentionManager
-import com.yoyoG.makeiteven2.managers.ShearedPrefManager
+import com.yoyoG.makeiteven2.managers.*
 import com.yoyoG.makeiteven2.room.DatabaseHelper
 import com.yoyoG.makeiteven2.room.RoomUserNote
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_start_screen.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.lang.Boolean.FALSE
-import java.lang.Boolean.TRUE
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragmentSettingsListener, LevelsAdapter.ILevelsAdapter,
     FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener,
     IFragmentScoreBoardScreenListener {
+
 
     private val fragmentManager = supportFragmentManager
     private lateinit var appToolbar: Toolbar
@@ -56,8 +52,8 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("lifecycle", "on create")
         hideNavBars()
+        Log.e("lifecycle", "on create")
         setContentView(R.layout.activity_main)
         init3DotToolBar()
         //initUpdateManager()
@@ -66,8 +62,11 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     private fun hideNavBars() {
-        window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-                SYSTEM_UI_FLAG_FULLSCREEN or SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        Handler(Looper.getMainLooper()).post {
+            window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+                    SYSTEM_UI_FLAG_FULLSCREEN or SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        }
+
     }
 
     private fun rateMe() {
@@ -75,7 +74,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
             startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=com.android.chrome")
+                    Uri.parse("market://details?id=$packageName")
                 )
             )
         } catch (e: ActivityNotFoundException) {
@@ -91,13 +90,13 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     private fun activeAd() {
         Handler(Looper.getMainLooper()).postDelayed({
-            GoogleAddManager.loadRewardAD(applicationContext)
-            GoogleAddManager.loadInterstitialAd(applicationContext)
+            GoogleAdManager.loadRewardAD(applicationContext)
+            GoogleAdManager.loadInterstitialAd(applicationContext)
         }, 7 * 1000)
     }
 
     private fun startLoadingApp() {
-        if (ShearedPrefManager.getIsFirstTimeInApp(this) == FALSE) {
+        if (ShearedPrefManager.getIsFirstTimeInApp(this)) {
             Handler(Looper.getMainLooper()).postDelayed({
                 setMainActivityVisible()
                 firstTimeInApp()
@@ -116,7 +115,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     private fun setMainActivityVisible() {
-        fragmentContainer.visibility = View.VISIBLE
+        fragmentContainer.visibility = VISIBLE
         show3DotsToolBar()
     }
 
@@ -127,13 +126,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     private fun loadUser() {
-        GlobalScope.launch {
-            DatabaseHelper.loadUserToConstants(applicationContext)
-            Handler(Looper.getMainLooper()).postDelayed({
-                //AudioManager.getInstance(this@MainActivity).playGameBeginAndStartLoop()
-                Constants.liveDataCoins.value = Constants.User.coinsLeft
-            }, 4000)
-        }
+        DatabaseHelper.loadUserToConstants(applicationContext)
     }
 
     private fun loadStartScreen() {
@@ -208,7 +201,9 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
                 val dialogView: View = layoutInflater.inflate(R.layout.about_dialog, null)
                 aboutDialog.setContentView(dialogView)
                 aboutDialog.setCanceledOnTouchOutside(true)
+                aboutDialog.setOnDismissListener { hideNavBars() }
                 aboutDialog.show()
+
             }
             R.id.action_settings -> {
                 //settings
@@ -221,10 +216,31 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
                 appToolbar.visibility = GONE
                 //item.isEnabled = false
             }
+            R.id.action_contact_us -> {
+                FireBaseHelper.saveUserToDatabase()
+                sendEmailIntent()
+            }
             else -> {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun sendEmailIntent() {
+        val intent = Intent(Intent.ACTION_SENDTO)
+        val temp = Constants.User.playerTokenId.substringBefore("-")
+        intent.data = Uri.parse("mailto:") // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("aptekar.granovsky+support@gmail.com"))
+        intent.putExtra(Intent.EXTRA_SUBJECT, temp)
+        try {
+            startActivity(intent)
+        }
+        catch (e: Exception){
+            //if any thing goes wrong for example no email client application or any exception
+            //get and show exception message
+            Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
+            Log.d("contact us", "${e.message}")
+        }
     }
 
 
@@ -244,6 +260,10 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         appToolbar.visibility = VISIBLE
     }
 
+    override fun hideNaveBarFromStartScreen() {
+        hideNavBars()
+    }
+
     override fun onSeekBarMainVolume(mainVolume: Int) {
         AudioManager.getInstance(this).setGameVolume(mainVolume)
     }
@@ -257,7 +277,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
         alertDialogBuilder.setIcon(R.drawable.warning_icon)
         alertDialogBuilder.setMessage(R.string.Progress).setCancelable(false).setPositiveButton(R.string.Yes) { dialog, _ ->
-            Constants.User.currentLevel = 1
+            Constants.User?.currentLevel  = 1
             val newArrayList = ArrayList<StageInfo>()
             newArrayList.add(Constants.User.stageList[0])
             Constants.User.stageList = newArrayList
@@ -291,19 +311,22 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     override fun onFinishEditDialog(inputText: String) {
         Toast.makeText(this, "welcome $inputText", Toast.LENGTH_SHORT).show()
         createNewUser(inputText)
-        ShearedPrefManager.setIsFirstTimeInApp(this, TRUE)
+        ShearedPrefManager.setIsFirstTimeInApp(this, false)
         loadStartScreen()
         AudioManager.getInstance(this).playGameBeginAndStartLoop()
     }
 
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
-            UUID.randomUUID().toString(), nickname, 1, 20, 50, 3, ArrayList(),
+            UUID.randomUUID().toString(), nickname, 1, 8, 40, 1, ArrayList(),
             "", "", false, "0", ArrayList()
         )
         newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))
         Constants.User = newUserNote
+        //update coins to live data
+        Constants.liveDataCoins.value = newUserNote.coinsLeft
         DatabaseHelper.createOrUpdateUser(applicationContext, newUserNote)
+        hideNavBars()
     }
 
     private fun firstTimeInApp() {
@@ -323,9 +346,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     override fun onRestart() {
         super.onRestart()
         Log.e("lifecycel", "on restart mainactivity")
-//        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
-//            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
-//        }
     }
 
     override fun onPause() {
@@ -334,12 +354,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         Log.e("lifecycel", "on pause mainactivity")
     }
 
-    //    override fun onResume() {
-//        super.onResume()
-//        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
-//            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
-//        }
-//    }
     override fun onDestroy() {
         super.onDestroy()
         AudioManager.getInstance(this).stopCurrentLoopMusic()
@@ -351,12 +365,12 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     override fun loadScoreBoardFromArcade() {
-        fragmentManager.popBackStack()
+        fragmentManager.popBackStackImmediate()
         loadScoreBoard()
     }
 
     override fun restartArcadeGame() {
-        fragmentManager.popBackStack()
+        fragmentManager.popBackStackImmediate()
         loadArcadeMode()
     }
 
@@ -364,10 +378,17 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         hide3DotsToolBar()
     }
 
+    override fun arcadeModeHideNavBar() {
+        hideNavBars()
+    }
+
     override fun backButtonPressedStage() {
         fragmentManager.popBackStack()
     }
 
+    override fun onStageModeHideNavBar() {
+        hideNavBars()
+    }
     override fun onLevelsFragmentBackPressed() {
         fragmentManager.popBackStack()
     }
@@ -393,6 +414,9 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onResume() {
         super.onResume()
+        supportFragmentManager.fragments.lastOrNull()?.let { currentFragment ->
+            AudioManager.getInstance(this).playLoopMusicForSpecificFragment(currentFragment.tag!!)
+        }
         hideNavBars()
         Log.e("lifecycel", "on resume mainactivity")
     }

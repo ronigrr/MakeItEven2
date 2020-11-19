@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:tool="http://schemas.android.com/tools"
     android:layout_margin="20dp"
     android:orientation="vertical">
 
     <ImageButton
         android:id="@+id/btnCloseSettings"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="end"
         android:background="@color/Transparent"
         android:contentDescription="@string/exit_setting_btn"
@@ -19,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher"
+        android:contentDescription="@string/store_icon" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -34,7 +36,8 @@
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
-            android:src="@drawable/ic_coins" />
+            android:src="@drawable/ic_coins"
+            android:contentDescription="@string/coins_text" />
 
         <TextView
             android:id="@+id/storeCoinsLeftTV"
@@ -42,7 +45,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/backofcoincounter"
             android:gravity="center"
-            android:text="@string/test_string"
+            tool:text = "0"
             android:textColor="#000" />
     </LinearLayout>
 
@@ -53,7 +56,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="50dp"
         android:background="@drawable/free_hints_btn"
-        android:text="free Coin"
+        android:text="@string/free_coin"
         android:textColor="@android:color/black"
         android:textSize="20sp" />
 
@@ -73,7 +76,7 @@
         android:layout_marginTop="50dp"
         android:background="@drawable/levels_color"
         android:drawableLeft="@drawable/ic_video"
-        android:text="Double Coins"
+        android:text="@string/video_coins"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp" />
 </LinearLayout>

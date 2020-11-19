@@ -8,6 +8,7 @@ import com.yoyoG.makeiteven2.R
 import com.yoyoG.makeiteven2.extras.Constants
 import com.yoyoG.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import com.yoyoG.makeiteven2.managers.AnimationsManager
+import com.yoyoG.makeiteven2.managers.GoogleAdManager
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 
 class DialogEndGameManager(fragment: Any, private val mContext: Context) {
@@ -27,7 +28,23 @@ class DialogEndGameManager(fragment: Any, private val mContext: Context) {
         winLooseDialog.dismiss()
     }
 
-    fun shodEndDialog(whichDialog: String, score: String = "") {
+    private fun checkAndShowAdd(levelNum : Int){
+        val addMobRate = when(Constants.User.currentLevel) {
+            in 1..20 -> 8
+            in 20..40 -> 6
+            else -> 5
+        }
+        if (levelNum % addMobRate == 0) {
+            GoogleAdManager.showInterstitialAd()
+        }
+    }
+
+    fun dismissDialogWithAd(adControlParameter : Int ){
+        winLooseDialog.dismiss()
+        checkAndShowAdd(adControlParameter)
+    }
+
+    fun showEndDialog(whichDialog: String, score: String = "") {
         winLooseDialog = Dialog(mContext)
 
         winLooseDialog.setCanceledOnTouchOutside(false)
@@ -37,6 +54,7 @@ class DialogEndGameManager(fragment: Any, private val mContext: Context) {
         winLooseDialog.ibtnHome.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
         winLooseDialog.ibtnNext.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
         winLooseDialog.ibtnRetry.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
+        winLooseDialog.setOnDismissListener { listener.onDialogDismiss() }
 
         winLooseDialog.ibtnHome.setOnClickListener { listener.onEndDialogBtnClicked(it) }
         winLooseDialog.ibtnNext.setOnClickListener { listener.onEndDialogBtnClicked(it) }

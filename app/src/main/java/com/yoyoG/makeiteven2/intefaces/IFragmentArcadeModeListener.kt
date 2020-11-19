@@ -5,4 +5,5 @@ interface IFragmentArcadeModeListener {
     fun loadScoreBoardFromArcade()
     fun restartArcadeGame()
     fun arcadeModeHide3dotToolBar()
+    fun arcadeModeHideNavBar()
 }

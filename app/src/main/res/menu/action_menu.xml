@@ -3,18 +3,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activity_main">
+
+    <item
+        android:id="@+id/action_contact_us"
+        android:title="@string/contact_us"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_email">
+    </item>
+
     <item
         android:id="@+id/action_about"
         android:title="@string/about_us"
-        app:showAsAction="never">
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_info">
 
     </item>
     <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
-        app:showAsAction="never">
-
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_settings">
     </item>
-
 
 </menu>

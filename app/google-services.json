@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:346105722610:android:f67efb740f9bf41aaf026b",
         "android_client_info": {
-          "package_name": "com.example.makeiteven2"
+          "package_name": "com.yoyoG.makeiteven2"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "346105722610-p5n9ac883kk8f3qs4pp8i5c6ik036gtu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.makeiteven2",
+            "package_name": "com.yoyoG.makeiteven2",
             "certificate_hash": "86629a1f7f08498a3f79eb6df48824879e634637"
           }
         },

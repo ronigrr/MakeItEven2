@@ -23,7 +23,6 @@ import com.yoyoG.makeiteven2.intefaces.IFragmentStageModeListener
 import com.yoyoG.makeiteven2.intefaces.IStoreDialogBtnClickedListener
 import com.yoyoG.makeiteven2.managers.AnimationsManager
 import com.yoyoG.makeiteven2.managers.AudioManager
-import com.yoyoG.makeiteven2.managers.GoogleAddManager
 import com.yoyoG.makeiteven2.managers.ShearedPrefManager
 import com.yoyoG.makeiteven2.room.DatabaseHelper
 import es.dmoral.toasty.Toasty
@@ -36,7 +35,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private lateinit var mStoreIBTN: ImageButton
     private lateinit var mCoinsIV: ImageView
-
     private lateinit var mLevelNumberTV: TextView
     private lateinit var mCoinsLeftTV: TextView
     private lateinit var mTargetNumberTV: TextView
@@ -136,7 +134,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             }
             val one = FancyShowCaseView.Builder(activity!!)
                 .focusOn(rootView.theTargetNumberTV)
-                .title("This is the target number you need to reach")
+                .title("Reach this number in order to complete the stage")
                 .build()
             val two = FancyShowCaseView.Builder(activity!!)
                 .focusOn(rootView.group_choices_of_numbers)
@@ -215,7 +213,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     hintToasty.show()
                 }, 50)
             }
-            mNumberOfCoinsLeft--
+            mNumberOfCoinsLeft-= Constants.HINT_COST
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
             checkIfNeedToShowSosHint()
         }
@@ -227,7 +225,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     sosToasty.show()
                 }, 50)
             }
-            mNumberOfCoinsLeft -= 2
+            mNumberOfCoinsLeft -= Constants.SOS_COST
             DatabaseHelper.saveCoinsToDataBase(context!!.applicationContext, mNumberOfCoinsLeft)
             checkIfNeedToShowSosHint()
         }
@@ -320,40 +318,50 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         mStageInfoArray = Constants.User.stageList
         if (mStageInfoArray.size < mLevelNum || currentStage < mLevelNum) {
             when (mLevelNum) {
-                in 1..20 -> {
+                in 1..10 -> {
                     min = 0
+                    max = 10
+                    difficulty = 5
+                }
+                in 11..20 -> {
+                    min = 10
                     max = 20
                     difficulty = 6
                 }
                 in 21..40 -> {
                     min = 20
                     max = 40
-                    difficulty = 8
+                    difficulty = 7
                 }
                 in 41..60 -> {
                     min = 40
                     max = 60
-                    difficulty = 9
+                    difficulty = 8
                 }
-                in 61..80 -> {
+                in 61..100 -> {
                     min = 60
-                    max = 90
-                    difficulty = 10
-                }
-                in 81..100 -> {
-                    min = 70
                     max = 100
-                    difficulty = 11
+                    difficulty = 9
                 }
                 in 101..150 -> {
                     min = 80
                     max = 120
                     difficulty = 13
                 }
+                in 151..200 -> {
+                    min = 130
+                    max = 170
+                    difficulty = 20
+                }
+                in 201..250 -> {
+                    min = 170
+                    max = 220
+                    difficulty = 24
+                }
                 else -> {
-                    min = 90
-                    max = 120
-                    difficulty = 14
+                    min = 200
+                    max = 999
+                    difficulty = 30
                 }
             }
             mGame?.setDifficulty(difficulty)
@@ -362,6 +370,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     mTargetNumber = mGame.gameGenerator(mGameButtonsList)
                     mFullHintString = mGame.getHint()
                     mHalfHintString = mFullHintString.substringBefore(")") + ")"
+
                     Log.e("game", "num of retrys = ${retry++} difficulty = $difficulty min = $min max = $max")
                 }
             } while (mTargetNumber > max || mTargetNumber < min)
@@ -386,6 +395,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     override fun onPause() {
         super.onPause()
+        mStoreDialog.hideStoreDialog()
         sosToasty.cancel()
         hintToasty.cancel()
     }
@@ -521,7 +531,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 if (tb.isEnabled) i++
             }
             if (isDivideZero || isFraction) {
-                mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
+                mEndGameDialog.showEndDialog(Constants.LOSE_DIALOG)
                 context?.let { AudioManager.getInstance(it).playWaWaSound() }
                 gameInit()
                 return
@@ -535,13 +545,15 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     var currentStage = Constants.User.currentLevel
                     if (mLevelNum == currentStage) {
                         currentStage++
-                        //add coins
+                        //add coins on every odd level
+                        if (currentStage % 2 == 0 ){
                         DatabaseHelper.addCoins(context!!, 1)
                         checkIfNeedToShowSosHint()
+                        }
                     }
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
                     Handler(Looper.getMainLooper()).postDelayed({
-                        mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
+                        mEndGameDialog.showEndDialog(Constants.WIN_DIALOG)
                         AnimationsManager.getInstance(context!!).getConfetti(rootView.main_constraint)
                     }, 200)
                     context?.let { AudioManager.getInstance(it).playTaDaSound() }
@@ -549,7 +561,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     //you loose
                     context?.let { AudioManager.getInstance(it).playWaWaSound() }
                     Handler(Looper.getMainLooper()).postDelayed({
-                        mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
+                        mEndGameDialog.showEndDialog(Constants.LOSE_DIALOG)
                     }, 200)
                     gameInit()
                 }
@@ -559,14 +571,14 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     private fun checkIfNeedToShowSosHint() {
-        if (mNumberOfCoinsLeft >= 1) {
+        if (mNumberOfCoinsLeft >= Constants.HINT_COST) {
             mHintIB.isEnabled = true
             mHintIB.setImageResource(R.drawable.ic_help)
         } else {
             mHintIB.isEnabled = false
             mHintIB.setImageResource(R.drawable.ic_help_off)
         }
-        if (mNumberOfCoinsLeft >= 2) {
+        if (mNumberOfCoinsLeft >= Constants.SOS_COST) {
             mSosHintIB.isEnabled = true
             mSosHintIB.setImageResource(R.drawable.ic_sos)
         } else {
@@ -579,21 +591,22 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         when (view.id) {
             R.id.ibtnHome -> {
                 listener.backButtonPressedStage()
-                mEndGameDialog.dismissDialog()
+                mEndGameDialog.dismissDialogWithAd(mLevelNum)
             }
             R.id.ibtnRetry -> {
                 gameInit()
-                mEndGameDialog.dismissDialog()
+                mEndGameDialog.dismissDialogWithAd(mLevelNum)
             }
             R.id.ibtnNext -> {
                 mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + " " + (++mLevelNum).toString()
                 gameInit()
-                mEndGameDialog.dismissDialog()
-                if (mLevelNum % 5 == 0) {
-                    GoogleAddManager.showInterstitialAd()
-                }
+                mEndGameDialog.dismissDialogWithAd(mLevelNum)
             }
         }
+    }
+
+    override fun onDialogDismiss() {
+        listener.onStageModeHideNavBar()
     }
 
     override fun onDetach() {
@@ -605,6 +618,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     override fun storeDialogDismissed() {
+        listener.onStageModeHideNavBar()
         checkIfNeedToShowSosHint()
     }
 

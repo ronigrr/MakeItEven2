@@ -5,27 +5,29 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
 import com.yoyoG.makeiteven2.data_models.NameAndScoreInfo
 import com.yoyoG.makeiteven2.extras.Constants
+import java.nio.file.attribute.UserDefinedFileAttributeView
 
 
 object FireBaseHelper {
 
     private val mDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
-    private val mFirebaseReference: DatabaseReference = mDatabase.getReference(Constants.SCOREBOARD_FIREBASE_REFERENCE)
+    private val mFirebaseScoreBoardReference: DatabaseReference = mDatabase.getReference(Constants.SCOREBOARD_FIREBASE_REFERENCE)
+    private val mFireBaseUserReference: DatabaseReference = mDatabase.getReference(Constants.USER_FIREBASE_REFERENCE)
 
 
     fun saveScoreToDatabaseScoreBoard(highScore: Int) {
-        mFirebaseReference.addListenerForSingleValueEvent(object : ValueEventListener {
+        mFirebaseScoreBoardReference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (child in snapshot.children) {
                     if (child.key.toString() == Constants.User.playerTokenId) {
                         val tempNameAndScoreInfo = child.getValue(NameAndScoreInfo::class.java) as NameAndScoreInfo
                         tempNameAndScoreInfo.playerScore = highScore
                         Log.v("database", child.toString())
-                        mFirebaseReference.child(Constants.User.playerTokenId).setValue(tempNameAndScoreInfo)
+                        mFirebaseScoreBoardReference.child(Constants.User.playerTokenId).setValue(tempNameAndScoreInfo)
                         return
                     }
                 }
-                mFirebaseReference.child(Constants.User.playerTokenId).setValue(NameAndScoreInfo(Constants.User.playerName, highScore))
+                mFirebaseScoreBoardReference.child(Constants.User.playerTokenId).setValue(NameAndScoreInfo(Constants.User.playerName, highScore))
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -37,7 +39,7 @@ object FireBaseHelper {
 
     fun getScoreBoardListFromDataBase(data: MutableLiveData<ArrayList<NameAndScoreInfo>>) {
         val tempScoreBoardListForAdapter: ArrayList<NameAndScoreInfo> = ArrayList()
-        val firebaseReferenceOrderByQuery = mFirebaseReference.orderByChild("playerScore")
+        val firebaseReferenceOrderByQuery = mFirebaseScoreBoardReference.orderByChild("playerScore")
         firebaseReferenceOrderByQuery.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (item in snapshot.children) {
@@ -52,6 +54,26 @@ object FireBaseHelper {
             override fun onCancelled(error: DatabaseError) {
                 Log.d("database", "Failed to read value.", error.toException())
             }
+        })
+    }
+
+    fun saveUserToDatabase(){
+        mFireBaseUserReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (child in snapshot.children) {
+                    if (child.key.toString() == Constants.User.playerTokenId) {
+                        Log.v("database", child.toString())
+                        mFireBaseUserReference.child(Constants.User.playerTokenId).setValue(Constants.User)
+                        return
+                    }
+                }
+                mFireBaseUserReference.child(Constants.User.playerTokenId).setValue(Constants.User)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("database", "saveScoreToDatabaseScoreBoard was cancelled do to $error")
+            }
+
         })
     }
 
