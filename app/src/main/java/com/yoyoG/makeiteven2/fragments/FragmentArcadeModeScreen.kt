@@ -503,6 +503,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
     override fun onPause() {
         super.onPause()
+        mEndGameDialog.dismissDialog()
         listener.backButtonPressedArcade()
     }
 }

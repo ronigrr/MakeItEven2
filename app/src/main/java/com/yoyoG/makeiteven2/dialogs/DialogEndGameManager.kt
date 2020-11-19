@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.win_loose_dialog.*
 class DialogEndGameManager(fragment: Any, private val mContext: Context) {
 
     private val listener: IEndDialogBtnClickedListener
-    private lateinit var winLooseDialog: Dialog
+    private var winLooseDialog: Dialog = Dialog(mContext)
 
     init {
         if (fragment is IEndDialogBtnClickedListener) {
@@ -45,6 +45,7 @@ class DialogEndGameManager(fragment: Any, private val mContext: Context) {
     }
 
     fun showEndDialog(whichDialog: String, score: String = "") {
+
         winLooseDialog = Dialog(mContext)
 
         winLooseDialog.setCanceledOnTouchOutside(false)

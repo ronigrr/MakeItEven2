@@ -90,7 +90,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
 
     override fun onPause() {
         super.onPause()
-        mDialogStore.let {it.hideStoreDialog() }
+//        mDialogStore.let {it.hideStoreDialog() }
     }
 
     @SuppressLint("ClickableViewAccessibility")
