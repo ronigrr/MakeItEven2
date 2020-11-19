@@ -10,16 +10,14 @@ import com.yoyoG.makeiteven2.room.RoomUserNote
 
 object Constants {
 
-    const val ZERO_BUTTON_EX = "zeroButtonEx"
-    const val SAME_OPERATOR_EX = "operatorEx"
-    const val SUM_ZERO_EX = "sumEx"
-    const val NOTIFICATION_TEST: String = """It's been a while that you didn't play and practice your brain!
-Click here to Come and Play"""
+    const val NOTIFICATION_TEST: String = """It's been a while since you played and practiced your brain!
+Click here to Play"""
     const val IS_FIRST_TIME_IN_STAGE_MODE: String = "first_time_in_stagemode"
     const val SCOREBOARD_SCREEN_FRAGMENT_TAG: String = "scoreboard_screen_fragment"
     const val IS_TUTORIAL = "is_tutorial"
     const val TEST_COUNTDOWN_10_SECONDS_IN_MILLIS: Long = (0.2 * 1000 * 60).toLong()
     const val NOTIFICATION_COUNTDOWN_3_DAYS_IN_MILLIS: Long = (3 * 24 * 60 * 60 * 1000).toLong()
+    const val NOTIFICATION_COUNTDOWN_5_DAYS_IN_MILLIS: Long = (5 * 24 * 60 * 60 * 1000).toLong()
     const val START_COUNTDOWN_ARCADE_TIMER_IN_MILLIS: Long = (1 * 1000 * 60).toLong()
     const val ARCADE_TIMER = "arcade_timer"
     const val COINS_TIMER = "coins_timer"

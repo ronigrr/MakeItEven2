@@ -2,19 +2,23 @@ package com.yoyoG.makeiteven2.game
 
 import android.util.Log
 import android.widget.ToggleButton
-import com.yoyoG.makeiteven2.exception.GameGeneratorException
 import com.yoyoG.makeiteven2.extras.Constants
 import com.yoyoG.makeiteven2.extras.EOperators
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.random.Random
 
-open class Game(private var mDifficulty: Int) {
+open class Game(private var mDifficulty: Int ) {
     private var testSum = 0
     private var sum = 0
     private var mHint: String = ""
     private val mOperatorList = ArrayList<EOperators>()
     private val mBtnList = ArrayList<Int>()
+    private var mMinInt = 0
+    private var mMaxInt = 0
+    private var mCurrentLevel = 0
+
+
     fun setDifficulty(difficulty: Int) {
         mDifficulty = difficulty
     }
@@ -24,10 +28,12 @@ open class Game(private var mDifficulty: Int) {
     }
 
     fun gameGenerator(playButtons: List<ToggleButton>): Int {
+        Log.d("game", "GameGeneratorExecute")
 
-        val randomList = List(4) { Random.nextInt(mDifficulty) }
-
-
+        // for test mCurrentLevel = 8
+        setMinAndMaxIntForGameGenerator()
+        setCurrentLevel()
+        val randomList = List(4) { Random.nextInt(mMinInt, mMaxInt) }
         //reset for new game generate
         mHint = ""
         mBtnList.clear()
@@ -144,6 +150,7 @@ open class Game(private var mDifficulty: Int) {
             }
 
             Collections.shuffle(playButtons)
+            
             //set text to play buttons
             playButtons[0].textOff = btn1.toString()
             playButtons[1].textOff = btn2.toString()
@@ -161,30 +168,68 @@ open class Game(private var mDifficulty: Int) {
             playButtons[3].text = btn4.toString()
 
             //test conditions for deliver the game
-            if (sum == 0) {
-                Log.e("game", "sum is zero generate game again")
-                throw GameGeneratorException(Constants.SUM_ZERO_EX)
-            }
-            if (isSameOperators() && mDifficulty >= 8) {
-                Log.e("game", "sum is zero generate game again")
-                throw GameGeneratorException(Constants.SAME_OPERATOR_EX)
-            }
-            if (isZeroButton() && mDifficulty >= 8) {
-                throw GameGeneratorException(Constants.ZERO_BUTTON_EX)
+            if (isSumZero()) {
+                Log.e("game", "sum is zero generate game again Execute gameGenerator")
+                return gameGenerator(playButtons)
             }
 
+            if (mDifficulty == 6) {
+                if (isAllOperatorsTheSame()) {
+                    Log.e("game", "mDifficulty == 6 | isAllOperatorsTheSame() Execute gameGenerator ")
+                    return gameGenerator(playButtons)
+                }
+
+            } else if (mDifficulty == 7) {
+                if (isAllOperatorsTheSame() || !isMultiplyExists()) {
+                    Log.e("game", "mDifficulty == 7 | isAllOperatorsTheSame() !isMultiplyExists() Execute gameGenerator ")
+                    return gameGenerator(playButtons)
+                }
+            } else if (mDifficulty == 8) {
+                if (isAllOperatorsTheSame() || !isMultiplyExists()) {
+                    Log.e("game", "mDifficulty == 8 | isAllOperatorsTheSame() !isMultiplyExists() Execute gameGenerator ")
+                    return gameGenerator(playButtons)
+                }
+                if (mCurrentLevel%3 == 0 && !isDivideOperatorExits())
+                {
+                    Log.e("game", "mDifficulty == 8 | !isDivideOperatorExits() mCurrentLevel%3")
+                    return gameGenerator(playButtons)
+                }
+                if (mCurrentLevel%2 == 0 && !isAllDifferentNumbers()){
+                    Log.e("game", "mDifficulty == 8 | !isAllDifferentNumbers() mCurrentLevel%3")
+                    return gameGenerator(playButtons)
+                }
+
+            }
+            else if (mDifficulty == 9){
+                if (isAllOperatorsTheSame() || !isMultiplyExists() || !isAllDifferentNumbers()) {
+                    Log.e("game", "mDifficulty == 9 | isAllOperatorsTheSame() !isMultiplyExists() !isAllDifferentNumbers() Execute gameGenerator ")
+                    return gameGenerator(playButtons)
+                }
+
+                if (mCurrentLevel%2 == 0 && !isDivideOperatorExits()){
+                    Log.e("game", "mDifficulty == 9 | !isDivideOperatorExits() mCurrentLevel%2")
+                    return gameGenerator(playButtons)
+                }
+
+                if (mCurrentLevel%4 == 0 && !isAllDifferentOperators()){
+                    Log.e("game", "mDifficulty == 9 | !isAllDifferentOperators() mCurrentLevel%4")
+                    return gameGenerator(playButtons)
+                }
+
+            }
+            else {
+                if (!isAllDifferentNumbers() || !isDivideOperatorExits() || !isMultiplyExists()
+                    || isAllOperatorsTheSame() || !isAllDifferentOperators() )
+                {
+                    Log.e("game", "mDifficulty > 9 | !isAllDifferentNumbers() || !isDivideOperatorExits() || !isMultiplyExists() \n" +
+                            "|| isAllOperatorsTheSame() || !isAllDifferentOperators()")
+                    return gameGenerator(playButtons)
+                }
+
+            }
         } catch (ex: ArithmeticException) {
             Log.e("game", "divide by zero")
             return gameGenerator(playButtons)
-        } catch (ex: GameGeneratorException) {
-            when (ex.message) {
-                Constants.SUM_ZERO_EX -> {
-                    return gameGenerator(playButtons)
-                }
-                Constants.SAME_OPERATOR_EX -> {
-                    return gameGenerator(playButtons)
-                }
-            }
         }
         try {
             testSum = 0
@@ -205,10 +250,6 @@ open class Game(private var mDifficulty: Int) {
                     }
                 }
             }
-            //Test prints
-            print("$mHint \n")
-            print("$testSum $sum \n")
-
             if (testSum != sum) {
 
                 throw Exception("unsolvable equation")
@@ -220,14 +261,68 @@ open class Game(private var mDifficulty: Int) {
         return sum
     }
 
-    private fun isZeroButton(): Boolean {
-        return mBtnList.contains(0)
+    private fun setCurrentLevel() {
+        mCurrentLevel = Constants.User.currentLevel
     }
 
-    private fun isSameOperators(): Boolean {
+    private fun setMinAndMaxIntForGameGenerator() {
+        val random = Random.nextInt(2)
+
+        mMaxInt = mDifficulty
+
+        if (mDifficulty >= 6) {
+            mMinInt = 1
+        }
+        if ((mDifficulty == 7) && (random == 1)) {
+            mMinInt = 2
+        }
+        if ((mDifficulty == 8) && (mCurrentLevel % 3 == 0) )
+        {
+            mMinInt = 2
+            mMaxInt++
+        }
+
+        if (mDifficulty >=9){
+            mMinInt = 2
+            mMaxInt++
+        }
+    }
+
+    private fun isAllDifferentOperators(): Boolean {
+        var ret = false
+        if (mOperatorList.distinct().size == 3) ret = true
+        return ret
+    }
+
+    private fun isAllDifferentNumbers(): Boolean {
+        var ret = false
+        if (mBtnList.distinct().size == 4) ret = true
+        return ret
+    }
+
+    private fun isDivideOperatorExits(): Boolean {
+        var ret = false
+        if (mOperatorList.contains(EOperators.DIVIDE)) ret = true
+        return ret
+    }
+
+    private fun isAllOperatorsTheSame(): Boolean {
         var ret = false
         if (mOperatorList.distinct().size == 1) ret = true
         return ret
 
     }
+
+    private fun isSumZero(): Boolean {
+        var ret = false
+        if (sum == 0) ret = true
+        return ret
+    }
+
+    private fun isMultiplyExists(): Boolean {
+        var ret = false
+        if (mOperatorList.contains(EOperators.MULTIPLY)) ret = true
+        return ret
+    }
+
 }

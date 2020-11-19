@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.work.impl.model.Dependency
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import com.yoyoG.makeiteven2.R
 import com.yoyoG.makeiteven2.data_models.StageInfo
@@ -36,7 +37,6 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
 
     private lateinit var mStoreIBTN: ImageButton
     private lateinit var mCoinsIV: ImageView
-
     private lateinit var mLevelNumberTV: TextView
     private lateinit var mCoinsLeftTV: TextView
     private lateinit var mTargetNumberTV: TextView
@@ -136,7 +136,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
             }
             val one = FancyShowCaseView.Builder(activity!!)
                 .focusOn(rootView.theTargetNumberTV)
-                .title("This is the target number you need to reach")
+                .title("Reach this number in order to complete the stage")
                 .build()
             val two = FancyShowCaseView.Builder(activity!!)
                 .focusOn(rootView.group_choices_of_numbers)
@@ -333,32 +333,37 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 in 21..40 -> {
                     min = 20
                     max = 40
-                    difficulty = 8
+                    difficulty = 7
                 }
                 in 41..60 -> {
                     min = 40
                     max = 60
-                    difficulty = 9
+                    difficulty = 8
                 }
-                in 61..80 -> {
+                in 61..100 -> {
                     min = 60
-                    max = 90
-                    difficulty = 10
-                }
-                in 81..100 -> {
-                    min = 70
                     max = 100
-                    difficulty = 11
+                    difficulty = 9
                 }
                 in 101..150 -> {
                     min = 80
                     max = 120
                     difficulty = 13
                 }
+                in 151..200 -> {
+                    min = 130
+                    max = 170
+                    difficulty = 20
+                }
+                in 201..250 -> {
+                    min = 170
+                    max = 220
+                    difficulty = 24
+                }
                 else -> {
-                    min = 90
-                    max = 120
-                    difficulty = 14
+                    min = 200
+                    max = 999
+                    difficulty = 30
                 }
             }
             mGame?.setDifficulty(difficulty)
@@ -367,6 +372,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     mTargetNumber = mGame.gameGenerator(mGameButtonsList)
                     mFullHintString = mGame.getHint()
                     mHalfHintString = mFullHintString.substringBefore(")") + ")"
+
                     Log.e("game", "num of retrys = ${retry++} difficulty = $difficulty min = $min max = $max")
                 }
             } while (mTargetNumber > max || mTargetNumber < min)

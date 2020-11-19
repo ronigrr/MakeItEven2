@@ -9,6 +9,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ImageSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -41,6 +44,7 @@ import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragmentSettingsListener, LevelsAdapter.ILevelsAdapter,
     FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener,
     IFragmentScoreBoardScreenListener {
@@ -180,6 +184,12 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.action_menu, menu)
+//        val item = menu!!.findItem(R.id.action_contact_us)
+//        val builder = SpannableStringBuilder("* Contact us")
+//        // replace "*" with icon
+//        // replace "*" with icon
+//        builder.setSpan(ImageSpan(this, R.drawable.ic_gmail), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+//        item.setTitle(builder)
         return true
     }
 
@@ -235,7 +245,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
             //if any thing goes wrong for example no email client application or any exception
             //get and show exception message
             Toast.makeText(this, e.message, Toast.LENGTH_LONG).show()
-            Log.d("contact us","${e.message}")
+            Log.d("contact us", "${e.message}")
         }
     }
 
@@ -269,7 +279,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
         alertDialogBuilder.setIcon(R.drawable.warning_icon)
         alertDialogBuilder.setMessage(R.string.Progress).setCancelable(false).setPositiveButton(R.string.Yes) { dialog, _ ->
-            Constants.User?.currentLevel  = 1
+            Constants.User.currentLevel  = 1
             val newArrayList = ArrayList<StageInfo>()
             newArrayList.add(Constants.User.stageList[0])
             Constants.User.stageList = newArrayList

@@ -118,7 +118,7 @@
         android:autoSizeMinTextSize="10sp"
         android:gravity="center"
         android:textColor="@color/primaryTextColor"
-        android:textSize="28sp"
+        android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/theTargetNumberTV"
         app:layout_constraintEnd_toEndOf="parent"
@@ -126,17 +126,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         app:layout_constraintWidth_percent="0.13"
-        tools:text="Level : 5" />
+        tools:text="Level : 5"
+        tools:targetApi="o" />
 
     <TextView
         android:id="@+id/theTargetNumberTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoSizeMaxTextSize="55sp"
+        android:autoSizeMaxTextSize="70sp"
         android:autoSizeMinTextSize="10sp"
         android:gravity="center"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="35sp"
+        android:textColor="#001E73"
+        android:textSize="50sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -144,7 +145,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline4"
         app:layout_constraintWidth_percent="0.13"
-        tools:text="5" />
+        android:fontFamily="@font/itim_regular"
+        tools:text="6"
+        tools:targetApi="o" />
 
     <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
         android:id="@+id/group_choices_of_numbers"

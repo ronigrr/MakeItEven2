@@ -268,25 +268,25 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         var max = 0
         var difficulty = 0
         when {
-            mWinsCounter < 3 -> {
+            mWinsCounter < 4 -> {
                 min = 0
-                max = 14
+                max = 15
                 difficulty = 6
             }
             mWinsCounter < 8 -> {
                 min = 20
                 max = 40
-                difficulty = 8
+                difficulty = 7
             }
             mWinsCounter < 12 -> {
                 min = 40
                 max = 60
-                difficulty = 9
+                difficulty = 8
             }
             mWinsCounter < 30 -> {
                 min = 60
                 max = 90
-                difficulty = 10
+                difficulty = 9
             }
             mWinsCounter < 100 -> {
                 min = 80

@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/confetti_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></RelativeLayout>
+        android:layout_height="match_parent"/>
 
     <ImageButton
         android:id="@+id/backButtonIB"
@@ -126,17 +126,20 @@
         android:id="@+id/theTargetNumberTV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:autoSizeMaxTextSize="55sp"
+        android:autoSizeMaxTextSize="70sp"
         android:autoSizeMinTextSize="20sp"
-        android:textColor="@color/primaryTextColor"
-        android:textSize="40sp"
+        android:fontFamily="@font/itim_regular"
+        android:textColor="#001E73"
+        android:textSize="50sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline5"
         app:layout_constraintWidth_percent="0.2"
-        tools:text="5" />
+        tools:text="5"
+        tools:targetApi="o" />
 
     <com.nex3z.togglebuttongroup.SingleSelectToggleGroup
         android:id="@+id/group_choices_of_numbers"
