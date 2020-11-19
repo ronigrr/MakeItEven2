@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.work.impl.model.Dependency
 import com.nex3z.togglebuttongroup.SingleSelectToggleGroup
 import com.yoyoG.makeiteven2.R
 import com.yoyoG.makeiteven2.data_models.StageInfo
@@ -24,7 +23,6 @@ import com.yoyoG.makeiteven2.intefaces.IFragmentStageModeListener
 import com.yoyoG.makeiteven2.intefaces.IStoreDialogBtnClickedListener
 import com.yoyoG.makeiteven2.managers.AnimationsManager
 import com.yoyoG.makeiteven2.managers.AudioManager
-import com.yoyoG.makeiteven2.managers.GoogleAddManager
 import com.yoyoG.makeiteven2.managers.ShearedPrefManager
 import com.yoyoG.makeiteven2.room.DatabaseHelper
 import es.dmoral.toasty.Toasty
@@ -533,7 +531,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                 if (tb.isEnabled) i++
             }
             if (isDivideZero || isFraction) {
-                mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
+                mEndGameDialog.showEndDialog(Constants.LOSE_DIALOG)
                 context?.let { AudioManager.getInstance(it).playWaWaSound() }
                 gameInit()
                 return
@@ -555,7 +553,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     }
                     DatabaseHelper.saveCurrentStage(context!!.applicationContext, currentStage)
                     Handler(Looper.getMainLooper()).postDelayed({
-                        mEndGameDialog.shodEndDialog(Constants.WIN_DIALOG)
+                        mEndGameDialog.showEndDialog(Constants.WIN_DIALOG)
                         AnimationsManager.getInstance(context!!).getConfetti(rootView.main_constraint)
                     }, 200)
                     context?.let { AudioManager.getInstance(it).playTaDaSound() }
@@ -563,7 +561,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
                     //you loose
                     context?.let { AudioManager.getInstance(it).playWaWaSound() }
                     Handler(Looper.getMainLooper()).postDelayed({
-                        mEndGameDialog.shodEndDialog(Constants.LOSE_DIALOG)
+                        mEndGameDialog.showEndDialog(Constants.LOSE_DIALOG)
                     }, 200)
                     gameInit()
                 }
@@ -593,21 +591,22 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         when (view.id) {
             R.id.ibtnHome -> {
                 listener.backButtonPressedStage()
-                mEndGameDialog.dismissDialog()
+                mEndGameDialog.dismissDialogWithAd(mLevelNum)
             }
             R.id.ibtnRetry -> {
                 gameInit()
-                mEndGameDialog.dismissDialog()
+                mEndGameDialog.dismissDialogWithAd(mLevelNum)
             }
             R.id.ibtnNext -> {
                 mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + " " + (++mLevelNum).toString()
                 gameInit()
-                mEndGameDialog.dismissDialog()
-                if (mLevelNum % 5 == 0) {
-                    GoogleAddManager.showInterstitialAd()
-                }
+                mEndGameDialog.dismissDialogWithAd(mLevelNum)
             }
         }
+    }
+
+    override fun onDialogDismiss() {
+        listener.onStageModeHideNavBar()
     }
 
     override fun onDetach() {
@@ -619,6 +618,7 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
     }
 
     override fun storeDialogDismissed() {
+        listener.onStageModeHideNavBar()
         checkIfNeedToShowSosHint()
     }
 

@@ -92,6 +92,7 @@ class DialogStore(fragment: Any, private val mContext: Context, private val acti
             }
         }
         mStoreDialog!!.setOnDismissListener {
+            listener.storeDialogDismissed()
             mStoreDialog!!.cancel()
             timerManager?.cancelTimer()
         }

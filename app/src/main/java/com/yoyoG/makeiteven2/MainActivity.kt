@@ -15,8 +15,11 @@ import android.text.style.ImageSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import android.view.View.*
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -49,6 +52,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener,
     IFragmentScoreBoardScreenListener {
 
+
     private val fragmentManager = supportFragmentManager
     private lateinit var appToolbar: Toolbar
 
@@ -60,6 +64,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         hideNavBars()
         Log.e("lifecycle", "on create")
         setContentView(R.layout.activity_main)
+
         init3DotToolBar()
         //initUpdateManager()
         startLoadingApp()
@@ -67,8 +72,11 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     private fun hideNavBars() {
-        window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
-                SYSTEM_UI_FLAG_FULLSCREEN or SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        Handler(Looper.getMainLooper()).post {
+            window.decorView.systemUiVisibility = SYSTEM_UI_FLAG_IMMERSIVE_STICKY or
+                    SYSTEM_UI_FLAG_FULLSCREEN or SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        }
+
     }
 
     private fun rateMe() {
@@ -184,12 +192,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.action_menu, menu)
-//        val item = menu!!.findItem(R.id.action_contact_us)
-//        val builder = SpannableStringBuilder("* Contact us")
-//        // replace "*" with icon
-//        // replace "*" with icon
-//        builder.setSpan(ImageSpan(this, R.drawable.ic_gmail), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-//        item.setTitle(builder)
         return true
     }
 
@@ -209,7 +211,9 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
                 val dialogView: View = layoutInflater.inflate(R.layout.about_dialog, null)
                 aboutDialog.setContentView(dialogView)
                 aboutDialog.setCanceledOnTouchOutside(true)
+                aboutDialog.setOnDismissListener { hideNavBars() }
                 aboutDialog.show()
+
             }
             R.id.action_settings -> {
                 //settings
@@ -266,6 +270,10 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         appToolbar.visibility = VISIBLE
     }
 
+    override fun hideNaveBarFromStartScreen() {
+        hideNavBars()
+    }
+
     override fun onSeekBarMainVolume(mainVolume: Int) {
         AudioManager.getInstance(this).setGameVolume(mainVolume)
     }
@@ -320,7 +328,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     private fun createNewUser(nickname: String) {
         val newUserNote = RoomUserNote(
-            UUID.randomUUID().toString(), nickname, 1, 10, 50, 1, ArrayList(),
+            UUID.randomUUID().toString(), nickname, 1, 8, 40, 1, ArrayList(),
             "", "", false, "0", ArrayList()
         )
         newUserNote.stageList.add(StageInfo(1, 1, 1, 1, 4, "1+1+1+1"))
@@ -366,12 +374,12 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     override fun loadScoreBoardFromArcade() {
-        fragmentManager.popBackStack()
+        fragmentManager.popBackStackImmediate()
         loadScoreBoard()
     }
 
     override fun restartArcadeGame() {
-        fragmentManager.popBackStack()
+        fragmentManager.popBackStackImmediate()
         loadArcadeMode()
     }
 
@@ -379,10 +387,17 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         hide3DotsToolBar()
     }
 
+    override fun arcadeModeHideNavBar() {
+        hideNavBars()
+    }
+
     override fun backButtonPressedStage() {
         fragmentManager.popBackStack()
     }
 
+    override fun onStageModeHideNavBar() {
+        hideNavBars()
+    }
     override fun onLevelsFragmentBackPressed() {
         fragmentManager.popBackStack()
     }

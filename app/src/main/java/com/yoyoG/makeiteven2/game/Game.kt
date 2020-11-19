@@ -174,7 +174,10 @@ open class Game(private var mDifficulty: Int ) {
                 return gameGenerator(playButtons)
             }
 
-            if (mDifficulty == 6) {
+            if (mDifficulty < 6){
+                Log.e("game", "mDifficulty < 6 game generated ")
+            }
+            else if (mDifficulty == 6) {
                 if (isAllOperatorsTheSame()) {
                     Log.e("game", "mDifficulty == 6 | isAllOperatorsTheSame() Execute gameGenerator ")
                     return gameGenerator(playButtons)

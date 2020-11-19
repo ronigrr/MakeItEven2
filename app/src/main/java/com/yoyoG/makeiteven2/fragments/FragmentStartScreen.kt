@@ -141,6 +141,7 @@ class FragmentStartScreen : Fragment(), IFinishTimerListener, IStoreDialogBtnCli
     }
 
     override fun storeDialogDismissed() {
+        mListener.hideNaveBarFromStartScreen()
     }
 
     override fun onResume() {

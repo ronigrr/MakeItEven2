@@ -268,13 +268,13 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         var max = 0
         var difficulty = 0
         when {
-            mWinsCounter < 4 ->{
+            mWinsCounter < 2 ->{
                 min = 0
                 max = 10
                 difficulty = 5
                 mGame?.updateRandomLevelFlag(mWinsCounter)
             }
-            mWinsCounter < 8 -> {
+            mWinsCounter < 6 -> {
                 min = 10
                 max = 20
                 difficulty = 6
@@ -480,7 +480,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
             DatabaseHelper.setPlayerArcadeMaxScore(context!!, mScoreCounter.toString())
             saveScoreToDatabaseScoreBoard(mScoreCounter)
         }
-        mEndGameDialog.shodEndDialog(Constants.ARCADE_END_DIALOG, mActualScoreTV.text.toString())
+        mEndGameDialog.showEndDialog(Constants.ARCADE_END_DIALOG, mActualScoreTV.text.toString())
     }
 
     override fun onEndDialogBtnClicked(view: View) {
@@ -498,6 +498,10 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 listener.loadScoreBoardFromArcade()
             }
         }
+    }
+
+    override fun onDialogDismiss() {
+        listener.arcadeModeHideNavBar()
     }
 
     override fun onPause() {
