@@ -18,7 +18,7 @@ import com.yoyoG.makeiteven2.extras.HintsWorker
 import com.yoyoG.makeiteven2.intefaces.IFinishTimerListener
 import com.yoyoG.makeiteven2.intefaces.IStoreDialogBtnClickedListener
 import com.yoyoG.makeiteven2.managers.AnimationsManager
-import com.yoyoG.makeiteven2.managers.GoogleAddManager
+import com.yoyoG.makeiteven2.managers.GoogleAdManager
 import com.yoyoG.makeiteven2.managers.TimerManager
 import com.yoyoG.makeiteven2.room.DatabaseHelper
 import kotlinx.android.synthetic.main.store_dialog.*
@@ -105,7 +105,7 @@ class DialogStore(fragment: Any, private val mContext: Context, private val acti
         })
         mStoreDialog!!.btnGetHintByAd.apply {
             setOnClickListener {
-                GoogleAddManager.showRewardVideo(mContext, activityContext)
+                GoogleAdManager.showRewardVideo(mContext, activityContext)
                 Constants.rewardedAdLoaded.postValue(false)
             }
         }

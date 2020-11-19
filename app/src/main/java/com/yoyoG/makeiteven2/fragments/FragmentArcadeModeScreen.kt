@@ -107,9 +107,6 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         initTimer()
         initDialog()
         startCountDownAnimation()
-
-
-
         return rootView
     }
 

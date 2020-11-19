@@ -9,20 +9,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.SpannableStringBuilder
-import android.text.Spanned
-import android.text.style.ImageSpan
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.view.View.*
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -35,10 +28,7 @@ import com.yoyoG.makeiteven2.extras.Constants
 import com.yoyoG.makeiteven2.firebase.FireBaseHelper
 import com.yoyoG.makeiteven2.fragments.*
 import com.yoyoG.makeiteven2.intefaces.*
-import com.yoyoG.makeiteven2.managers.AudioManager
-import com.yoyoG.makeiteven2.managers.GoogleAddManager
-import com.yoyoG.makeiteven2.managers.RetentionManager
-import com.yoyoG.makeiteven2.managers.ShearedPrefManager
+import com.yoyoG.makeiteven2.managers.*
 import com.yoyoG.makeiteven2.room.DatabaseHelper
 import com.yoyoG.makeiteven2.room.RoomUserNote
 import kotlinx.android.synthetic.main.activity_main.*
@@ -100,8 +90,8 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     private fun activeAd() {
         Handler(Looper.getMainLooper()).postDelayed({
-            GoogleAddManager.loadRewardAD(applicationContext)
-            GoogleAddManager.loadInterstitialAd(applicationContext)
+            GoogleAdManager.loadRewardAD(applicationContext)
+            GoogleAdManager.loadInterstitialAd(applicationContext)
         }, 7 * 1000)
     }
 

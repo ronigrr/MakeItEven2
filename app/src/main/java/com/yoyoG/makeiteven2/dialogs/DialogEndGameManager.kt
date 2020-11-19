@@ -8,7 +8,7 @@ import com.yoyoG.makeiteven2.R
 import com.yoyoG.makeiteven2.extras.Constants
 import com.yoyoG.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import com.yoyoG.makeiteven2.managers.AnimationsManager
-import com.yoyoG.makeiteven2.managers.GoogleAddManager
+import com.yoyoG.makeiteven2.managers.GoogleAdManager
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 
 class DialogEndGameManager(fragment: Any, private val mContext: Context) {
@@ -35,7 +35,7 @@ class DialogEndGameManager(fragment: Any, private val mContext: Context) {
             else -> 5
         }
         if (levelNum % addMobRate == 0) {
-            GoogleAddManager.showInterstitialAd()
+            GoogleAdManager.showInterstitialAd()
         }
     }
 

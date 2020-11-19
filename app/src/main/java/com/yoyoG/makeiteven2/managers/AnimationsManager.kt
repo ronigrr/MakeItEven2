@@ -5,6 +5,7 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.core.animation.doOnEnd
 import com.github.jinatonic.confetti.CommonConfetti
+import com.google.android.gms.ads.mediation.VersionInfo
 import com.yoyoG.makeiteven2.R
 import com.yoyoG.makeiteven2.extras.SingletonHolder
 
@@ -71,12 +73,14 @@ class AnimationsManager private constructor(private val context: Context) {
         AnimationUtils.loadAnimation(context, R.anim.levels_scale_in)
 
     fun setFadeInOutAnimation(view: View) {
-        val animationSet = AnimatorSet()
-        animationSet.apply {
-            play(ObjectAnimator.ofFloat(view, "alpha", 0.1f, 0.5f).setDuration(1500))
-                .after(ObjectAnimator.ofFloat(view, "alpha", 0.5f, 0.1f).setDuration(1500))
-            start()
-            doOnEnd { animator -> animator.start() }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val animationSet = AnimatorSet()
+            animationSet.apply {
+                play(ObjectAnimator.ofFloat(view, "alpha", 0.1f, 0.5f).setDuration(1500))
+                    .after(ObjectAnimator.ofFloat(view, "alpha", 0.5f, 0.1f).setDuration(1500))
+                start()
+                doOnEnd { animator -> animator.start() }
+            }
         }
     }
 }

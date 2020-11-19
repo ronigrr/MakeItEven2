@@ -12,12 +12,12 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.yoyoG.makeiteven2.extras.Constants
 import com.yoyoG.makeiteven2.room.DatabaseHelper
 
-object GoogleAddManager {
+object GoogleAdManager {
 
     fun loadInterstitialAd(context: Context) {
         Constants.mInterstitialAd = InterstitialAd(context)
-        Constants.mInterstitialAd.adUnitId = Constants.ADD_MOB_TEST
-       // Constants.mInterstitialAd.adUnitId = Constants.AD_MOB_INTERSTITIAL_AD
+        //Constants.mInterstitialAd.adUnitId = Constants.ADD_MOB_TEST
+        Constants.mInterstitialAd.adUnitId = Constants.AD_MOB_INTERSTITIAL_AD
         Constants.mInterstitialAd.loadAd(AdRequest.Builder().build())
         Constants.mInterstitialAd.adListener = object : AdListener() {
             override fun onAdClosed() {
@@ -43,8 +43,8 @@ object GoogleAddManager {
     }
 
     fun loadRewardAD(context: Context) {
-       Constants.rewardedAd = RewardedAd(context, Constants.ADD_MOB_TEST)
-        //Constants.rewardedAd = RewardedAd(context, Constants.AD_MOB_REWARD_AD)
+       //Constants.rewardedAd = RewardedAd(context, Constants.ADD_MOB_TEST)
+        Constants.rewardedAd = RewardedAd(context, Constants.AD_MOB_REWARD_AD)
         val adLoadCallback = object : RewardedAdLoadCallback() {
             override fun onRewardedAdLoaded() {
                 Log.d("adMob", "onRewardedAdLoaded")
