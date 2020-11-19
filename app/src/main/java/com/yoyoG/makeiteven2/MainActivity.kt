@@ -279,7 +279,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
         alertDialogBuilder.setTitle(resources.getString(R.string.game_reset))
         alertDialogBuilder.setIcon(R.drawable.warning_icon)
         alertDialogBuilder.setMessage(R.string.Progress).setCancelable(false).setPositiveButton(R.string.Yes) { dialog, _ ->
-            Constants.User.currentLevel  = 1
+            Constants.User?.currentLevel  = 1
             val newArrayList = ArrayList<StageInfo>()
             newArrayList.add(Constants.User.stageList[0])
             Constants.User.stageList = newArrayList
