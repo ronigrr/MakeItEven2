@@ -26,9 +26,9 @@ android {
         }
     }
 
-//    testOptions {
-//        unitTests.returnDefaultValues = true
-//    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 
 }
 
@@ -54,17 +54,17 @@ allprojects {
         implementation 'androidx.appcompat:appcompat:1.2.0'
         implementation 'androidx.core:core-ktx:1.3.2'
         implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-        implementation 'com.google.firebase:firebase-database:19.5.1'
-        implementation 'com.google.firebase:firebase-analytics:18.0.0'
-        implementation 'com.google.firebase:firebase-crashlytics:17.3.0'
-        implementation 'com.google.firebase:firebase-database:19.5.1'
-        testImplementation 'junit:junit:4.13.1'
+        implementation 'com.google.firebase:firebase-database:19.7.0'
+        implementation 'com.google.firebase:firebase-analytics:18.0.2'
+        implementation 'com.google.firebase:firebase-crashlytics:17.4.1'
+        implementation 'com.google.firebase:firebase-database:19.7.0'
+        testImplementation 'junit:junit:4.13.2'
         testImplementation "io.mockk:mockk:1.9.3"
         androidTestImplementation 'androidx.test.ext:junit:1.1.2'
         androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
         //recyclerView
-        implementation "androidx.recyclerview:recyclerview:1.1.0"
+        implementation "androidx.recyclerview:recyclerview:1.2.0"
         //cardView
         implementation "androidx.cardview:cardview:1.0.0"
         //toggle button
@@ -72,11 +72,11 @@ allprojects {
         //Toasty
         implementation 'com.github.GrenderG:Toasty:1.4.0'
         //Gson
-        implementation 'com.google.code.gson:gson:2.8.5'
+        implementation 'com.google.code.gson:gson:2.8.6'
 
 
         //room
-        def room_version = "2.2.5"
+        def room_version = "2.2.6"
         // optional - Kotlin Extensions and Coroutines support for Room
         implementation "androidx.room:room-ktx:$room_version"
         implementation "androidx.room:room-runtime:$room_version"
@@ -87,16 +87,16 @@ allprojects {
         implementation "androidx.room:room-guava:$room_version"
         kapt "androidx.room:room-compiler:$room_version"
         // Test helpers
-        testImplementation "androidx.room:room-testing:2.2.5"
+        testImplementation "androidx.room:room-testing:2.2.6"
 
-        implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+        implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
 
         // -- Coroutines
-        def coroutines_version = "1.2.1"
-        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.7"
+        def coroutines_version = "1.4.1"
+        implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
         implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
-        implementation "androidx.work:work-runtime-ktx:2.4.0"
+        implementation "androidx.work:work-runtime-ktx:2.5.0"
 
         //confetti
         implementation 'com.github.jinatonic.confetti:confetti:1.1.2'
@@ -108,7 +108,7 @@ allprojects {
         //spotlight
         implementation 'me.toptas.fancyshowcase:fancyshowcaseview:1.3.3'
 
-        def work_version = "2.4.0"
+        def work_version = "2.5.0"
         // Kotlin + coroutines
         implementation "androidx.work:work-runtime-ktx:$work_version"
 
@@ -122,20 +122,20 @@ allprojects {
         androidTestImplementation "androidx.work:work-testing:$work_version"
 
         //volley
-        implementation 'com.android.volley:volley:1.1.1'
+        implementation 'com.android.volley:volley:1.2.0'
 
         //adMod
-        implementation 'com.google.android.gms:play-services-ads:19.5.0'
+        implementation 'com.google.android.gms:play-services-ads:19.7.0'
 
         //gifview
         implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 
         //google play core
-        implementation 'com.google.android.play:core:1.8.3'
+        implementation 'com.google.android.play:core:1.10.0'
         // For Kotlin users also import the Kotlin extensions library for Play Core:
         implementation 'com.google.android.play:core-ktx:1.8.1'
         //google material
-        implementation 'com.google.android.material:material:1.2.1'
+        implementation 'com.google.android.material:material:1.3.0'
 
     }
 }

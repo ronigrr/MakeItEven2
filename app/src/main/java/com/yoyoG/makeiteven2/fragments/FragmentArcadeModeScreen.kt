@@ -129,7 +129,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
                 override fun onAnimationEnd(animation: Animator) {
                     Log.e("Animation:", "end")
                     countDownAnim.visibility = View.GONE
-                    mTimerManager.startTimer(Constants.START_COUNTDOWN_ARCADE_TIMER_IN_MILLIS)
+                    mTimerManager.startTimer(Constants.TEST_COUNTDOWN_10_SECONDS_IN_MILLIS)
                     setButtonAnimation()
                 }
 
@@ -484,14 +484,14 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
         when (view.id) {
             R.id.ibtnHome -> {
                 listener.backButtonPressedArcade()
-                mEndGameDialog.dismissDialog()
+                mEndGameDialog.arcadeDismissDialog()
             }
             R.id.ibtnRetry -> {
                 listener.restartArcadeGame()
-                mEndGameDialog.dismissDialog()
+                mEndGameDialog.arcadeDismissDialog()
             }
             R.id.ibtnScoreBoard -> {
-                mEndGameDialog.dismissDialog()
+                mEndGameDialog.arcadeDismissDialog()
                 listener.loadScoreBoardFromArcade()
             }
         }
@@ -503,7 +503,7 @@ class FragmentArcadeModeScreen : Fragment(), View.OnClickListener, IFinishTimerL
 
     override fun onPause() {
         super.onPause()
-        mEndGameDialog.dismissDialog()
+        mEndGameDialog.arcadeDismissDialog()
         listener.backButtonPressedArcade()
     }
 }

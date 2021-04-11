@@ -4,17 +4,20 @@ import android.app.Dialog
 import android.content.Context
 import android.view.View
 import android.view.Window
+import androidx.core.text.set
 import com.yoyoG.makeiteven2.R
 import com.yoyoG.makeiteven2.extras.Constants
+import com.yoyoG.makeiteven2.firebase.FireBaseHelper
 import com.yoyoG.makeiteven2.intefaces.IEndDialogBtnClickedListener
 import com.yoyoG.makeiteven2.managers.AnimationsManager
 import com.yoyoG.makeiteven2.managers.GoogleAdManager
+import com.yoyoG.makeiteven2.room.DatabaseHelper
 import kotlinx.android.synthetic.main.win_loose_dialog.*
 
 class DialogEndGameManager(fragment: Any, private val mContext: Context) {
 
     private val listener: IEndDialogBtnClickedListener
-    private var winLooseDialog: Dialog = Dialog(mContext)
+    private var winLoseDialog: Dialog = Dialog(mContext)
 
     init {
         if (fragment is IEndDialogBtnClickedListener) {
@@ -24,8 +27,18 @@ class DialogEndGameManager(fragment: Any, private val mContext: Context) {
         }
     }
 
-    fun dismissDialog() {
-        winLooseDialog.dismiss()
+    fun arcadeDismissDialog() {
+        winLoseDialog.dismiss()
+        checkAndSaveName()
+    }
+
+    private fun checkAndSaveName() {
+        if (winLoseDialog.etNickname.text.isNotEmpty() && winLoseDialog.etNickname.text.toString() != Constants.User.playerName)
+        {
+            DatabaseHelper.changePlayerNickname(mContext,winLoseDialog.etNickname.text.toString())
+            FireBaseHelper.updateScoreBoardUserNickName(winLoseDialog.etNickname.text.toString())
+        }
+
     }
 
     private fun checkAndShowAdd(levelNum : Int){
@@ -39,50 +52,54 @@ class DialogEndGameManager(fragment: Any, private val mContext: Context) {
         }
     }
 
-    fun dismissDialogWithAd(adControlParameter : Int ){
-        winLooseDialog.dismiss()
+    fun stageModeDismissDialogWithAd(adControlParameter : Int ){
+        winLoseDialog.dismiss()
         checkAndShowAdd(adControlParameter)
     }
 
     fun showEndDialog(whichDialog: String, score: String = "") {
 
-        winLooseDialog = Dialog(mContext)
+        winLoseDialog = Dialog(mContext)
 
-        winLooseDialog.setCanceledOnTouchOutside(false)
-        winLooseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        winLooseDialog.setCancelable(false)
-        winLooseDialog.setContentView(R.layout.win_loose_dialog)
-        winLooseDialog.ibtnHome.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
-        winLooseDialog.ibtnNext.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
-        winLooseDialog.ibtnRetry.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
-        winLooseDialog.setOnDismissListener { listener.onDialogDismiss() }
+        winLoseDialog.setCanceledOnTouchOutside(false)
+        winLoseDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        winLoseDialog.setCancelable(false)
+        winLoseDialog.setContentView(R.layout.win_loose_dialog)
+        winLoseDialog.ibtnHome.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
+        winLoseDialog.ibtnNext.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
+        winLoseDialog.ibtnRetry.setOnTouchListener(AnimationsManager.getInstance(mContext).getTouchAnimation())
+        winLoseDialog.setOnDismissListener { listener.onDialogDismiss() }
 
-        winLooseDialog.ibtnHome.setOnClickListener { listener.onEndDialogBtnClicked(it) }
-        winLooseDialog.ibtnNext.setOnClickListener { listener.onEndDialogBtnClicked(it) }
-        winLooseDialog.ibtnRetry.setOnClickListener { listener.onEndDialogBtnClicked(it) }
-        winLooseDialog.ibtnScoreBoard.setOnClickListener { listener.onEndDialogBtnClicked(it) }
+        winLoseDialog.ibtnHome.setOnClickListener { listener.onEndDialogBtnClicked(it) }
+        winLoseDialog.ibtnNext.setOnClickListener { listener.onEndDialogBtnClicked(it) }
+        winLoseDialog.ibtnRetry.setOnClickListener { listener.onEndDialogBtnClicked(it) }
+        winLoseDialog.ibtnScoreBoard.setOnClickListener { listener.onEndDialogBtnClicked(it) }
 
         when (whichDialog) {
             Constants.WIN_DIALOG -> {
-                winLooseDialog.tvText.text = mContext.resources.getString(R.string.correct_answer)
-                winLooseDialog.animationView.setAnimation(R.raw.win_owl_anim)
-                winLooseDialog.animationView.playAnimation()
-                winLooseDialog.ibtnScoreBoard.visibility = View.GONE
+                winLoseDialog.tvText.text = mContext.resources.getString(R.string.correct_answer)
+                winLoseDialog.animationView.setAnimation(R.raw.win_owl_anim)
+                winLoseDialog.animationView.playAnimation()
+                winLoseDialog.ibtnScoreBoard.visibility = View.GONE
             }
             Constants.LOSE_DIALOG -> {
-                winLooseDialog.ibtnNext.visibility = View.GONE
-                winLooseDialog.ibtnScoreBoard.visibility = View.GONE
-                winLooseDialog.tvText.text = mContext.resources.getString(R.string.wrong_answer)
-                winLooseDialog.animationView.setAnimation(R.raw.loose_anim)
-                winLooseDialog.animationView.playAnimation()
+                winLoseDialog.ibtnNext.visibility = View.GONE
+                winLoseDialog.ibtnScoreBoard.visibility = View.GONE
+                winLoseDialog.tvText.text = mContext.resources.getString(R.string.wrong_answer)
+                winLoseDialog.animationView.setAnimation(R.raw.loose_anim)
+                winLoseDialog.animationView.playAnimation()
             }
             Constants.ARCADE_END_DIALOG -> {
-                winLooseDialog.ibtnNext.visibility = View.GONE
-                winLooseDialog.tvText.text = "${mContext.getString(R.string.you_score_is)} $score"
-                winLooseDialog.animationView.setAnimation(R.raw.times_up)
-                winLooseDialog.animationView.playAnimation()
+                winLoseDialog.ibtnNext.visibility = View.GONE
+                winLoseDialog.tvText.text = "${mContext.getString(R.string.you_score_is)} $score"
+
+                winLoseDialog.etNickname.visibility = View.VISIBLE
+                winLoseDialog.etNickname.setText(Constants.User.playerName)
+
+                winLoseDialog.animationView.setAnimation(R.raw.times_up)
+                winLoseDialog.animationView.playAnimation()
             }
         }
-        winLooseDialog.show()
+        winLoseDialog.show()
     }
 }

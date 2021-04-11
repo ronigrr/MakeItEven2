@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.database.*
 import com.yoyoG.makeiteven2.data_models.NameAndScoreInfo
 import com.yoyoG.makeiteven2.extras.Constants
-import java.nio.file.attribute.UserDefinedFileAttributeView
 
 
 object FireBaseHelper {
@@ -68,6 +67,28 @@ object FireBaseHelper {
                     }
                 }
                 mFireBaseUserReference.child(Constants.User.playerTokenId).setValue(Constants.User)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("database", "saveScoreToDatabaseScoreBoard was cancelled do to $error")
+            }
+
+        })
+    }
+
+    fun updateScoreBoardUserNickName(nickName: String) {
+        mFirebaseScoreBoardReference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (child in snapshot.children) {
+                    if (child.key.toString() == Constants.User.playerTokenId) {
+                        val tempNameAndScoreInfo = child.getValue(NameAndScoreInfo::class.java) as NameAndScoreInfo
+                        tempNameAndScoreInfo.playerName = nickName
+                        Log.v("database", child.toString())
+                        mFirebaseScoreBoardReference.child(Constants.User.playerTokenId).setValue(tempNameAndScoreInfo)
+                        return
+                    }
+                }
+                mFirebaseScoreBoardReference.child(Constants.User.playerTokenId).setValue(NameAndScoreInfo(nickName, Constants.User.arcadeHighScore.toInt()))
             }
 
             override fun onCancelled(error: DatabaseError) {

@@ -40,7 +40,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/main_sound"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold"/>
 
             <SeekBar
                 android:id="@+id/seekBarMainSound"
@@ -66,7 +67,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sound_effects"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <SeekBar
             android:id="@+id/seekBarSoundEffects"
@@ -91,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="@string/nickname"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <EditText
@@ -104,9 +106,9 @@
             android:enabled="false"
             android:gravity="center"
             android:inputType="text"
-            android:maxLength="24"
+            android:maxLength="16"
             android:text="@string/test_string"
-            android:textSize="22sp" />
+            android:textSize="16sp" />
 
         <ImageButton
             android:id="@+id/IBtnEditNickname"

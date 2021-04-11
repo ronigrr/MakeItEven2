@@ -11,6 +11,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.fragment.app.Fragment
 import com.yoyoG.makeiteven2.R
 import com.yoyoG.makeiteven2.extras.Constants
+import com.yoyoG.makeiteven2.firebase.FireBaseHelper
 import com.yoyoG.makeiteven2.intefaces.IFragmentSettingsListener
 import com.yoyoG.makeiteven2.managers.AnimationsManager
 import com.yoyoG.makeiteven2.room.DatabaseHelper.changePlayerNickname
@@ -56,6 +57,7 @@ class FragmentSettings : Fragment() {
                         }
                         else -> {
                             changePlayerNickname(context!!, rootView.etNickname.text.toString())
+                            FireBaseHelper.updateScoreBoardUserNickName(rootView.etNickname.text.toString())
                         }
 
                     }

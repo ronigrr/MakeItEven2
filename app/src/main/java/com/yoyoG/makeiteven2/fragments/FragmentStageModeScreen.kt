@@ -591,16 +591,16 @@ class FragmentStageModeScreen(levelNumber: Int) : Fragment(), View.OnClickListen
         when (view.id) {
             R.id.ibtnHome -> {
                 listener.backButtonPressedStage()
-                mEndGameDialog.dismissDialogWithAd(mLevelNum)
+                mEndGameDialog.stageModeDismissDialogWithAd(mLevelNum)
             }
             R.id.ibtnRetry -> {
                 gameInit()
-                mEndGameDialog.dismissDialogWithAd(mLevelNum)
+                mEndGameDialog.stageModeDismissDialogWithAd(mLevelNum)
             }
             R.id.ibtnNext -> {
                 mLevelNumberTV.text = context!!.resources.getText(R.string.level_number).toString() + " " + (++mLevelNum).toString()
                 gameInit()
-                mEndGameDialog.dismissDialogWithAd(mLevelNum)
+                mEndGameDialog.stageModeDismissDialogWithAd(mLevelNum)
             }
         }
     }

@@ -38,6 +38,7 @@ import kotlin.collections.ArrayList
 import kotlin.system.exitProcess
 
 
+
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragmentSettingsListener, LevelsAdapter.ILevelsAdapter,
     FragmentDialogNickName.DialogListener, IFragmentStageModeListener, IFragmentArcadeModeListener, IFragmentLevelsScreenListener,
@@ -86,7 +87,6 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
             )
         }
     }
-
 
     private fun activeAd() {
         Handler(Looper.getMainLooper()).postDelayed({
@@ -309,6 +309,7 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
     }
 
     override fun onFinishEditDialog(inputText: String) {
+        //Replaced on patch 1.0.5
         Toast.makeText(this, "welcome $inputText", Toast.LENGTH_SHORT).show()
         createNewUser(inputText)
         ShearedPrefManager.setIsFirstTimeInApp(this, false)
@@ -331,9 +332,13 @@ class MainActivity : AppCompatActivity(), IFragmentsStartsScreenListener, IFragm
 
     private fun firstTimeInApp() {
         hide3DotsToolBar()
-        fragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, FragmentDialogNickName(), Constants.NICK_NAME_DIALOG_TAG)
-            .commit()
+        createNewUser("Guest")
+        ShearedPrefManager.setIsFirstTimeInApp(this, false)
+        loadStartScreen()
+        AudioManager.getInstance(this).playGameBeginAndStartLoop()
+//        fragmentManager.beginTransaction()
+//            .replace(R.id.fragmentContainer, FragmentDialogNickName(), Constants.NICK_NAME_DIALOG_TAG)
+//            .commit()
     }
 
     override fun onStop() {

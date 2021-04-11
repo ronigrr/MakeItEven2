@@ -124,5 +124,6 @@
     <string name="coins_text">coins text</string>
     <string name="free_coin">free Coin</string>
     <string name="video_coins">Video Coins</string>
+    <string name="well_done">Well Done!</string>
 
 </resources>
