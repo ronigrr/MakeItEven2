@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.score_board_cell.view.*
 
 class ScoreBoardCellAdapter(private var mScoresList: List<NameAndScoreInfo>, private val context: Context) :
     RecyclerView.Adapter<ScoreBoardCellAdapter.ViewHolder>() {
+
     class ViewHolder(private val view: View, private val context: Context) : RecyclerView.ViewHolder(view) {
         @SuppressLint("SetTextI18n")
         fun bind(list: NameAndScoreInfo, position: Int) {

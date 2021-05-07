@@ -25,10 +25,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
+//dont forget to remove anotate testOptions before release
+//    testOptions {
+//        unitTests.returnDefaultValues = true
+//    }
 
 }
 
