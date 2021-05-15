@@ -12,8 +12,8 @@ android {
         applicationId "com.yoyoG.makeiteven2"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 7
-        versionName "1.0.6"
+        versionCode 8
+        versionName "1.0.61"
 
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -26,9 +26,9 @@ android {
         }
     }
 //dont forget to remove anotate testOptions before release
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
+//    testOptions {
+//        unitTests.returnDefaultValues = true
+//    }
 
 }
 
