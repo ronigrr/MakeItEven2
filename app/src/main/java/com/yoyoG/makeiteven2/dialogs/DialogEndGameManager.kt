@@ -28,12 +28,15 @@ class DialogEndGameManager(fragment: Any, private val mContext: Context) {
     }
 
     fun arcadeDismissDialog() {
-        winLoseDialog.dismiss()
-        checkAndSaveName()
+        if (winLoseDialog.isShowing) {
+            checkAndSaveName()
+            winLoseDialog.dismiss()
+        }
     }
 
     private fun checkAndSaveName() {
-        if (winLoseDialog.etNickname.text.isNotEmpty() && winLoseDialog.etNickname.text.toString() != Constants.User.playerName)
+        if (winLoseDialog.etNickname.text.isNotEmpty()
+            && winLoseDialog.etNickname.text.toString() != Constants.User.playerName)
         {
             DatabaseHelper.changePlayerNickname(mContext,winLoseDialog.etNickname.text.toString())
             FireBaseHelper.updateScoreBoardUserNickName(winLoseDialog.etNickname.text.toString())

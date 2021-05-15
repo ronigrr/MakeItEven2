@@ -9,7 +9,7 @@ import com.yoyoG.makeiteven2.room.RoomUserNote
 
 
 object Constants {
-
+    const val TEST_MODE = false
     const val NOTIFICATION_TEST: String = """It's been a while since you played and practiced your brain!
 Click here to Play"""
     const val IS_FIRST_TIME_IN_STAGE_MODE: String = "first_time_in_stagemode"
